@@ -1,0 +1,416 @@
+/* ===== BASIC PAGE ===== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f6f8;
+    color: #1f2937;
+}
+
+
+/* ===== SIDEBAR ===== */
+
+.sidebar {
+    width: 280px;
+    height: 100vh;
+    background: #344256;
+    color: white;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    padding: 28px 25px;
+    box-sizing: border-box;
+
+    overflow-y: auto;
+}
+
+.sidebar h2 {
+    margin: 0 0 28px 0;
+
+    font-size: 28px;
+    line-height: 1.25;
+
+    color: white;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    margin-bottom: 20px;
+}
+
+.sidebar a {
+    display: inline-block;
+
+    color: white;
+    text-decoration: none;
+
+    font-size: 19px;
+    line-height: 1.4;
+}
+
+.sidebar a:hover {
+    text-decoration: underline;
+}
+
+
+/* ===== MAIN CONTENT ===== */
+
+.content {
+    margin-left: 280px;
+
+    padding: 45px;
+    min-height: 100vh;
+
+    background: white;
+}
+
+.content h1 {
+    margin-top: 0;
+    margin-bottom: 20px;
+
+    font-size: 36px;
+    line-height: 1.2;
+
+    color: #111827;
+}
+
+.content>p {
+    font-size: 17px;
+    line-height: 1.6;
+    margin-bottom: 22px;
+}
+
+
+/* ===== CARDS ===== */
+
+.card {
+    max-width: 760px;
+
+    background: white;
+
+    border: 1px solid #dcdfe4;
+
+    padding: 25px;
+
+    margin-top: 22px;
+    margin-bottom: 22px;
+}
+
+.card h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+
+    font-size: 22px;
+
+    color: #1f2937;
+}
+
+.card p {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+
+/* ===== NORMAL LINKS ===== */
+
+.content a {
+    color: #344256;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.content a:hover {
+    color: #1f2937;
+}
+
+
+/* ===== FORMS ===== */
+
+.content>form,
+.card form {
+    max-width: 700px;
+}
+
+.content>form {
+    border: 1px solid #dddddd;
+
+    padding: 30px;
+
+    margin-top: 25px;
+
+    background: white;
+}
+
+.content>form div,
+.card form div {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    color: #111827;
+}
+
+
+/* ===== INPUTS ===== */
+
+input,
+textarea,
+select {
+    width: 100%;
+
+    padding: 11px 12px;
+
+    border: 1px solid #cfd3d8;
+
+    background: white;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+
+    outline: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #344256;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+
+/* ===== BUTTON ===== */
+
+button {
+    background: #344256;
+
+    color: white;
+
+    border: none;
+
+    padding: 11px 18px;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+button:hover {
+    background: #263548;
+}
+
+
+/* ===== TABLE ===== */
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    margin-top: 22px;
+
+    background: white;
+}
+
+th {
+    background: #344256;
+    color: white;
+
+    padding: 13px;
+
+    text-align: left;
+
+    font-size: 15px;
+}
+
+td {
+    padding: 13px;
+
+    border: 1px solid #dddddd;
+
+    font-size: 15px;
+}
+
+table form {
+    border: none;
+    padding: 0;
+    margin: 0;
+    max-width: none;
+}
+
+table form select {
+    width: auto;
+}
+
+table form button {
+    margin-left: 5px;
+}
+
+
+/* ===== SUCCESS / ERROR TEXT ===== */
+
+.success-message {
+    max-width: 700px;
+
+    padding: 12px 15px;
+
+    border: 1px solid #b7d9bd;
+
+    margin: 15px 0;
+
+    background: #f2faf3;
+}
+
+.error-message {
+    max-width: 700px;
+
+    padding: 12px 15px;
+
+    border: 1px solid #e0b4b4;
+
+    margin: 15px 0;
+
+    background: #fff5f5;
+}
+
+
+/* ===== ADMIN NOTIFICATION SEARCH ===== */
+
+.notification-search {
+    max-width: 500px;
+
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+.notification-search input {
+    width: 100%;
+}
+
+#noSearchResult {
+    max-width: 700px;
+
+    padding: 12px;
+
+    border: 1px solid #dddddd;
+
+    background: white;
+}
+
+
+/* ===== VOLUNTEER AVAILABILITY ===== */
+
+#availabilityText {
+    font-weight: bold;
+}
+
+
+/* ===== SMALL SCREEN ===== */
+
+@media (max-width: 800px) {
+
+    .sidebar {
+        width: 220px;
+    }
+
+    .content {
+        margin-left: 220px;
+        padding: 30px;
+    }
+
+    .content h1 {
+        font-size: 30px;
+    }
+}
+
+.status-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.status-form select {
+    width: 130px;
+    margin: 0;
+}
+
+.status-form button {
+    margin: 0;
+    white-space: nowrap;
+}
+
+.action-links {
+    white-space: nowrap;
+}
+
+.action-links a,
+.delete-link {
+    color: #344256;
+    text-decoration: underline;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.delete-form {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+.delete-link {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-left: 12px;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.delete-link:hover,
+.action-links a:hover {
+    color: #1f2937;
+}
+
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 900px;
+    margin-top: 25px;
+}
+
+.dashboard-cards .card {
+    margin: 0;
+    max-width: none;
+}
+
+.dashboard-count {
+    font-size: 34px !important;
+    font-weight: bold;
+    margin: 10px 0 18px;
+}
