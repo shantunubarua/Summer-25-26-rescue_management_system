@@ -414,3 +414,168 @@ table form button {
     font-weight: bold;
     margin: 10px 0 18px;
 }
+
+/* =========================================================
+   DETAILED RESCUE REPORT
+   ========================================================= */
+
+.report-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.printable-rescue-report {
+    max-width: 1000px;
+    margin-top: 25px;
+    background: #ffffff;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    padding: 35px;
+}
+
+.report-document-header {
+    text-align: center;
+    padding-bottom: 25px;
+    border-bottom: 2px solid #222222;
+    margin-bottom: 30px;
+}
+
+.report-document-header h1 {
+    margin-bottom: 6px;
+}
+
+.report-document-header h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.report-document-header p {
+    margin: 4px 0;
+}
+
+.report-section {
+    margin-bottom: 30px;
+}
+
+.report-section h3 {
+    border-bottom: 1px solid #dddddd;
+    padding-bottom: 8px;
+    margin-bottom: 18px;
+}
+
+.report-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px 25px;
+}
+
+.report-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.report-field span {
+    font-size: 13px;
+    font-weight: 600;
+    color: #666666;
+}
+
+.report-field strong {
+    font-size: 15px;
+    word-break: break-word;
+}
+
+.report-description {
+    margin-top: 20px;
+}
+
+.report-description h4 {
+    margin-bottom: 8px;
+}
+
+.report-description p {
+    margin-top: 0;
+    line-height: 1.7;
+}
+
+.report-document-footer {
+    margin-top: 40px;
+    padding-top: 15px;
+    border-top: 1px solid #dddddd;
+    text-align: center;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   PRINT RESCUE REPORT
+   ========================================================= */
+
+@media print {
+
+    @page {
+        size: A4;
+        margin: 15mm;
+    }
+
+    body {
+        background: #ffffff !important;
+    }
+
+    .sidebar,
+    .no-print,
+    footer {
+        display: none !important;
+    }
+
+    .content {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+    }
+
+    .printable-rescue-report {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .report-section {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .report-document-header {
+        margin-top: 0;
+    }
+
+    a {
+        color: #000000 !important;
+        text-decoration: none !important;
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    .report-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .report-actions {
+        flex-wrap: wrap;
+    }
+
+    .printable-rescue-report {
+        padding: 20px;
+    }
+}
