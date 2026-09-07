@@ -273,3 +273,97 @@ function handleAdminResourceRequestStatus(
 
     return '';
 }
+/*
+|--------------------------------------------------------------------------
+| ADMIN - AJAX RESOURCE REQUEST SEARCH
+|--------------------------------------------------------------------------
+*/
+
+function handleAdminResourceRequestSearch($conn)
+{
+    /*
+    |--------------------------------------------------------------------------
+    | Only GET request allowed
+    |--------------------------------------------------------------------------
+    */
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+
+        header('Content-Type: application/json');
+
+        echo json_encode([
+            'success' => false,
+            'message' => 'Invalid request method.',
+            'data' => []
+        ]);
+
+        exit;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Get + validate search text
+    |--------------------------------------------------------------------------
+    */
+
+    $search = trim(
+        $_GET['search'] ?? ''
+    );
+
+
+    if (strlen($search) > 100) {
+
+        header('Content-Type: application/json');
+
+        echo json_encode([
+            'success' => false,
+            'message' => 'Search text is too long.',
+            'data' => []
+        ]);
+
+        exit;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Empty search = show all requests
+    |--------------------------------------------------------------------------
+    */
+
+    if ($search === '') {
+
+        $requests =
+            getAllResourceRequestsForAdmin($conn);
+
+    } else {
+
+        $requests =
+            searchResourceRequestsForAdmin(
+                $conn,
+                $search
+            );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | JSON RESPONSE
+    |--------------------------------------------------------------------------
+    */
+
+    header(
+        'Content-Type: application/json; charset=utf-8'
+    );
+
+
+    echo json_encode([
+        'success' => true,
+        'count' => count($requests),
+        'data' => $requests
+    ]);
+
+
+    exit;
+}
