@@ -632,9 +632,15 @@ if ($page === 'login') {
 
     requireVolunteer();
 
+    require_once "controllers/NotificationController.php";
+
+    $dashboardNotifications =
+        loadRoleDashboardNotifications(
+            $conn,
+            'volunteer'
+        );
+
     require_once "views/volunteer/dashboard.php";
-
-
 /*
 |--------------------------------------------------------------------------
 | VOLUNTEER ACTIVITIES
