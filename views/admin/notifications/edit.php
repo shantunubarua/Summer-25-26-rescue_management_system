@@ -9,7 +9,7 @@
     <?php if (!empty($error)): ?>
 
         <p style="color: red;">
-            <?php echo htmlspecialchars($error); ?>
+            <?= htmlspecialchars($error); ?>
         </p>
 
     <?php endif; ?>
@@ -17,7 +17,7 @@
 
     <form
         method="POST"
-        action="index.php?page=notification-edit&id=<?php echo (int)$notification['id']; ?>"
+        action="index.php?page=notification-edit&id=<?= (int)$notification['id']; ?>"
     >
 
         <div>
@@ -33,11 +33,12 @@
                 id="title"
                 name="title"
                 maxlength="150"
-                value="<?php echo htmlspecialchars($notification['title']); ?>"
+                value="<?= htmlspecialchars($notification['title']); ?>"
                 required
             >
 
         </div>
+
 
         <br>
 
@@ -55,9 +56,10 @@
                 name="message"
                 rows="5"
                 required
-            ><?php echo htmlspecialchars($notification['message']); ?></textarea>
+            ><?= htmlspecialchars($notification['message']); ?></textarea>
 
         </div>
+
 
         <br>
 
@@ -73,25 +75,32 @@
             <select
                 id="alert_type"
                 name="alert_type"
+                required
             >
 
                 <option
                     value="normal"
-                    <?php echo $notification['alert_type'] === 'normal' ? 'selected' : ''; ?>
+                    <?= $notification['alert_type'] === 'normal'
+                        ? 'selected'
+                        : ''; ?>
                 >
                     Normal
                 </option>
 
                 <option
                     value="important"
-                    <?php echo $notification['alert_type'] === 'important' ? 'selected' : ''; ?>
+                    <?= $notification['alert_type'] === 'important'
+                        ? 'selected'
+                        : ''; ?>
                 >
                     Important
                 </option>
 
                 <option
                     value="emergency"
-                    <?php echo $notification['alert_type'] === 'emergency' ? 'selected' : ''; ?>
+                    <?= $notification['alert_type'] === 'emergency'
+                        ? 'selected'
+                        : ''; ?>
                 >
                     Emergency
                 </option>
@@ -99,6 +108,67 @@
             </select>
 
         </div>
+
+
+        <br>
+
+
+        <!-- TARGET AUDIENCE -->
+
+        <div>
+
+            <label for="target_audience">
+                Target Audience
+            </label>
+
+            <br>
+
+            <select
+                id="target_audience"
+                name="target_audience"
+                required
+            >
+
+                <option
+                    value="all"
+                    <?= ($notification['target_audience'] ?? 'all') === 'all'
+                        ? 'selected'
+                        : ''; ?>
+                >
+                    All Users
+                </option>
+
+                <option
+                    value="volunteer"
+                    <?= ($notification['target_audience'] ?? 'all') === 'volunteer'
+                        ? 'selected'
+                        : ''; ?>
+                >
+                    Volunteers
+                </option>
+
+                <option
+                    value="witness"
+                    <?= ($notification['target_audience'] ?? 'all') === 'witness'
+                        ? 'selected'
+                        : ''; ?>
+                >
+                    Witnesses
+                </option>
+
+                <option
+                    value="help_seeker"
+                    <?= ($notification['target_audience'] ?? 'all') === 'help_seeker'
+                        ? 'selected'
+                        : ''; ?>
+                >
+                    Help Seekers
+                </option>
+
+            </select>
+
+        </div>
+
 
         <br>
 
@@ -114,18 +184,23 @@
             <select
                 id="status"
                 name="status"
+                required
             >
 
                 <option
                     value="active"
-                    <?php echo $notification['status'] === 'active' ? 'selected' : ''; ?>
+                    <?= $notification['status'] === 'active'
+                        ? 'selected'
+                        : ''; ?>
                 >
                     Active
                 </option>
 
                 <option
                     value="inactive"
-                    <?php echo $notification['status'] === 'inactive' ? 'selected' : ''; ?>
+                    <?= $notification['status'] === 'inactive'
+                        ? 'selected'
+                        : ''; ?>
                 >
                     Inactive
                 </option>
@@ -134,7 +209,9 @@
 
         </div>
 
+
         <br>
+
 
         <button type="submit">
             Update Notification
