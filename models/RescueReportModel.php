@@ -304,3 +304,97 @@ function getDetailedRescueReportById($conn, $report_id)
 
     return $report ?: null;
 }
+/*
+|--------------------------------------------------------------------------
+| GET EMERGENCY REQUESTS FOR RESCUE REPORT
+|--------------------------------------------------------------------------
+*/
+
+function getEmergencyRequestsForRescueReport($conn)
+{
+    $sql = "
+        SELECT
+            er.id,
+            er.emergency_type,
+            er.location,
+            er.priority,
+            er.status,
+            er.created_at,
+
+            hs.name AS help_seeker_name,
+            v.name AS volunteer_name
+
+        FROM emergency_requests AS er
+
+        LEFT JOIN users AS hs
+            ON er.help_seeker_id = hs.id
+            AND hs.role = 'help_seeker'
+
+        LEFT JOIN users AS v
+            ON er.volunteer_id = v.id
+            AND v.role = 'volunteer'
+
+        ORDER BY er.id DESC
+    ";
+
+    $result = mysqli_query($conn, $sql);
+
+    if (!$result) {
+        return [];
+    }
+
+    $requests = [];
+
+    while ($row = mysqli_fetch_assoc($result)) {
+        $requests[] = $row;
+    }
+
+    return $requests;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| CHECK EMERGENCY REQUEST EXISTS
+|--------------------------------------------------------------------------
+*/
+
+function emergencyRequestExistsForRescueReport(
+    $conn,
+    $emergency_request_id
+) {
+    $sql = "
+        SELECT id
+
+        FROM emergency_requests
+
+        WHERE id = ?
+
+        LIMIT 1
+    ";
+
+    $stmt = mysqli_prepare($conn, $sql);
+
+    if (!$stmt) {
+        return false;
+    }
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "i",
+        $emergency_request_id
+    );
+
+    mysqli_stmt_execute($stmt);
+
+    $result = mysqli_stmt_get_result($stmt);
+
+    $exists =
+        mysqli_fetch_assoc($result)
+        ? true
+        : false;
+
+    mysqli_stmt_close($stmt);
+
+    return $exists;
+}
