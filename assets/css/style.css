@@ -579,3 +579,155 @@ table form button {
         padding: 20px;
     }
 }
+
+/* =========================================================
+   FINAL PRINT OVERRIDE - RESCUE REPORT
+   Keep this block at the VERY END of style.css
+   ========================================================= */
+
+@media print {
+
+    @page {
+        size: A4 portrait;
+        margin: 12mm;
+    }
+
+    html,
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+        font-size: 11px !important;
+    }
+
+    .sidebar,
+    .no-print,
+    footer {
+        display: none !important;
+    }
+
+    .content {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+    }
+
+    .printable-rescue-report {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+
+
+    /* DOCUMENT HEADER */
+
+    .report-document-header {
+        text-align: center;
+        padding-bottom: 10px;
+        margin-bottom: 14px;
+        border-bottom: 2px solid #222222;
+    }
+
+    .report-document-header h1 {
+        font-size: 20px !important;
+        margin: 0 0 4px !important;
+    }
+
+    .report-document-header h2 {
+        font-size: 14px !important;
+        margin: 0 0 7px !important;
+    }
+
+    .report-document-header p {
+        font-size: 10px !important;
+        margin: 2px 0 !important;
+    }
+
+
+    /* REPORT SECTIONS */
+
+    .report-section {
+        margin-bottom: 14px !important;
+
+        break-inside: auto !important;
+        page-break-inside: auto !important;
+    }
+
+    .report-section h3 {
+        font-size: 13px !important;
+        margin: 0 0 8px !important;
+        padding-bottom: 4px !important;
+
+        border-bottom: 1px solid #cccccc;
+    }
+
+
+    /* FORCE TWO COLUMNS WHILE PRINTING */
+
+    .report-grid {
+        display: grid !important;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr)) !important;
+
+        column-gap: 28px !important;
+        row-gap: 7px !important;
+    }
+
+    .report-field {
+        display: flex !important;
+        flex-direction: column !important;
+
+        gap: 1px !important;
+
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    .report-field span {
+        font-size: 9px !important;
+        font-weight: 600 !important;
+        color: #555555 !important;
+    }
+
+    .report-field strong {
+        font-size: 10.5px !important;
+        line-height: 1.25 !important;
+    }
+
+
+    /* DESCRIPTIONS */
+
+    .report-description {
+        margin-top: 9px !important;
+    }
+
+    .report-description h4 {
+        font-size: 10.5px !important;
+        margin: 0 0 4px !important;
+    }
+
+    .report-description p {
+        font-size: 10px !important;
+        line-height: 1.4 !important;
+        margin: 0 !important;
+    }
+
+
+    /* FOOTER */
+
+    .report-document-footer {
+        margin-top: 16px !important;
+        padding-top: 7px !important;
+
+        border-top: 1px solid #cccccc;
+
+        text-align: center;
+        font-size: 8px !important;
+    }
+}
