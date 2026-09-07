@@ -301,3 +301,34 @@ function handleDeleteNotification(
 
     return "Failed to delete notification.";
 }
+/*
+|--------------------------------------------------------------------------
+| LOAD ACTIVE NOTIFICATIONS FOR ROLE DASHBOARD
+|--------------------------------------------------------------------------
+*/
+
+function loadRoleDashboardNotifications(
+    $conn,
+    $role
+) {
+    $allowedRoles = [
+        'volunteer',
+        'witness',
+        'help_seeker'
+    ];
+
+    if (
+        !in_array(
+            $role,
+            $allowedRoles,
+            true
+        )
+    ) {
+        return [];
+    }
+
+    return getActiveNotificationsForRole(
+        $conn,
+        $role
+    );
+}
