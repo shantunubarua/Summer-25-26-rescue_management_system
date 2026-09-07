@@ -59,3 +59,23 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+/* =========================================================
+   PRINT RESCUE REPORT
+   ========================================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const printButton =
+        document.getElementById("printRescueReportBtn");
+
+    if (printButton) {
+
+        printButton.addEventListener(
+            "click",
+            function () {
+
+                window.print();
+            }
+        );
+    }
+});
