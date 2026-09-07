@@ -52,6 +52,7 @@
                     <th>Title</th>
                     <th>Message</th>
                     <th>Alert Type</th>
+                    <th>Target Audience</th>
                     <th>Status</th>
                     <th>Created By</th>
                     <th>Created At</th>
@@ -80,6 +81,10 @@
 
                         <td>
                             <?php echo htmlspecialchars($notification['alert_type']); ?>
+                        </td>
+
+                        <td>
+                             <?php echo htmlspecialchars(ucwords(str_replace('_',' ',$notification['target_audience'] ?? 'all')));?>
                         </td>
 
                         <td>
