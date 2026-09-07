@@ -6,43 +6,81 @@ require_once "views/partials/sidebar.php";
 <div class="content">
 
     <div class="page-header">
+
         <div>
             <h1>Volunteer Resource Requests</h1>
+
             <p>
-                Review resource and rescue support requests submitted by volunteers.
+                Review and manage resource requests
+                submitted by volunteers.
             </p>
         </div>
+
     </div>
 
 
-    <?php if (empty($requests)): ?>
+    <!-- AJAX SEARCH -->
 
-        <div class="card">
-            <p>No resource requests found.</p>
+    <div class="card">
+
+        <div class="form-group">
+
+            <label for="resourceRequestSearch">
+                Search Resource Requests
+            </label>
+
+            <input
+                type="text"
+                id="resourceRequestSearch"
+                placeholder="Search volunteer, resource, status or description..."
+                autocomplete="off"
+            >
+
         </div>
 
-    <?php else: ?>
+        <p id="resourceSearchMessage">
+            <?= count($requests); ?>
+            request(s) found
+        </p>
 
-        <div class="card">
+    </div>
 
-            <div class="table-responsive">
 
-                <table class="data-table">
+    <!-- RESOURCE REQUEST TABLE -->
 
-                    <thead>
+    <div class="card">
+
+        <div class="table-responsive">
+
+            <table class="data-table">
+
+                <thead>
+
+                    <tr>
+                        <th>ID</th>
+                        <th>Volunteer</th>
+                        <th>Resource</th>
+                        <th>Quantity</th>
+                        <th>Availability</th>
+                        <th>Status</th>
+                        <th>Requested At</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="resourceRequestTableBody">
+
+                    <?php if (empty($requests)): ?>
+
                         <tr>
-                            <th>ID</th>
-                            <th>Volunteer</th>
-                            <th>Resource</th>
-                            <th>Quantity</th>
-                            <th>Availability</th>
-                            <th>Status</th>
-                            <th>Requested At</th>
-                            <th>Action</th>
+                            <td colspan="8">
+                                No resource requests found.
+                            </td>
                         </tr>
-                    </thead>
 
-                    <tbody>
+                    <?php else: ?>
 
                         <?php foreach ($requests as $request): ?>
 
@@ -52,12 +90,14 @@ require_once "views/partials/sidebar.php";
                                     #<?= (int)$request['id']; ?>
                                 </td>
 
+
                                 <td>
                                     <?= htmlspecialchars(
                                         $request['volunteer_name']
                                         ?? 'N/A'
                                     ); ?>
                                 </td>
+
 
                                 <td>
                                     <?= htmlspecialchars(
@@ -72,12 +112,14 @@ require_once "views/partials/sidebar.php";
                                     ); ?>
                                 </td>
 
+
                                 <td>
                                     <?= (int)(
                                         $request['quantity']
                                         ?? 0
                                     ); ?>
                                 </td>
+
 
                                 <td>
                                     <?= htmlspecialchars(
@@ -92,18 +134,25 @@ require_once "views/partials/sidebar.php";
                                     ); ?>
                                 </td>
 
+
                                 <td>
+
                                     <span class="status-badge">
+
                                         <?= htmlspecialchars(
                                             ucfirst(
                                                 $request['status']
                                                 ?? 'pending'
                                             )
                                         ); ?>
+
                                     </span>
+
                                 </td>
 
+
                                 <td>
+
                                     <?php
 
                                     $createdAt =
@@ -120,7 +169,9 @@ require_once "views/partials/sidebar.php";
                                         : 'N/A';
 
                                     ?>
+
                                 </td>
+
 
                                 <td>
 
@@ -137,15 +188,15 @@ require_once "views/partials/sidebar.php";
 
                         <?php endforeach; ?>
 
-                    </tbody>
+                    <?php endif; ?>
 
-                </table>
+                </tbody>
 
-            </div>
+            </table>
 
         </div>
 
-    <?php endif; ?>
+    </div>
 
 </div>
 
