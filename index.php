@@ -199,12 +199,6 @@ if ($page === 'login') {
         $conn,
         $report_id
     );
-/*
-|--------------------------------------------------------------------------
-| CREATE RESCUE REPORT
-|--------------------------------------------------------------------------
-*/
-
 } elseif ($page === 'rescue-report-create') {
 
     requireAdmin();
@@ -213,14 +207,16 @@ if ($page === 'login') {
 
     $error = '';
 
+    $emergencyRequests =
+        loadRescueReportCreatePageData($conn);
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $error = handleCreateRescueReport($conn);
+        $error =
+            handleCreateRescueReport($conn);
     }
 
     require_once "views/admin/rescue_reports/create.php";
-
-
 /*
 |--------------------------------------------------------------------------
 | EDIT RESCUE REPORT
