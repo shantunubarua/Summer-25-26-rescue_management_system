@@ -31,6 +31,12 @@ $role = $_SESSION['user']['role'] ?? '';
             </li>
 
             <li>
+                <a href="index.php?page=admin-witness-reports">
+                    Witness Reports
+                </a>
+            </li>
+
+            <li>
                 <a href="index.php?page=rescue-reports">
                     Rescue Reports
                 </a>

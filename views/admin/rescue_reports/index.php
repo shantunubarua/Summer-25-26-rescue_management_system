@@ -150,6 +150,12 @@
                        <td class="action-links">
 
     <a
+        href="index.php?page=rescue-report-view&id=<?php echo (int)$report['id']; ?>"
+    >
+        View Report
+    </a>
+
+    <a
         href="index.php?page=rescue-report-edit&id=<?php echo (int)$report['id']; ?>"
     >
         Edit

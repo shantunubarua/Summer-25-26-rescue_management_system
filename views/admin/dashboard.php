@@ -16,51 +16,86 @@
 
     <div class="dashboard-cards">
 
-        <div class="card">
-            <h3>Notifications</h3>
+    <!-- USER OVERVIEW -->
 
-            <p class="dashboard-count">
-                <?php echo $dashboardCounts['notifications']; ?>
-            </p>
+    <div class="card">
+        <h3>Registered Volunteers</h3>
 
-            <a href="index.php?page=notifications">
-                View Notifications
-            </a>
-        </div>
+        <p class="dashboard-count">
+            <?php echo $dashboardCounts['volunteers']; ?>
+        </p>
 
-        <div class="card">
-            <h3>Feedback</h3>
-
-            <p class="dashboard-count">
-                <?php echo $dashboardCounts['feedback']; ?>
-            </p>
-
-            <a href="index.php?page=feedback">
-                View Feedback
-            </a>
-        </div>
-
-        <div class="card">
-            <h3>Rescue Reports</h3>
-
-            <p class="dashboard-count">
-                <?php echo $dashboardCounts['rescue_reports']; ?>
-            </p>
-
-            <a href="index.php?page=rescue-reports">
-                View Rescue Reports
-            </a>
-        </div>
-
-        <div class="card">
-            <h3>Emergency Requests</h3>
-
-            <p class="dashboard-count">
-                <?php echo $dashboardCounts['emergency_requests']; ?>
-            </p>
-        </div>
-
+        <p>Volunteer accounts registered in the system.</p>
     </div>
+
+    <div class="card">
+        <h3>Registered Witnesses</h3>
+
+        <p class="dashboard-count">
+            <?php echo $dashboardCounts['witnesses']; ?>
+        </p>
+
+        <p>Witness accounts registered in the system.</p>
+    </div>
+
+    <div class="card">
+        <h3>Registered Help Seekers</h3>
+
+        <p class="dashboard-count">
+            <?php echo $dashboardCounts['help_seekers']; ?>
+        </p>
+
+        <p>Help Seeker accounts registered in the system.</p>
+    </div>
+
+
+    <!-- SYSTEM OVERVIEW -->
+
+    <div class="card">
+        <h3>Notifications</h3>
+
+        <p class="dashboard-count">
+            <?php echo $dashboardCounts['notifications']; ?>
+        </p>
+
+        <a href="index.php?page=notifications">
+            View Notifications
+        </a>
+    </div>
+
+    <div class="card">
+        <h3>Feedback</h3>
+
+        <p class="dashboard-count">
+            <?php echo $dashboardCounts['feedback']; ?>
+        </p>
+
+        <a href="index.php?page=feedback">
+            View Feedback
+        </a>
+    </div>
+
+    <div class="card">
+        <h3>Rescue Reports</h3>
+
+        <p class="dashboard-count">
+            <?php echo $dashboardCounts['rescue_reports']; ?>
+        </p>
+
+        <a href="index.php?page=rescue-reports">
+            View Rescue Reports
+        </a>
+    </div>
+
+    <div class="card">
+        <h3>Emergency Requests</h3>
+
+        <p class="dashboard-count">
+            <?php echo $dashboardCounts['emergency_requests']; ?>
+        </p>
+    </div>
+
+</div>
 
 </div>
 

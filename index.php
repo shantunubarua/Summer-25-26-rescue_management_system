@@ -34,13 +34,9 @@ if ($page === 'login') {
 
     requireAdmin();
 
-    require_once "models/AdminDashboardModel.php";
+    require_once "controllers/AdminController.php";
 
-    $dashboardCounts = getAdminDashboardCounts($conn);
-
-    require_once "views/admin/dashboard.php";
-
-
+    showAdminDashboard($conn);
 /*
 |--------------------------------------------------------------------------
 | LOGOUT
@@ -113,7 +109,51 @@ if ($page === 'login') {
     require_once "controllers/FeedbackController.php";
 
     handleDeleteFeedback($conn);
+/*
+|--------------------------------------------------------------------------
+| ADMIN - WITNESS REPORTS
+|--------------------------------------------------------------------------
+*/
 
+} elseif ($page === 'admin-witness-reports') {
+
+    requireAdmin();
+
+    require_once "controllers/AdminController.php";
+
+    showAdminWitnessReports($conn);
+
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN - WITNESS REPORT VIEW / REVIEW
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'admin-witness-report-view') {
+
+    requireAdmin();
+
+    require_once "controllers/AdminController.php";
+
+    $report_id = isset($_GET['id'])
+        ? (int)$_GET['id']
+        : 0;
+
+    $error = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $error = handleAdminWitnessReportStatus(
+            $conn,
+            $report_id
+        );
+    }
+
+    showAdminWitnessReport(
+        $conn,
+        $report_id
+    );
 
 /*
 |--------------------------------------------------------------------------
@@ -139,6 +179,26 @@ if ($page === 'login') {
     require_once "views/admin/rescue_reports/index.php";
 
 
+    /*
+|--------------------------------------------------------------------------
+| VIEW DETAILED RESCUE REPORT
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'rescue-report-view') {
+
+    requireAdmin();
+
+    require_once "controllers/RescueReportController.php";
+
+    $report_id = isset($_GET['id'])
+        ? (int)$_GET['id']
+        : 0;
+
+    showDetailedRescueReport(
+        $conn,
+        $report_id
+    );
 /*
 |--------------------------------------------------------------------------
 | CREATE RESCUE REPORT

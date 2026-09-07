@@ -138,3 +138,37 @@ function handleDeleteRescueReport($conn)
     header("Location: index.php?page=rescue-reports");
     exit;
 }
+/*
+|--------------------------------------------------------------------------
+| ADMIN - VIEW DETAILED RESCUE REPORT
+|--------------------------------------------------------------------------
+*/
+
+function showDetailedRescueReport(
+    $conn,
+    $report_id
+) {
+
+    $report_id = (int)$report_id;
+
+
+    if ($report_id <= 0) {
+
+        die("Invalid rescue report ID.");
+    }
+
+
+    $report = getDetailedRescueReportById(
+        $conn,
+        $report_id
+    );
+
+
+    if (!$report) {
+
+        die("Rescue report not found.");
+    }
+
+
+    require_once "views/admin/rescue_reports/view.php";
+}
