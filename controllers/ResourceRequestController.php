@@ -161,3 +161,115 @@ function handleCancelResourceRequest(
 
     exit;
 }
+/*
+|--------------------------------------------------------------------------
+| ADMIN - RESOURCE REQUEST LIST
+|--------------------------------------------------------------------------
+*/
+
+function showAdminResourceRequests($conn)
+{
+    $requests = getAllResourceRequestsForAdmin($conn);
+
+    require_once "views/admin/resource_requests/index.php";
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN - SINGLE RESOURCE REQUEST
+|--------------------------------------------------------------------------
+*/
+
+function showAdminResourceRequest(
+    $conn,
+    $request_id
+) {
+    $request_id = (int)$request_id;
+
+    if ($request_id <= 0) {
+        die("Invalid resource request ID.");
+    }
+
+    $request = getResourceRequestForAdminById(
+        $conn,
+        $request_id
+    );
+
+    if (!$request) {
+        die("Resource request not found.");
+    }
+
+    require_once "views/admin/resource_requests/view.php";
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN - UPDATE RESOURCE REQUEST STATUS
+|--------------------------------------------------------------------------
+*/
+
+function handleAdminResourceRequestStatus(
+    $conn,
+    $request_id
+) {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        return "Invalid request method.";
+    }
+
+    $request_id = (int)$request_id;
+
+    $status = trim(
+        $_POST['status'] ?? ''
+    );
+
+    if ($request_id <= 0) {
+        return "Invalid resource request ID.";
+    }
+
+    $allowedStatuses = [
+        'pending',
+        'approved',
+        'rejected',
+        'completed'
+    ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | PHP SERVER-SIDE VALIDATION
+    |--------------------------------------------------------------------------
+    */
+
+    if (
+        $status === '' ||
+        !in_array(
+            $status,
+            $allowedStatuses,
+            true
+        )
+    ) {
+        return "Please select a valid request status.";
+    }
+
+    $request = getResourceRequestForAdminById(
+        $conn,
+        $request_id
+    );
+
+    if (!$request) {
+        return "Resource request not found.";
+    }
+
+    $updated = updateResourceRequestStatusByAdmin(
+        $conn,
+        $request_id,
+        $status
+    );
+
+    if (!$updated) {
+        return "Failed to update resource request status.";
+    }
+
+    return '';
+}
