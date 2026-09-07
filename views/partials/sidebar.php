@@ -42,9 +42,9 @@ $role = $_SESSION['user']['role'] ?? '';
                 </a>
             </li>
             <li>
-             <a href="index.php?page=admin-resource-requests">
+                 <a href="index.php?page=admin-resource-requests">
                     Resource Requests
-            </a>
+                </a>
             </li>
 
             <li>
