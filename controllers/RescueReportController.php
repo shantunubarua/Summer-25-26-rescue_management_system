@@ -33,8 +33,6 @@ function handleUpdateRescueReportStatus($conn)
 }
 function handleCreateRescueReport($conn)
 {
-    require_once "models/RescueReportModel.php";
-
     $emergency_request_id =
         (int)($_POST['emergency_request_id'] ?? 0);
 
@@ -47,37 +45,77 @@ function handleCreateRescueReport($conn)
     $admin_id =
         (int)($_SESSION['user']['id'] ?? 0);
 
-    if ($emergency_request_id <= 0) {
-        return "Please enter a valid emergency request ID.";
-    }
-
-    if ($rescue_status === '') {
-        return "Please select rescue status.";
-    }
-
-    if ($description === '') {
-        return "Please enter report description.";
-    }
 
     if ($admin_id <= 0) {
         return "Invalid admin account.";
     }
 
-    $created = createRescueReport(
-        $conn,
-        $emergency_request_id,
-        $admin_id,
-        $rescue_status,
-        $description
-    );
+
+    if ($emergency_request_id <= 0) {
+        return "Please select a valid emergency request.";
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | PHP VALIDATION - CHECK REAL EMERGENCY REQUEST
+    |--------------------------------------------------------------------------
+    */
+
+    if (
+        !emergencyRequestExistsForRescueReport(
+            $conn,
+            $emergency_request_id
+        )
+    ) {
+        return "Selected emergency request does not exist.";
+    }
+
+
+    $allowedStatuses = [
+        'pending',
+        'ongoing',
+        'completed',
+        'cancelled'
+    ];
+
+
+    if (
+        $rescue_status === '' ||
+        !in_array(
+            $rescue_status,
+            $allowedStatuses,
+            true
+        )
+    ) {
+        return "Please select a valid rescue status.";
+    }
+
+
+    if ($description === '') {
+        return "Report description is required.";
+    }
+
+
+    $created =
+        createRescueReport(
+            $conn,
+            $emergency_request_id,
+            $admin_id,
+            $rescue_status,
+            $description
+        );
+
 
     if (!$created) {
         return "Failed to create rescue report.";
     }
 
+
     header(
         "Location: index.php?page=rescue-reports"
     );
+
     exit;
 }
 function handleEditRescueReport($conn, $report_id)
@@ -171,4 +209,8 @@ function showDetailedRescueReport(
 
 
     require_once "views/admin/rescue_reports/view.php";
+}
+function loadRescueReportCreatePageData($conn)
+{
+    return getEmergencyRequestsForRescueReport($conn);
 }
