@@ -313,3 +313,100 @@ function updateResourceRequestStatusByAdmin(
 
     return $success;
 }
+/*
+|--------------------------------------------------------------------------
+| ADMIN - SEARCH RESOURCE REQUESTS
+|--------------------------------------------------------------------------
+*/
+
+function searchResourceRequestsForAdmin(
+    $conn,
+    $search
+) {
+    $search = trim($search);
+
+    $sql = "
+        SELECT
+            rr.*,
+
+            u.name AS volunteer_name,
+            u.email AS volunteer_email,
+            u.phone AS volunteer_phone,
+
+            vp.address AS volunteer_address,
+            vp.availability_status
+
+        FROM resource_requests AS rr
+
+        INNER JOIN users AS u
+            ON rr.volunteer_id = u.id
+
+        LEFT JOIN volunteer_profiles AS vp
+            ON rr.volunteer_id = vp.user_id
+
+        WHERE u.role = 'volunteer'
+
+        AND (
+            u.name LIKE ?
+            OR u.email LIKE ?
+            OR rr.resource_type LIKE ?
+            OR rr.description LIKE ?
+            OR rr.status LIKE ?
+        )
+
+        ORDER BY
+            CASE rr.status
+                WHEN 'pending' THEN 1
+                WHEN 'approved' THEN 2
+                WHEN 'completed' THEN 3
+                WHEN 'rejected' THEN 4
+                ELSE 5
+            END,
+            rr.created_at DESC
+    ";
+
+    $stmt = mysqli_prepare(
+        $conn,
+        $sql
+    );
+
+    if (!$stmt) {
+        return [];
+    }
+
+    $searchValue =
+        '%' . $search . '%';
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "sssss",
+        $searchValue,
+        $searchValue,
+        $searchValue,
+        $searchValue,
+        $searchValue
+    );
+
+    if (!mysqli_stmt_execute($stmt)) {
+
+        mysqli_stmt_close($stmt);
+
+        return [];
+    }
+
+    $result =
+        mysqli_stmt_get_result($stmt);
+
+    $requests = [];
+
+    while (
+        $result &&
+        $row = mysqli_fetch_assoc($result)
+    ) {
+        $requests[] = $row;
+    }
+
+    mysqli_stmt_close($stmt);
+
+    return $requests;
+}
