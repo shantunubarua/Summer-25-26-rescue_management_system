@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 02, 2026 at 03:42 PM
+-- Generation Time: Sep 07, 2026 at 08:06 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -112,6 +112,7 @@ CREATE TABLE `notifications` (
   `title` varchar(150) NOT NULL,
   `message` text NOT NULL,
   `alert_type` enum('normal','important','emergency') NOT NULL DEFAULT 'normal',
+  `target_audience` enum('all','volunteer','witness','help_seeker') NOT NULL DEFAULT 'all',
   `status` enum('active','inactive') NOT NULL DEFAULT 'active',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -121,8 +122,10 @@ CREATE TABLE `notifications` (
 -- Dumping data for table `notifications`
 --
 
-INSERT INTO `notifications` (`id`, `created_by`, `title`, `message`, `alert_type`, `status`, `created_at`, `updated_at`) VALUES
-(2, 1, 'Flood emergency alert', 'Rescue operation active in zone A', 'emergency', 'inactive', '2026-08-21 08:19:14', '2026-08-21 09:35:12');
+INSERT INTO `notifications` (`id`, `created_by`, `title`, `message`, `alert_type`, `target_audience`, `status`, `created_at`, `updated_at`) VALUES
+(2, 1, 'Flood emergency alert', 'Rescue operation active in zone A', 'emergency', 'all', 'inactive', '2026-08-21 08:19:14', '2026-08-21 09:35:12'),
+(4, 1, 'test', 'test', 'normal', 'all', 'active', '2026-09-07 17:46:38', '2026-09-07 17:46:38'),
+(5, 1, 'volunteet test alert', 'test', 'important', 'volunteer', 'active', '2026-09-07 17:47:43', '2026-09-07 17:47:43');
 
 -- --------------------------------------------------------
 
@@ -139,6 +142,14 @@ CREATE TABLE `rescue_reports` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `rescue_reports`
+--
+
+INSERT INTO `rescue_reports` (`id`, `emergency_request_id`, `admin_id`, `rescue_status`, `description`, `created_at`, `updated_at`) VALUES
+(3, 2, 1, 'completed', 'test', '2026-09-07 16:14:43', '2026-09-07 16:14:43'),
+(4, 1, 1, 'completed', 'succesfully operated', '2026-09-07 16:50:38', '2026-09-07 16:50:38');
 
 -- --------------------------------------------------------
 
@@ -162,7 +173,7 @@ CREATE TABLE `resource_requests` (
 --
 
 INSERT INTO `resource_requests` (`id`, `volunteer_id`, `resource_type`, `quantity`, `description`, `status`, `created_at`, `updated_at`) VALUES
-(1, 4, 'First Aid Kit', 2, 'Needed for emergency rescue activity.', 'pending', '2026-08-30 12:07:59', '2026-08-30 12:07:59'),
+(1, 4, 'First Aid Kit', 2, 'Needed for emergency rescue activity.', 'approved', '2026-08-30 12:07:59', '2026-09-07 17:25:24'),
 (2, 4, 'First Aid Kit', 2, 'fgg', 'pending', '2026-08-30 12:13:30', '2026-08-30 12:13:30'),
 (3, 4, 'First Aid Kit', 2, 'hh', 'pending', '2026-08-30 12:17:06', '2026-08-30 12:17:06'),
 (4, 4, 'First Aid Kit 2', 2, 'qqq', 'pending', '2026-08-30 12:22:43', '2026-08-30 12:22:43');
@@ -246,7 +257,7 @@ CREATE TABLE `witness_reports` (
 --
 
 INSERT INTO `witness_reports` (`id`, `witness_id`, `title`, `description`, `damage_level`, `incident_type`, `location`, `incident_date`, `evidence_file`, `status`, `created_at`, `updated_at`) VALUES
-(2, 2, 'Car Accident', 'Car vs Bike Clash', 'low', 'accident', 'Kuril', '2026-08-29 00:00:00', NULL, 'pending', '2026-08-29 10:39:46', '2026-08-29 10:39:46'),
+(2, 2, 'Car Accident', 'Car vs Bike Clash', 'low', 'accident', 'Kuril', '2026-08-29 00:00:00', NULL, 'reviewed', '2026-08-29 10:39:46', '2026-09-07 15:55:29'),
 (3, 2, 'Road Accident', 'A road accident occurred near the main road', 'low', 'accident', 'Main Road', '2026-08-29 00:00:00', NULL, 'pending', '2026-08-29 10:42:18', '2026-08-29 10:42:18'),
 (4, 2, 'Flood', 'Flood at feni', 'low', 'flood', 'Feni', '2026-12-12 00:00:00', NULL, 'pending', '2026-08-29 10:47:35', '2026-08-29 10:47:35'),
 (5, 2, 'Medical Emergency', 'Suicide', 'low', 'medical', 'Jatrabari', '2026-12-11 00:00:00', 'uploads/witness/witness_2_1788000957_6a92babd16d2b.jpeg', 'pending', '2026-08-29 10:55:57', '2026-08-29 10:55:57'),
@@ -345,13 +356,13 @@ ALTER TABLE `feedback`
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `rescue_reports`
 --
 ALTER TABLE `rescue_reports`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `resource_requests`
