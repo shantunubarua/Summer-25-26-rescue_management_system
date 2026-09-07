@@ -204,3 +204,75 @@ function deleteNotification($conn, $id)
 
     return $success;
 }
+/*
+|--------------------------------------------------------------------------
+| GET ACTIVE NOTIFICATIONS FOR A USER ROLE
+|--------------------------------------------------------------------------
+*/
+
+function getActiveNotificationsForRole(
+    $conn,
+    $role
+) {
+    $sql = "
+        SELECT
+            id,
+            title,
+            message,
+            alert_type,
+            target_audience,
+            status,
+            created_at
+
+        FROM notifications
+
+        WHERE status = 'active'
+
+        AND (
+            target_audience = 'all'
+            OR target_audience = ?
+        )
+
+        ORDER BY
+            CASE alert_type
+                WHEN 'emergency' THEN 1
+                WHEN 'important' THEN 2
+                WHEN 'normal' THEN 3
+                ELSE 4
+            END,
+            id DESC
+    ";
+
+    $stmt = mysqli_prepare(
+        $conn,
+        $sql
+    );
+
+    if (!$stmt) {
+        return [];
+    }
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "s",
+        $role
+    );
+
+    mysqli_stmt_execute($stmt);
+
+    $result =
+        mysqli_stmt_get_result($stmt);
+
+    $notifications = [];
+
+    while (
+        $result &&
+        $row = mysqli_fetch_assoc($result)
+    ) {
+        $notifications[] = $row;
+    }
+
+    mysqli_stmt_close($stmt);
+
+    return $notifications;
+}
