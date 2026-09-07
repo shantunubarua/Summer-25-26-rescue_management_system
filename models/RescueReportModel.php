@@ -246,7 +246,7 @@ function getDetailedRescueReportById($conn, $report_id)
 
         FROM rescue_reports AS rr
 
-        INNER JOIN emergency_requests AS er
+        LEFT JOIN emergency_requests AS er
             ON rr.emergency_request_id = er.id
 
         LEFT JOIN users AS hs
