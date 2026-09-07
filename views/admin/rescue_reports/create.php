@@ -1,96 +1,238 @@
-<?php require_once "views/partials/header.php"; ?>
-<?php require_once "views/partials/sidebar.php"; ?>
+<?php
+require_once "views/partials/header.php";
+require_once "views/partials/sidebar.php";
+
+$selectedRequestId =
+    (int)($_POST['emergency_request_id'] ?? 0);
+
+$selectedStatus =
+    $_POST['rescue_status'] ?? 'pending';
+
+$description =
+    $_POST['description'] ?? '';
+?>
 
 <div class="content">
 
-    <h1>Create Rescue Report</h1>
+    <div class="page-header">
+        <div>
+            <h1>Create Rescue Report</h1>
+            <p>
+                Create an official rescue report for a valid emergency request.
+            </p>
+        </div>
+    </div>
 
-    <p>
-        Create a rescue report for an emergency request.
-    </p>
 
     <?php if (!empty($error)): ?>
 
-        <p class="error-message">
-            <?php echo htmlspecialchars($error); ?>
-        </p>
+        <div class="alert alert-danger">
+            <?= htmlspecialchars($error); ?>
+        </div>
 
     <?php endif; ?>
 
-    <form
-        method="POST"
-        action="index.php?page=rescue-report-create"
-    >
 
-        <div>
+    <div class="card">
 
-            <label>
-                Emergency Request ID
-            </label>
+        <?php if (empty($emergencyRequests)): ?>
 
-            <input
-                type="number"
-                name="emergency_request_id"
-                min="1"
-                required
+            <p>
+                No emergency requests are currently available.
+            </p>
+
+            <a
+                href="index.php?page=rescue-reports"
+                class="btn"
+            >
+                Back to Rescue Reports
+            </a>
+
+        <?php else: ?>
+
+            <form
+                method="POST"
+                action="index.php?page=rescue-report-create"
             >
 
-        </div>
+                <!-- EMERGENCY REQUEST -->
 
-        <div>
+                <div class="form-group">
 
-            <label>
-                Rescue Status
-            </label>
+                    <label for="emergency_request_id">
+                        Emergency Request
+                    </label>
 
-            <select
-                name="rescue_status"
-                required
-            >
+                    <select
+                        name="emergency_request_id"
+                        id="emergency_request_id"
+                        required
+                    >
 
-                <option value="">
-                    Select Status
-                </option>
+                        <option value="">
+                            Select an Emergency Request
+                        </option>
 
-                <option value="pending">
-                    Pending
-                </option>
+                        <?php foreach ($emergencyRequests as $request): ?>
 
-                <option value="ongoing">
-                    Ongoing
-                </option>
+                            <option
+                                value="<?= (int)$request['id']; ?>"
+                                <?= $selectedRequestId === (int)$request['id']
+                                    ? 'selected'
+                                    : ''; ?>
+                            >
+                                #<?= (int)$request['id']; ?>
+                                -
+                                <?= htmlspecialchars(
+                                    ucfirst(
+                                        $request['emergency_type']
+                                        ?? 'Emergency'
+                                    )
+                                ); ?>
 
-                <option value="completed">
-                    Completed
-                </option>
+                                |
+                                <?= htmlspecialchars(
+                                    $request['location']
+                                    ?? 'Unknown Location'
+                                ); ?>
 
-                <option value="cancelled">
-                    Cancelled
-                </option>
+                                |
+                                Priority:
+                                <?= htmlspecialchars(
+                                    ucfirst(
+                                        $request['priority']
+                                        ?? 'N/A'
+                                    )
+                                ); ?>
 
-            </select>
+                                |
+                                Status:
+                                <?= htmlspecialchars(
+                                    ucfirst(
+                                        $request['status']
+                                        ?? 'N/A'
+                                    )
+                                ); ?>
 
-        </div>
+                                |
+                                Help Seeker:
+                                <?= htmlspecialchars(
+                                    $request['help_seeker_name']
+                                    ?? 'N/A'
+                                ); ?>
+                            </option>
 
-        <div>
+                        <?php endforeach; ?>
 
-            <label>
-                Description
-            </label>
+                    </select>
 
-            <textarea
-                name="description"
-                required
-            ></textarea>
+                    <small>
+                        Only emergency requests stored in the system can be selected.
+                    </small>
 
-        </div>
+                </div>
 
-        <button type="submit">
-            Create Report
-        </button>
 
-    </form>
+                <!-- RESCUE STATUS -->
+
+                <div class="form-group">
+
+                    <label for="rescue_status">
+                        Rescue Status
+                    </label>
+
+                    <select
+                        name="rescue_status"
+                        id="rescue_status"
+                        required
+                    >
+
+                        <option
+                            value="pending"
+                            <?= $selectedStatus === 'pending'
+                                ? 'selected'
+                                : ''; ?>
+                        >
+                            Pending
+                        </option>
+
+                        <option
+                            value="ongoing"
+                            <?= $selectedStatus === 'ongoing'
+                                ? 'selected'
+                                : ''; ?>
+                        >
+                            Ongoing
+                        </option>
+
+                        <option
+                            value="completed"
+                            <?= $selectedStatus === 'completed'
+                                ? 'selected'
+                                : ''; ?>
+                        >
+                            Completed
+                        </option>
+
+                        <option
+                            value="cancelled"
+                            <?= $selectedStatus === 'cancelled'
+                                ? 'selected'
+                                : ''; ?>
+                        >
+                            Cancelled
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="form-group">
+
+                    <label for="description">
+                        Rescue Report Description
+                    </label>
+
+                    <textarea
+                        name="description"
+                        id="description"
+                        rows="6"
+                        required
+                        placeholder="Describe the rescue operation, actions taken and important observations..."
+                    ><?= htmlspecialchars($description); ?></textarea>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        Create Rescue Report
+                    </button>
+
+                    <a
+                        href="index.php?page=rescue-reports"
+                        class="btn"
+                    >
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        <?php endif; ?>
+
+    </div>
 
 </div>
 
-<?php require_once "views/partials/footer.php"; ?>
+<?php
+require_once "views/partials/footer.php";
+?>
