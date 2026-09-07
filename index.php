@@ -423,6 +423,10 @@ if ($page === 'login') {
             $notification['alert_type'] =
                 $_POST['alert_type']
                 ?? $notification['alert_type'];
+            
+            $notification['target_audience'] =
+                $_POST['target_audience']
+                ?? $notification['target_audience'];    
 
             $notification['status'] =
                 $_POST['status']
