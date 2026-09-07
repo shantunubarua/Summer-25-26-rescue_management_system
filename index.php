@@ -200,6 +200,19 @@ if ($page === 'login') {
         $conn,
         $request_id
     );
+    /*
+|--------------------------------------------------------------------------
+| ADMIN - AJAX RESOURCE REQUEST SEARCH
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'admin-resource-request-search') {
+
+    requireAdmin();
+
+    require_once "controllers/ResourceRequestController.php";
+
+    handleAdminResourceRequestSearch($conn);
 
 /*
 |--------------------------------------------------------------------------
