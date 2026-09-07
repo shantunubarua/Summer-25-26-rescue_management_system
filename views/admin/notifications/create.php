@@ -7,81 +7,227 @@
     <h1>Create Notification</h1>
 
     <?php if (!empty($error)): ?>
+
         <p style="color: red;">
-            <?php echo htmlspecialchars($error); ?>
+            <?= htmlspecialchars($error); ?>
         </p>
+
     <?php endif; ?>
 
-    <form method="POST" action="index.php?page=notification-create">
+
+    <form
+        method="POST"
+        action="index.php?page=notification-create"
+    >
 
         <div>
-            <label for="title">Title</label>
+
+            <label for="title">
+                Title
+            </label>
+
             <br>
+
             <input
                 type="text"
                 id="title"
                 name="title"
                 maxlength="150"
+                value="<?= htmlspecialchars($_POST['title'] ?? ''); ?>"
                 required
             >
+
         </div>
+
 
         <br>
 
+
         <div>
-            <label for="message">Message</label>
+
+            <label for="message">
+                Message
+            </label>
+
             <br>
+
             <textarea
                 id="message"
                 name="message"
                 rows="5"
                 required
-            ></textarea>
+            ><?= htmlspecialchars($_POST['message'] ?? ''); ?></textarea>
+
         </div>
+
 
         <br>
 
+
         <div>
-            <label for="alert_type">Alert Type</label>
+
+            <label for="alert_type">
+                Alert Type
+            </label>
+
             <br>
 
-            <select id="alert_type" name="alert_type">
+            <?php
+            $selectedAlertType =
+                $_POST['alert_type'] ?? 'normal';
+            ?>
 
-                <option value="normal">
+            <select
+                id="alert_type"
+                name="alert_type"
+                required
+            >
+
+                <option
+                    value="normal"
+                    <?= $selectedAlertType === 'normal'
+                        ? 'selected'
+                        : ''; ?>
+                >
                     Normal
                 </option>
 
-                <option value="important">
+                <option
+                    value="important"
+                    <?= $selectedAlertType === 'important'
+                        ? 'selected'
+                        : ''; ?>
+                >
                     Important
                 </option>
 
-                <option value="emergency">
+                <option
+                    value="emergency"
+                    <?= $selectedAlertType === 'emergency'
+                        ? 'selected'
+                        : ''; ?>
+                >
                     Emergency
                 </option>
 
             </select>
+
         </div>
+
 
         <br>
 
+
+        <!-- TARGET AUDIENCE -->
+
         <div>
-            <label for="status">Status</label>
+
+            <label for="target_audience">
+                Target Audience
+            </label>
+
             <br>
 
-            <select id="status" name="status">
+            <?php
+            $selectedAudience =
+                $_POST['target_audience']
+                ?? 'all';
+            ?>
 
-                <option value="active">
+            <select
+                id="target_audience"
+                name="target_audience"
+                required
+            >
+
+                <option
+                    value="all"
+                    <?= $selectedAudience === 'all'
+                        ? 'selected'
+                        : ''; ?>
+                >
+                    All Users
+                </option>
+
+                <option
+                    value="volunteer"
+                    <?= $selectedAudience === 'volunteer'
+                        ? 'selected'
+                        : ''; ?>
+                >
+                    Volunteers
+                </option>
+
+                <option
+                    value="witness"
+                    <?= $selectedAudience === 'witness'
+                        ? 'selected'
+                        : ''; ?>
+                >
+                    Witnesses
+                </option>
+
+                <option
+                    value="help_seeker"
+                    <?= $selectedAudience === 'help_seeker'
+                        ? 'selected'
+                        : ''; ?>
+                >
+                    Help Seekers
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <br>
+
+
+        <div>
+
+            <label for="status">
+                Status
+            </label>
+
+            <br>
+
+            <?php
+            $selectedStatus =
+                $_POST['status'] ?? 'active';
+            ?>
+
+            <select
+                id="status"
+                name="status"
+                required
+            >
+
+                <option
+                    value="active"
+                    <?= $selectedStatus === 'active'
+                        ? 'selected'
+                        : ''; ?>
+                >
                     Active
                 </option>
 
-                <option value="inactive">
+                <option
+                    value="inactive"
+                    <?= $selectedStatus === 'inactive'
+                        ? 'selected'
+                        : ''; ?>
+                >
                     Inactive
                 </option>
 
             </select>
+
         </div>
 
+
         <br>
+
 
         <button type="submit">
             Create Notification
