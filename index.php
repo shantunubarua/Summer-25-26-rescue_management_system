@@ -155,6 +155,52 @@ if ($page === 'login') {
         $report_id
     );
 
+    /*
+|--------------------------------------------------------------------------
+| ADMIN - RESOURCE REQUESTS
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'admin-resource-requests') {
+
+    requireAdmin();
+
+    require_once "controllers/ResourceRequestController.php";
+
+    showAdminResourceRequests($conn);
+
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN - RESOURCE REQUEST VIEW
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'admin-resource-request-view') {
+
+    requireAdmin();
+
+    require_once "controllers/ResourceRequestController.php";
+
+    $request_id = isset($_GET['id'])
+        ? (int)$_GET['id']
+        : 0;
+
+    $error = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $error = handleAdminResourceRequestStatus(
+            $conn,
+            $request_id
+        );
+    }
+
+    showAdminResourceRequest(
+        $conn,
+        $request_id
+    );
+
 /*
 |--------------------------------------------------------------------------
 | RESCUE REPORTS
