@@ -274,3 +274,39 @@ function handleUpdateEmergencyRequest(
 
     return '';
 }
+function handleHelpSeekerRequestSearch($conn)
+{
+    header('Content-Type: application/json; charset=UTF-8');
+
+    $help_seeker_id =
+        (int)($_SESSION['user']['id'] ?? 0);
+
+    $keyword =
+        trim($_GET['q'] ?? '');
+
+    if ($help_seeker_id <= 0) {
+
+        echo json_encode([
+            'success' => false,
+            'message' => 'Invalid help seeker account.',
+            'data' => []
+        ]);
+
+        exit;
+    }
+
+    $requests =
+        searchHelpSeekerRequests(
+            $conn,
+            $help_seeker_id,
+            $keyword
+        );
+
+    echo json_encode([
+        'success' => true,
+        'count' => count($requests),
+        'data' => $requests
+    ]);
+
+    exit;
+}
