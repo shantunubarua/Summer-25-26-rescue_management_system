@@ -705,6 +705,8 @@ if ($page === 'login') {
     $error = '';
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        
+requireValidCsrfToken();
 
         $error = handleCreateDonation($conn);
     }
@@ -1366,7 +1368,7 @@ if ($page === 'login') {
     }
 
     requireValidCsrfToken();
-    
+
     require_once "models/WitnessModel.php";
 
     $witness_id =
