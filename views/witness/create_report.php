@@ -32,6 +32,7 @@
     novalidate
 >
 
+<?php echo csrfField(); ?>
 
         <!-- Incident Title -->
 
