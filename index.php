@@ -1174,6 +1174,55 @@ requireValidCsrfToken();
         die("Emergency request not found.");
     }
 
+    /*
+|--------------------------------------------------------------------------
+| HELP SEEKER REQUEST DELETE
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'helpseeker-request-delete') {
+
+    requireHelpSeeker();
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        die("Invalid request method.");
+    }
+
+    requireValidCsrfToken();
+
+    require_once "models/HelpSeekerModel.php";
+
+    $request_id =
+        (int)($_POST['request_id'] ?? 0);
+
+    $help_seeker_id =
+        (int)($_SESSION['user']['id'] ?? 0);
+
+    if (
+        $request_id <= 0 ||
+        $help_seeker_id <= 0
+    ) {
+        die("Invalid emergency request.");
+    }
+
+    $deleted =
+        deleteEmergencyRequest(
+            $conn,
+            $request_id,
+            $help_seeker_id
+        );
+
+    if (!$deleted) {
+        die(
+            "Only your pending emergency request can be deleted."
+        );
+    }
+
+    header(
+        "Location: index.php?page=helpseeker-requests"
+    );
+
+    exit;
 
     /*
     |--------------------------------------------------------------------------
