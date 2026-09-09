@@ -95,6 +95,24 @@ require_once "views/partials/sidebar.php";
 
     </div>
 
+        <?php
+    if (
+        ($request['status'] ?? 'pending')
+        === 'pending'
+    ):
+    ?>
+
+        <p>
+            <a
+                href="index.php?page=helpseeker-request-edit&id=<?php
+                    echo (int)$request['id'];
+                ?>"
+            >
+                Edit Request
+            </a>
+        </p>
+
+    <?php endif; ?>
     <p>
         <a href="index.php?page=helpseeker-requests">
             Back to My Requests
