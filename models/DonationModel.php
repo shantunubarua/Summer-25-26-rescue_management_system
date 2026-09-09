@@ -12,38 +12,68 @@ function createDonation(
     $amount,
     $donation_type,
     $payment_method,
+    $transaction_id,
     $message
 ) {
-    $sql = "INSERT INTO donations
-            (
-                witness_id,
-                amount,
-                donation_type,
-                payment_method,
-                message,
-                status
-            )
-            VALUES (?, ?, ?, ?, ?, 'pending')";
 
-    $stmt = mysqli_prepare($conn, $sql);
+    $sql = "
+        INSERT INTO donations
+        (
+            witness_id,
+            amount,
+            donation_type,
+            payment_method,
+            transaction_id,
+            message,
+            status
+        )
+        VALUES
+        (
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            'completed'
+        )
+    ";
+
+    $stmt =
+        mysqli_prepare(
+            $conn,
+            $sql
+        );
+
 
     if ($stmt === false) {
+
         return false;
     }
 
+
     mysqli_stmt_bind_param(
         $stmt,
-        "idsss",
+        "idssss",
         $witness_id,
         $amount,
         $donation_type,
         $payment_method,
+        $transaction_id,
         $message
     );
 
-    $success = mysqli_stmt_execute($stmt);
 
-    mysqli_stmt_close($stmt);
+    $success =
+        mysqli_stmt_execute(
+            $stmt
+        );
+
+
+    mysqli_stmt_close(
+        $stmt
+    );
+
 
     return $success;
 }
