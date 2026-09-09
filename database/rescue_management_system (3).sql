@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 07, 2026 at 08:06 PM
+-- Generation Time: Sep 09, 2026 at 05:52 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -51,7 +51,10 @@ INSERT INTO `donations` (`id`, `witness_id`, `amount`, `donation_type`, `payment
 (5, 2, 300.00, 'money', 'bkash', 'TXN0000000000005', 'good luck', 'pending', '2026-09-01 05:54:01'),
 (6, 2, 300.00, 'money', 'card', 'TXN0000000000006', 'good initiative', 'pending', '2026-09-01 06:47:02'),
 (7, 2, 100.00, 'money', 'cash', 'TXN453f3943bf9cd', 'keep up the good work', 'pending', '2026-09-01 08:02:35'),
-(8, 2, 200.00, 'medicine', 'bank', 'TXN881b6d1b13c52', 'good', 'pending', '2026-09-01 08:05:43');
+(8, 2, 200.00, 'medicine', 'bank', 'TXN881b6d1b13c52', 'good', 'pending', '2026-09-01 08:05:43'),
+(9, 2, 100.00, 'water', 'cash', '', 'TXNd0b66fd6641b8', 'pending', '2026-09-09 12:08:30'),
+(10, 2, 10000.00, 'water', 'cash', 'TXNe313a30c55157', 'Water donation for affected families', 'completed', '2026-09-09 12:24:20'),
+(11, 2, 20000.00, 'money', 'card', 'TXN334d3e84f9574', 'Money for food', 'completed', '2026-09-09 15:08:08');
 
 -- --------------------------------------------------------
 
@@ -125,7 +128,8 @@ CREATE TABLE `notifications` (
 INSERT INTO `notifications` (`id`, `created_by`, `title`, `message`, `alert_type`, `target_audience`, `status`, `created_at`, `updated_at`) VALUES
 (2, 1, 'Flood emergency alert', 'Rescue operation active in zone A', 'emergency', 'all', 'inactive', '2026-08-21 08:19:14', '2026-08-21 09:35:12'),
 (4, 1, 'test', 'test', 'normal', 'all', 'active', '2026-09-07 17:46:38', '2026-09-07 17:46:38'),
-(5, 1, 'volunteet test alert', 'test', 'important', 'volunteer', 'active', '2026-09-07 17:47:43', '2026-09-07 17:47:43');
+(5, 1, 'volunteet test alert', 'test', 'important', 'volunteer', 'active', '2026-09-07 17:47:43', '2026-09-07 17:47:43'),
+(6, 1, 'Witness Test', 'This is for witnesses.', 'important', 'witness', 'active', '2026-09-09 09:48:30', '2026-09-09 09:48:30');
 
 -- --------------------------------------------------------
 
@@ -201,9 +205,10 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `phone`, `password`, `role`, `created_at`, `updated_at`) VALUES
 (1, 'System Admin', 'admin@rescue.com', '01700000000', '$2y$10$0TxWWt5Dy4zyekIjW/gJYefYvGILexixK0i/rsl1F3fPTZtSN3vai', 'admin', '2026-08-21 07:35:46', '2026-08-21 07:35:46'),
-(2, 'Tanaka Rahman', 'tanaka@rescue.com', '01800000000', '$2y$10$lJMs7egNit.DoRe/xM7asO35.mHpp0cuKqiPA2alhtQ5s7/bZah.y', 'witness', '2026-08-21 08:18:48', '2026-08-21 08:18:48'),
+(2, 'Tanaka Rahman', 'tanaka@rescue.com', '01800000000', '$2y$10$lJMs7egNit.DoRe/xM7asO35.mHpp0cuKqiPA2alhtQ5s7/bZah.y', 'witness', '2026-08-21 08:18:48', '2026-09-09 12:54:48'),
 (3, 'Parvej', 'parvej@rescue.com', '01900000000', '$2y$10$UHacZYTqkzzRovwowls1fuc41RobBnObJZQkJ8UH5u/zUU9Y/T80W', 'help_seeker', '2026-08-23 05:36:16', '2026-08-23 05:36:16'),
-(4, 'Suporna', 'suporna@rescue.com', '01615000000', '$2y$10$9KF9gXFTFbPW1UwEGm5A2epXacKWrMWmjabHNztosJGFy0PAiZsJq', 'volunteer', '2026-08-27 14:12:38', '2026-08-30 11:23:26');
+(4, 'Suporna', 'suporna@rescue.com', '01615000000', '$2y$10$9KF9gXFTFbPW1UwEGm5A2epXacKWrMWmjabHNztosJGFy0PAiZsJq', 'volunteer', '2026-08-27 14:12:38', '2026-08-30 11:23:26'),
+(5, 'Nasiba', 'nasiba@rescue.com', '01810000000', '$2y$10$BanhWqtFGN34lEgjtMI.ouv5v8ys6ai0sknnLDh/dFAlEVm5uJVyW', 'witness', '2026-09-09 15:35:44', '2026-09-09 15:35:44');
 
 -- --------------------------------------------------------
 
@@ -257,11 +262,10 @@ CREATE TABLE `witness_reports` (
 --
 
 INSERT INTO `witness_reports` (`id`, `witness_id`, `title`, `description`, `damage_level`, `incident_type`, `location`, `incident_date`, `evidence_file`, `status`, `created_at`, `updated_at`) VALUES
-(2, 2, 'Car Accident', 'Car vs Bike Clash', 'low', 'accident', 'Kuril', '2026-08-29 00:00:00', NULL, 'reviewed', '2026-08-29 10:39:46', '2026-09-07 15:55:29'),
-(3, 2, 'Road Accident', 'A road accident occurred near the main road', 'low', 'accident', 'Main Road', '2026-08-29 00:00:00', NULL, 'pending', '2026-08-29 10:42:18', '2026-08-29 10:42:18'),
 (4, 2, 'Flood', 'Flood at feni', 'low', 'flood', 'Feni', '2026-12-12 00:00:00', NULL, 'pending', '2026-08-29 10:47:35', '2026-08-29 10:47:35'),
 (5, 2, 'Medical Emergency', 'Suicide', 'low', 'medical', 'Jatrabari', '2026-12-11 00:00:00', 'uploads/witness/witness_2_1788000957_6a92babd16d2b.jpeg', 'pending', '2026-08-29 10:55:57', '2026-08-29 10:55:57'),
-(6, 2, 'Gas leakage', 'At residential area', 'medium', 'other', 'Puran Dhaka', '2026-09-01 00:00:00', NULL, 'pending', '2026-09-01 03:42:30', '2026-09-01 03:42:30');
+(6, 2, 'Gas leakage', 'At residential area', 'medium', 'other', 'Puran Dhaka', '2026-09-01 00:00:00', NULL, 'pending', '2026-09-01 03:42:30', '2026-09-01 03:42:30'),
+(7, 2, 'Earthquake', '4.2 Magnitude', 'low', 'other', 'Narshingdi', '2025-04-23 00:00:00', NULL, 'pending', '2026-09-09 14:12:46', '2026-09-09 14:13:15');
 
 --
 -- Indexes for dumped tables
@@ -338,7 +342,7 @@ ALTER TABLE `witness_reports`
 -- AUTO_INCREMENT for table `donations`
 --
 ALTER TABLE `donations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `emergency_requests`
@@ -356,7 +360,7 @@ ALTER TABLE `feedback`
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `rescue_reports`
@@ -374,7 +378,7 @@ ALTER TABLE `resource_requests`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `volunteer_profiles`
@@ -386,7 +390,7 @@ ALTER TABLE `volunteer_profiles`
 -- AUTO_INCREMENT for table `witness_reports`
 --
 ALTER TABLE `witness_reports`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
