@@ -628,15 +628,17 @@ if ($page === 'login') {
     */
 
     if (
-        $_SERVER['REQUEST_METHOD']
-        === 'POST'
-    ) {
+    $_SERVER['REQUEST_METHOD']
+    === 'POST'
+) {
 
-        $error =
-            handleUpdateWitnessProfile(
-                $conn,
-                $witness_id
-            );
+    requireValidCsrfToken();
+
+    $error =
+        handleUpdateWitnessProfile(
+            $conn,
+            $witness_id
+        );
 
 
         if ($error === '') {
