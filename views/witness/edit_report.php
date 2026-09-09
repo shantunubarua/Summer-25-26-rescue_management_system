@@ -17,10 +17,13 @@
     <?php endif; ?>
 
 
-    <form
-        method="POST"
-        action="index.php?page=witness-report-edit&id=<?php echo (int)$report['id']; ?>"
-    >
+   <form
+    id="witnessReportForm"
+    method="POST"
+    action="index.php?page=witness-report-edit&id=<?php echo (int)$report['id']; ?>"
+>
+
+    <?php echo csrfField(); ?>
 
 
         <!-- Incident Title -->
