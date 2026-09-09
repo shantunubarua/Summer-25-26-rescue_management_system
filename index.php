@@ -1132,6 +1132,127 @@ requireValidCsrfToken();
 
     require_once "views/helpseeker/view_request.php";
 
+    /*
+|--------------------------------------------------------------------------
+| HELP SEEKER REQUEST EDIT
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'helpseeker-request-edit') {
+
+    requireHelpSeeker();
+
+    require_once "models/HelpSeekerModel.php";
+    require_once "controllers/HelpSeekerController.php";
+
+    $request_id =
+        isset($_GET['id'])
+            ? (int)$_GET['id']
+            : 0;
+
+    $help_seeker_id =
+        (int)($_SESSION['user']['id'] ?? 0);
+
+
+    if ($request_id <= 0) {
+        die("Invalid emergency request ID.");
+    }
+
+    if ($help_seeker_id <= 0) {
+        die("Invalid help seeker account.");
+    }
+
+
+    $request =
+        getHelpSeekerRequestById(
+            $conn,
+            $request_id,
+            $help_seeker_id
+        );
+
+    if (!$request) {
+        die("Emergency request not found.");
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | ONLY PENDING REQUEST CAN BE EDITED
+    |--------------------------------------------------------------------------
+    */
+
+    if (($request['status'] ?? '') !== 'pending') {
+        die(
+            "Only pending emergency requests can be edited."
+        );
+    }
+
+
+    $error = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        requireValidCsrfToken();
+
+        $error =
+            handleUpdateEmergencyRequest(
+                $conn,
+                $request_id,
+                $help_seeker_id
+            );
+
+        if ($error === '') {
+
+            header(
+                "Location: index.php?page=helpseeker-request-view&id=" .
+                $request_id
+            );
+
+            exit;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | KEEP SUBMITTED VALUES AFTER VALIDATION ERROR
+        |--------------------------------------------------------------------------
+        */
+
+        $request['emergency_type'] =
+            $_POST['emergency_type']
+            ?? $request['emergency_type'];
+
+        $request['location'] =
+            $_POST['location']
+            ?? $request['location'];
+
+        $request['description'] =
+            $_POST['description']
+            ?? $request['description'];
+
+        $request['priority'] =
+            $_POST['priority']
+            ?? $request['priority'];
+
+        $request['victim_type'] =
+            $_POST['victim_type']
+            ?? $request['victim_type'];
+
+        $request['victim_information'] =
+            $_POST['victim_information']
+            ?? $request['victim_information'];
+
+        $request['victim_count'] =
+            $_POST['victim_count']
+            ?? $request['victim_count'];
+
+        $request['contact_information'] =
+            $_POST['contact_information']
+            ?? $request['contact_information'];
+    }
+
+
+    require_once "views/helpseeker/edit_request.php";
 
 /*
 |--------------------------------------------------------------------------
