@@ -1,49 +1,17 @@
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+document.addEventListener("DOMContentLoaded", function () {
 
-        initWitnessReportSearch();
-
-        initWitnessReportValidation();
-
-    }
-);
-
-
-/*
-|--------------------------------------------------------------------------
-| WITNESS INCIDENT REPORT AJAX SEARCH
-|--------------------------------------------------------------------------
-*/
-
-function initWitnessReportSearch()
-{
     const searchInput =
-        document.getElementById(
-            "witnessReportSearch"
-        );
+        document.getElementById("witnessReportSearch");
 
     const tableBody =
-        document.getElementById(
-            "witnessReportTableBody"
-        );
+        document.getElementById("witnessReportTableBody");
 
     const countElement =
-        document.getElementById(
-            "witnessSearchCount"
-        );
+        document.getElementById("witnessSearchCount");
 
     const messageElement =
-        document.getElementById(
-            "witnessSearchMessage"
-        );
+        document.getElementById("witnessSearchMessage");
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Search page na hole stop
-    |--------------------------------------------------------------------------
-    */
 
     if (
         !searchInput ||
@@ -58,14 +26,17 @@ function initWitnessReportSearch()
     let searchTimer = null;
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | SEARCH INPUT
+    |--------------------------------------------------------------------------
+    */
+
     searchInput.addEventListener(
         "input",
         function () {
 
-            clearTimeout(
-                searchTimer
-            );
-
+            clearTimeout(searchTimer);
 
             const keyword =
                 searchInput.value.trim();
@@ -75,49 +46,38 @@ function initWitnessReportSearch()
                 "Searching...";
 
 
-            searchTimer =
-                setTimeout(
-                    function () {
+            searchTimer = setTimeout(
+                function () {
 
-                        searchWitnessReports(
-                            keyword
-                        );
+                    searchWitnessReports(keyword);
 
-                    },
-                    300
-                );
+                },
+                300
+            );
         }
     );
 
 
     /*
     |--------------------------------------------------------------------------
-    | AJAX Request
+    | AJAX SEARCH
     |--------------------------------------------------------------------------
     */
 
-    function searchWitnessReports(
-        keyword
-    ) {
+    function searchWitnessReports(keyword)
+    {
 
         const url =
             "index.php?page=witness-report-search&q=" +
-            encodeURIComponent(
-                keyword
-            );
+            encodeURIComponent(keyword);
 
 
-        fetch(
-            url,
-            {
-                method: "GET",
-
-                headers: {
-                    "X-Requested-With":
-                        "XMLHttpRequest"
-                }
+        fetch(url, {
+            method: "GET",
+            headers: {
+                "X-Requested-With": "XMLHttpRequest"
             }
-        )
+        })
         .then(function (response) {
 
             if (!response.ok) {
@@ -127,9 +87,7 @@ function initWitnessReportSearch()
                 );
             }
 
-
             return response.json();
-
         })
         .then(function (result) {
 
@@ -165,27 +123,28 @@ function initWitnessReportSearch()
         })
         .catch(function (error) {
 
-            console.error(
-                error
-            );
-
+            console.error(error);
 
             messageElement.textContent =
                 "Unable to load search results.";
-
         });
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | Update Table Using DOM
+    | UPDATE TABLE USING DOM
     |--------------------------------------------------------------------------
     */
 
-    function updateWitnessReportTable(
-        reports
-    ) {
+    function updateWitnessReportTable(reports)
+    {
+
+        /*
+        |--------------------------------------------------------------------------
+        | Clear Old Rows
+        |--------------------------------------------------------------------------
+        */
 
         tableBody.textContent = "";
 
@@ -202,14 +161,10 @@ function initWitnessReportSearch()
         ) {
 
             const row =
-                document.createElement(
-                    "tr"
-                );
+                document.createElement("tr");
 
             const cell =
-                document.createElement(
-                    "td"
-                );
+                document.createElement("td");
 
 
             cell.colSpan = 8;
@@ -218,13 +173,9 @@ function initWitnessReportSearch()
                 "No matching incident reports found.";
 
 
-            row.appendChild(
-                cell
-            );
+            row.appendChild(cell);
 
-            tableBody.appendChild(
-                row
-            );
+            tableBody.appendChild(row);
 
             return;
         }
@@ -232,328 +183,323 @@ function initWitnessReportSearch()
 
         /*
         |--------------------------------------------------------------------------
-        | Result Rows
+        | Create Result Rows
         |--------------------------------------------------------------------------
         */
 
-        reports.forEach(
-            function (report) {
+        reports.forEach(function (report) {
 
-                const row =
-                    document.createElement(
-                        "tr"
-                    );
+            const row =
+                document.createElement("tr");
 
 
-                /*
-                | ID
-                */
+            /*
+            |--------------------------------------------------------------------------
+            | ID
+            |--------------------------------------------------------------------------
+            */
 
-                const idCell =
-                    document.createElement(
-                        "td"
-                    );
+            const idCell =
+                document.createElement("td");
 
-                idCell.textContent =
-                    report.id ?? "";
+            idCell.textContent =
+                report.id ?? "";
 
-                row.appendChild(
-                    idCell
+            row.appendChild(idCell);
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | TITLE
+            |--------------------------------------------------------------------------
+            */
+
+            const titleCell =
+                document.createElement("td");
+
+            titleCell.textContent =
+                report.title ?? "";
+
+            row.appendChild(titleCell);
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | INCIDENT TYPE
+            |--------------------------------------------------------------------------
+            */
+
+            const typeCell =
+                document.createElement("td");
+
+            typeCell.textContent =
+                capitalizeText(
+                    report.incident_type ?? ""
                 );
 
+            row.appendChild(typeCell);
 
-                /*
-                | Title
-                */
 
-                const titleCell =
-                    document.createElement(
-                        "td"
-                    );
+            /*
+            |--------------------------------------------------------------------------
+            | DAMAGE LEVEL
+            |--------------------------------------------------------------------------
+            */
 
-                titleCell.textContent =
-                    report.title ?? "";
+            const damageCell =
+                document.createElement("td");
 
-                row.appendChild(
-                    titleCell
+            damageCell.textContent =
+                capitalizeText(
+                    report.damage_level ??
+                    "Not specified"
                 );
 
+            row.appendChild(damageCell);
 
-                /*
-                | Incident Type
-                */
 
-                const typeCell =
-                    document.createElement(
-                        "td"
-                    );
+            /*
+            |--------------------------------------------------------------------------
+            | LOCATION
+            |--------------------------------------------------------------------------
+            */
 
-                typeCell.textContent =
-                    capitalizeText(
-                        report.incident_type
-                        ?? ""
-                    );
+            const locationCell =
+                document.createElement("td");
 
-                row.appendChild(
-                    typeCell
+            locationCell.textContent =
+                report.location ?? "";
+
+            row.appendChild(locationCell);
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | INCIDENT DATE
+            |--------------------------------------------------------------------------
+            */
+
+            const dateCell =
+                document.createElement("td");
+
+            dateCell.textContent =
+                report.incident_date ?? "";
+
+            row.appendChild(dateCell);
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | STATUS
+            |--------------------------------------------------------------------------
+            */
+
+            const statusCell =
+                document.createElement("td");
+
+            statusCell.textContent =
+                capitalizeText(
+                    report.status ?? "pending"
                 );
 
+            row.appendChild(statusCell);
 
-                /*
-                | Damage Level
-                */
 
-                const damageCell =
-                    document.createElement(
-                        "td"
-                    );
+            /*
+            |--------------------------------------------------------------------------
+            | ACTION
+            |--------------------------------------------------------------------------
+            */
 
-                damageCell.textContent =
-                    capitalizeText(
-                        report.damage_level
-                        ?? "Not specified"
-                    );
+            const actionCell =
+                document.createElement("td");
 
-                row.appendChild(
-                    damageCell
-                );
 
+            /*
+            |--------------------------------------------------------------------------
+            | View Link
+            |--------------------------------------------------------------------------
+            */
 
-                /*
-                | Location
-                */
+            const viewLink =
+                document.createElement("a");
 
-                const locationCell =
-                    document.createElement(
-                        "td"
-                    );
+            viewLink.href =
+                "index.php?page=witness-report-view&id=" +
+                encodeURIComponent(report.id);
 
-                locationCell.textContent =
-                    report.location ?? "";
+            viewLink.textContent =
+                "View";
 
-                row.appendChild(
-                    locationCell
-                );
 
+            actionCell.appendChild(
+                viewLink
+            );
 
-                /*
-                | Incident Date
-                */
 
-                const dateCell =
-                    document.createElement(
-                        "td"
-                    );
+            actionCell.appendChild(
+                document.createTextNode(" ")
+            );
 
-                dateCell.textContent =
-                    report.incident_date ?? "";
 
-                row.appendChild(
-                    dateCell
-                );
+            /*
+            |--------------------------------------------------------------------------
+            | Edit Link
+            |--------------------------------------------------------------------------
+            */
 
+            const editLink =
+                document.createElement("a");
 
-                /*
-                | Status
-                */
+            editLink.href =
+                "index.php?page=witness-report-edit&id=" +
+                encodeURIComponent(report.id);
 
-                const statusCell =
-                    document.createElement(
-                        "td"
-                    );
+            editLink.textContent =
+                "Edit";
 
-                statusCell.textContent =
-                    capitalizeText(
-                        report.status
-                        ?? "pending"
-                    );
 
-                row.appendChild(
-                    statusCell
-                );
+            actionCell.appendChild(
+                editLink
+            );
 
 
-                /*
-                | Actions
-                */
+            actionCell.appendChild(
+                document.createTextNode(" ")
+            );
 
-                const actionCell =
-                    document.createElement(
-                        "td"
-                    );
 
+            /*
+            |--------------------------------------------------------------------------
+            | Delete Form
+            |--------------------------------------------------------------------------
+            */
 
-                /*
-                | View
-                */
+            const deleteForm =
+                document.createElement("form");
 
-                const viewLink =
-                    document.createElement(
-                        "a"
-                    );
+            deleteForm.method =
+                "POST";
 
-                viewLink.href =
-                    "index.php?page=witness-report-view&id=" +
-                    encodeURIComponent(
-                        report.id
-                    );
+            deleteForm.action =
+                "index.php?page=witness-report-delete";
 
-                viewLink.textContent =
-                    "View";
+            deleteForm.style.display =
+                "inline";
 
 
-                actionCell.appendChild(
-                    viewLink
-                );
+            const hiddenInput =
+                document.createElement("input");
 
+            hiddenInput.type =
+                "hidden";
 
-                actionCell.appendChild(
-                    document.createTextNode(
-                        " "
-                    )
-                );
+            hiddenInput.name =
+                "id";
 
+            hiddenInput.value =
+                report.id;
 
-                /*
-                | Edit
-                */
 
-                const editLink =
-                    document.createElement(
-                        "a"
-                    );
+            const deleteButton =
+                document.createElement("button");
 
-                editLink.href =
-                    "index.php?page=witness-report-edit&id=" +
-                    encodeURIComponent(
-                        report.id
-                    );
+            deleteButton.type =
+                "submit";
 
-                editLink.textContent =
-                    "Edit";
+            deleteButton.textContent =
+                "Delete";
 
 
-                actionCell.appendChild(
-                    editLink
-                );
+            deleteForm.appendChild(
+                hiddenInput
+            );
 
+            deleteForm.appendChild(
+                deleteButton
+            );
 
-                actionCell.appendChild(
-                    document.createTextNode(
-                        " "
-                    )
-                );
 
+            deleteForm.addEventListener(
+                "submit",
+                function (event) {
 
-                /*
-                | Delete Form
-                */
+                    const confirmed =
+                        window.confirm(
+                            "Are you sure you want to delete this report?"
+                        );
 
-                const deleteForm =
-                    document.createElement(
-                        "form"
-                    );
 
-                deleteForm.method =
-                    "POST";
+                    if (!confirmed) {
 
-                deleteForm.action =
-                    "index.php?page=witness-report-delete";
-
-                deleteForm.style.display =
-                    "inline";
-
-
-                const hiddenInput =
-                    document.createElement(
-                        "input"
-                    );
-
-                hiddenInput.type =
-                    "hidden";
-
-                hiddenInput.name =
-                    "id";
-
-                hiddenInput.value =
-                    report.id;
-
-
-                const deleteButton =
-                    document.createElement(
-                        "button"
-                    );
-
-                deleteButton.type =
-                    "submit";
-
-                deleteButton.textContent =
-                    "Delete";
-
-
-                deleteForm.appendChild(
-                    hiddenInput
-                );
-
-                deleteForm.appendChild(
-                    deleteButton
-                );
-
-
-                deleteForm.addEventListener(
-                    "submit",
-                    function (event) {
-
-                        const confirmed =
-                            window.confirm(
-                                "Are you sure you want to delete this report?"
-                            );
-
-
-                        if (!confirmed) {
-
-                            event.preventDefault();
-                        }
+                        event.preventDefault();
                     }
-                );
+                }
+            );
 
 
-                actionCell.appendChild(
-                    deleteForm
-                );
+            actionCell.appendChild(
+                deleteForm
+            );
 
 
-                row.appendChild(
-                    actionCell
-                );
+            row.appendChild(
+                actionCell
+            );
 
 
-                tableBody.appendChild(
-                    row
-                );
-            }
-        );
+            /*
+            |--------------------------------------------------------------------------
+            | Add Row
+            |--------------------------------------------------------------------------
+            */
+
+            tableBody.appendChild(
+                row
+            );
+        });
     }
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| WITNESS INCIDENT REPORT JAVASCRIPT VALIDATION
-|--------------------------------------------------------------------------
-*/
-
-function initWitnessReportValidation()
-{
-    const form =
-        document.getElementById(
-            "witnessReportForm"
-        );
 
 
     /*
     |--------------------------------------------------------------------------
-    | Create report page na hole stop
+    | CAPITALIZE TEXT
+    |--------------------------------------------------------------------------
+    */
+
+    function capitalizeText(value)
+    {
+
+        const text =
+            String(value);
+
+        if (text.length === 0) {
+            return "";
+        }
+
+        return (
+            text.charAt(0).toUpperCase() +
+            text.slice(1)
+        );
+    }
+
+});
+
+/*
+|--------------------------------------------------------------------------
+| WITNESS CREATE REPORT - JAVASCRIPT VALIDATION
+|--------------------------------------------------------------------------
+*/
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form =
+        document.getElementById("witnessReportForm");
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Create Report page না হলে কিছু করার দরকার নেই
     |--------------------------------------------------------------------------
     */
 
@@ -563,71 +509,69 @@ function initWitnessReportValidation()
 
 
     const title =
-        document.getElementById(
-            "title"
-        );
+        document.getElementById("title");
 
     const description =
-        document.getElementById(
-            "description"
-        );
+        document.getElementById("description");
 
     const damageLevel =
-        document.getElementById(
-            "damage_level"
-        );
+        document.getElementById("damage_level");
 
     const incidentType =
-        document.getElementById(
-            "incident_type"
-        );
+        document.getElementById("incident_type");
 
     const location =
-        document.getElementById(
-            "location"
-        );
+        document.getElementById("location");
 
     const incidentDate =
-        document.getElementById(
-            "incident_date"
-        );
+        document.getElementById("incident_date");
 
     const evidenceFile =
-        document.getElementById(
-            "evidence_file"
-        );
+        document.getElementById("evidence_file");
 
 
     /*
     |--------------------------------------------------------------------------
-    | Validation Message
+    | Validation Message Create
     |--------------------------------------------------------------------------
     */
 
-    const validationMessage =
-        document.createElement(
-            "p"
+    let validationMessage =
+        document.getElementById(
+            "witnessValidationMessage"
         );
 
 
-    validationMessage.id =
-        "witnessValidationMessage";
+    if (!validationMessage) {
 
-    validationMessage.setAttribute(
-        "role",
-        "alert"
-    );
+        validationMessage =
+            document.createElement("p");
+
+        validationMessage.id =
+            "witnessValidationMessage";
+
+        validationMessage.style.color =
+            "red";
+
+        validationMessage.style.fontWeight =
+            "600";
+
+        validationMessage.setAttribute(
+            "role",
+            "alert"
+        );
 
 
-    form.parentNode.insertBefore(
-        validationMessage,
-        form
-    );
+        form.parentNode.insertBefore(
+            validationMessage,
+            form
+        );
+    }
 
 
     /*
     |--------------------------------------------------------------------------
-    | Form Submit Validation
+    | Form Submit
     |--------------------------------------------------------------------------
     */
 
@@ -635,8 +579,7 @@ function initWitnessReportValidation()
         "submit",
         function (event) {
 
-            validationMessage.textContent =
-                "";
+            validationMessage.textContent = "";
 
 
             /*
@@ -658,6 +601,48 @@ function initWitnessReportValidation()
 
                 validationMessage.textContent =
                     "Please complete all required incident fields.";
+
+                return;
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Title Validation
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                title.value.trim().length < 3
+            ) {
+
+                event.preventDefault();
+
+                validationMessage.textContent =
+                    "Incident title must be at least 3 characters.";
+
+                title.focus();
+
+                return;
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Description Validation
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                description.value.trim().length < 10
+            ) {
+
+                event.preventDefault();
+
+                validationMessage.textContent =
+                    "Description must be at least 10 characters.";
+
+                description.focus();
 
                 return;
             }
@@ -687,6 +672,8 @@ function initWitnessReportValidation()
 
                 validationMessage.textContent =
                     "Please select a valid damage level.";
+
+                damageLevel.focus();
 
                 return;
             }
@@ -718,6 +705,8 @@ function initWitnessReportValidation()
                 validationMessage.textContent =
                     "Please select a valid incident type.";
 
+                incidentType.focus();
+
                 return;
             }
 
@@ -737,24 +726,22 @@ function initWitnessReportValidation()
                     evidenceFile.files[0];
 
 
-                const allowedExtensions = [
-                    "jpg",
-                    "jpeg",
-                    "png",
-                    "pdf"
-                ];
-
-
                 const fileName =
                     file.name.toLowerCase();
 
 
                 const extension =
                     fileName.includes(".")
-                        ? fileName
-                            .split(".")
-                            .pop()
+                        ? fileName.split(".").pop()
                         : "";
+
+
+                const allowedExtensions = [
+                    "jpg",
+                    "jpeg",
+                    "png",
+                    "pdf"
+                ];
 
 
                 if (
@@ -772,13 +759,18 @@ function initWitnessReportValidation()
                 }
 
 
-                const maxFileSize =
+                /*
+                |--------------------------------------------------------------------------
+                | Maximum 5 MB
+                |--------------------------------------------------------------------------
+                */
+
+                const maxSize =
                     5 * 1024 * 1024;
 
 
                 if (
-                    file.size >
-                    maxFileSize
+                    file.size > maxSize
                 ) {
 
                     event.preventDefault();
@@ -790,39 +782,7 @@ function initWitnessReportValidation()
                 }
             }
 
-
-            /*
-            |--------------------------------------------------------------------------
-            | Validation Passed
-            |--------------------------------------------------------------------------
-            */
-
-            validationMessage.textContent =
-                "";
         }
     );
-}
 
-
-/*
-|--------------------------------------------------------------------------
-| CAPITALIZE TEXT
-|--------------------------------------------------------------------------
-*/
-
-function capitalizeText(value)
-{
-    const text =
-        String(value);
-
-
-    if (text.length === 0) {
-        return "";
-    }
-
-
-    return (
-        text.charAt(0).toUpperCase() +
-        text.slice(1)
-    );
-}
+});
