@@ -95,6 +95,7 @@ function getWitnessDonations(
                 amount,
                 donation_type,
                 payment_method,
+                transaction_id,
                 message,
                 status,
                 created_at
@@ -150,6 +151,7 @@ function getDonationById(
                 amount,
                 donation_type,
                 payment_method,
+                transaction_id,
                 message,
                 status,
                 created_at
