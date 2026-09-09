@@ -826,3 +826,133 @@ function getRecentWitnessDonations(
 
     return $donations;
 }
+
+/*
+|--------------------------------------------------------------------------
+| WITNESS - SEARCH OWN INCIDENT REPORTS
+|--------------------------------------------------------------------------
+*/
+
+function searchWitnessReports(
+    $conn,
+    $witness_id,
+    $keyword
+) {
+
+    $witness_id =
+        (int)$witness_id;
+
+    $keyword =
+        trim($keyword);
+
+
+    if ($witness_id <= 0) {
+        return [];
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Empty Search = Return All Own Reports
+    |--------------------------------------------------------------------------
+    */
+
+    if ($keyword === '') {
+
+        return getWitnessReports(
+            $conn,
+            $witness_id
+        );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Search Keyword
+    |--------------------------------------------------------------------------
+    */
+
+    $search =
+        '%' . $keyword . '%';
+
+
+    $sql = "
+        SELECT
+            id,
+            witness_id,
+            title,
+            description,
+            damage_level,
+            incident_type,
+            location,
+            incident_date,
+            evidence_file,
+            status,
+            created_at
+
+        FROM witness_reports
+
+        WHERE witness_id = ?
+
+        AND (
+            title LIKE ?
+            OR description LIKE ?
+            OR incident_type LIKE ?
+            OR location LIKE ?
+            OR damage_level LIKE ?
+            OR status LIKE ?
+        )
+
+        ORDER BY id DESC
+    ";
+
+
+    $stmt =
+        mysqli_prepare(
+            $conn,
+            $sql
+        );
+
+
+    if (!$stmt) {
+        return [];
+    }
+
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "issssss",
+        $witness_id,
+        $search,
+        $search,
+        $search,
+        $search,
+        $search,
+        $search
+    );
+
+
+    mysqli_stmt_execute($stmt);
+
+
+    $result =
+        mysqli_stmt_get_result($stmt);
+
+
+    $reports = [];
+
+
+    while (
+        $row =
+        mysqli_fetch_assoc($result)
+    ) {
+
+        $reports[] = $row;
+    }
+
+
+    mysqli_stmt_close($stmt);
+
+
+    return $reports;
+}
