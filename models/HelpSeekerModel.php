@@ -26,7 +26,10 @@ function createEmergencyRequest(
             )
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    $stmt = mysqli_prepare($conn, $sql);
+    $stmt = mysqli_prepare(
+        $conn,
+        $sql
+    );
 
     mysqli_stmt_bind_param(
         $stmt,
@@ -42,7 +45,8 @@ function createEmergencyRequest(
         $contact_information
     );
 
-    $success = mysqli_stmt_execute($stmt);
+    $success =
+        mysqli_stmt_execute($stmt);
 
     mysqli_stmt_close($stmt);
 
@@ -50,14 +54,19 @@ function createEmergencyRequest(
 }
 
 
-function getHelpSeekerRequests($conn, $help_seeker_id)
-{
+function getHelpSeekerRequests(
+    $conn,
+    $help_seeker_id
+) {
     $sql = "SELECT *
             FROM emergency_requests
             WHERE help_seeker_id = ?
             ORDER BY id DESC";
 
-    $stmt = mysqli_prepare($conn, $sql);
+    $stmt = mysqli_prepare(
+        $conn,
+        $sql
+    );
 
     mysqli_stmt_bind_param(
         $stmt,
@@ -67,11 +76,15 @@ function getHelpSeekerRequests($conn, $help_seeker_id)
 
     mysqli_stmt_execute($stmt);
 
-    $result = mysqli_stmt_get_result($stmt);
+    $result =
+        mysqli_stmt_get_result($stmt);
 
     $requests = [];
 
-    while ($row = mysqli_fetch_assoc($result)) {
+    while (
+        $row =
+        mysqli_fetch_assoc($result)
+    ) {
         $requests[] = $row;
     }
 
@@ -92,7 +105,10 @@ function getHelpSeekerRequestById(
             AND help_seeker_id = ?
             LIMIT 1";
 
-    $stmt = mysqli_prepare($conn, $sql);
+    $stmt = mysqli_prepare(
+        $conn,
+        $sql
+    );
 
     mysqli_stmt_bind_param(
         $stmt,
@@ -103,14 +119,17 @@ function getHelpSeekerRequestById(
 
     mysqli_stmt_execute($stmt);
 
-    $result = mysqli_stmt_get_result($stmt);
+    $result =
+        mysqli_stmt_get_result($stmt);
 
-    $request = mysqli_fetch_assoc($result);
+    $request =
+        mysqli_fetch_assoc($result);
 
     mysqli_stmt_close($stmt);
 
     return $request;
 }
+
 
 function updateEmergencyRequest(
     $conn,
@@ -168,4 +187,45 @@ function updateEmergencyRequest(
     mysqli_stmt_close($stmt);
 
     return $success;
+}
+
+
+function deleteEmergencyRequest(
+    $conn,
+    $request_id,
+    $help_seeker_id
+) {
+    $sql = "DELETE FROM emergency_requests
+            WHERE id = ?
+            AND help_seeker_id = ?
+            AND status = 'pending'";
+
+    $stmt = mysqli_prepare(
+        $conn,
+        $sql
+    );
+
+    if (!$stmt) {
+        return false;
+    }
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "ii",
+        $request_id,
+        $help_seeker_id
+    );
+
+    $success =
+        mysqli_stmt_execute($stmt);
+
+    $affectedRows =
+        mysqli_stmt_affected_rows($stmt);
+
+    mysqli_stmt_close($stmt);
+
+    return (
+        $success &&
+        $affectedRows === 1
+    );
 }
