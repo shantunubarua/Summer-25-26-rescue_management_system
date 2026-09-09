@@ -139,6 +139,8 @@ $selectedPayment = $_POST['payment_method'] ?? '';
                     id="paymentForm"
                 >
 
+                <?php echo csrfField(); ?>
+
                     <div class="payment-grid">
 
 
