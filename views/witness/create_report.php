@@ -18,6 +18,11 @@
 
     <?php endif; ?>
 
+    <p
+    id="witnessValidationMessage"
+    style="color: red; font-weight: 600;"
+></p>
+
 
    <form
     id="witnessReportForm"
@@ -248,6 +253,6 @@
 
 </div>
 
-<script src="assets/js/witness.js"></script>
+<script src="assets/js/witness.js?v=2"></script>
 
 <?php require_once "views/partials/footer.php"; ?>
