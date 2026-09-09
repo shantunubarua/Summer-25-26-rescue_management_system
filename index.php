@@ -24,6 +24,36 @@ if ($page === 'login') {
     require_once "views/auth/login.php";
 
 
+    /*
+|--------------------------------------------------------------------------
+| REGISTER
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'register') {
+
+    $error = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        requireValidCsrfToken();
+
+        require_once "controllers/AuthController.php";
+
+        $error = registerUser();
+
+        if ($error === '') {
+
+            header(
+                "Location: index.php?page=login&registered=1"
+            );
+
+            exit;
+        }
+    }
+
+    require_once "views/auth/register.php";
+
 /*
 |--------------------------------------------------------------------------
 | ADMIN DASHBOARD
