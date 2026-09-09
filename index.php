@@ -705,7 +705,7 @@ if ($page === 'login') {
     $error = '';
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        
+
 requireValidCsrfToken();
 
         $error = handleCreateDonation($conn);
@@ -751,6 +751,8 @@ requireValidCsrfToken();
      */
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    requireValidCsrfToken();
 
         $error = handleConfirmDonation($conn);
     }
