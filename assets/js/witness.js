@@ -387,6 +387,24 @@ document.addEventListener("DOMContentLoaded", function () {
             deleteForm.style.display =
                 "inline";
 
+                const csrfSource =
+    document.getElementById(
+        "witnessCsrfToken"
+    );
+
+const csrfInput =
+    document.createElement("input");
+
+csrfInput.type =
+    "hidden";
+
+csrfInput.name =
+    "csrf_token";
+
+csrfInput.value =
+    csrfSource
+        ? csrfSource.value
+        : "";
 
             const hiddenInput =
                 document.createElement("input");
@@ -412,12 +430,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             deleteForm.appendChild(
-                hiddenInput
-            );
+    csrfInput
+);
 
-            deleteForm.appendChild(
-                deleteButton
-            );
+deleteForm.appendChild(
+    hiddenInput
+);
+
+deleteForm.appendChild(
+    deleteButton
+);
 
 
             deleteForm.addEventListener(
