@@ -39,6 +39,8 @@
 
                     <th>Payment Method</th>
 
+                    <th>Transaction ID</th>
+
                     <th>Message</th>
 
                     <th>Status</th>
@@ -93,6 +95,16 @@
                             ?>
                         </td>
 
+<td>
+    <?php
+    echo htmlspecialchars(
+        $donation['transaction_id']
+        ?? '',
+        ENT_QUOTES,
+        'UTF-8'
+    );
+    ?>
+</td>
 
                         <td>
                             <?php
