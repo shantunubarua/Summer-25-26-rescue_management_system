@@ -216,4 +216,6 @@
 
 </div>
 
+<script src="assets/js/witness.js?v=4"></script>
+
 <?php require_once "views/partials/footer.php"; ?>
