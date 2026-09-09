@@ -1065,6 +1065,19 @@ requireValidCsrfToken();
 
     require_once "views/helpseeker/create_request.php";
 
+    /*
+|--------------------------------------------------------------------------
+| HELP SEEKER REQUEST AJAX SEARCH
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'helpseeker-request-search') {
+
+    requireHelpSeeker();
+
+    require_once "controllers/HelpSeekerController.php";
+
+    handleHelpSeekerRequestSearch($conn);
 
 /*
 |--------------------------------------------------------------------------
