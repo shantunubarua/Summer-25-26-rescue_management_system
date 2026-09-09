@@ -8,6 +8,7 @@
     <h1>My Incident Reports</h1>
 
 
+    <!-- CREATE REPORT -->
     <p>
         <a href="index.php?page=witness-report-create">
             Report New Incident
@@ -15,44 +16,99 @@
     </p>
 
 
-    <?php if (empty($reports)): ?>
+    <!--
+    |--------------------------------------------------------------------------
+    | AJAX SEARCH
+    |--------------------------------------------------------------------------
+    -->
 
-        <p>
-            You have not submitted any incident reports yet.
+    <div class="witness-report-search">
+
+        <label for="witnessReportSearch">
+            Search Incident Reports
+        </label>
+
+        <br>
+
+        <input
+            type="text"
+            id="witnessReportSearch"
+            placeholder="Search by title, type, location, damage level or status..."
+            autocomplete="off"
+        >
+
+        <p id="witnessSearchStatus">
+
+            <?php
+            $initialCount = is_array($reports)
+                ? count($reports)
+                : 0;
+            ?>
+
+            Showing
+            <strong id="witnessSearchCount">
+                <?php echo $initialCount; ?>
+            </strong>
+            report(s).
+
         </p>
 
-    <?php else: ?>
+    </div>
 
 
-        <table border="1" cellpadding="10">
+    <!--
+    |--------------------------------------------------------------------------
+    | REPORT TABLE
+    |--------------------------------------------------------------------------
+    -->
 
-            <thead>
+    <table
+        border="1"
+        cellpadding="10"
+        id="witnessReportTable"
+    >
 
-                <tr>
+        <thead>
 
-                    <th>ID</th>
+            <tr>
 
-                    <th>Title</th>
+                <th>ID</th>
 
-                    <th>Incident Type</th>
+                <th>Title</th>
 
-                    <!-- DAMAGE LEVEL -->
-                    <th>Damage Level</th>
+                <th>Incident Type</th>
 
-                    <th>Location</th>
+                <th>Damage Level</th>
 
-                    <th>Incident Date</th>
+                <th>Location</th>
 
-                    <th>Status</th>
+                <th>Incident Date</th>
 
-                    <th>Action</th>
+                <th>Status</th>
+
+                <th>Action</th>
+
+            </tr>
+
+        </thead>
+
+
+        <tbody id="witnessReportTableBody">
+
+            <?php if (empty($reports)): ?>
+
+                <tr id="witnessNoReportsRow">
+
+                    <td colspan="8">
+
+                        You have not submitted any incident reports yet.
+
+                    </td>
 
                 </tr>
 
-            </thead>
+            <?php else: ?>
 
-
-            <tbody>
 
                 <?php foreach ($reports as $report): ?>
 
@@ -64,13 +120,10 @@
                         <td>
 
                             <?php
-
                             echo (int)$report['id'];
-
                             ?>
 
                         </td>
-
 
 
                         <!-- TITLE -->
@@ -78,17 +131,14 @@
                         <td>
 
                             <?php
-
                             echo htmlspecialchars(
-
-                                $report['title']
-
+                                $report['title'] ?? '',
+                                ENT_QUOTES,
+                                'UTF-8'
                             );
-
                             ?>
 
                         </td>
-
 
 
                         <!-- INCIDENT TYPE -->
@@ -96,21 +146,16 @@
                         <td>
 
                             <?php
-
                             echo htmlspecialchars(
-
                                 ucfirst(
-
-                                    $report['incident_type']
-
-                                )
-
+                                    $report['incident_type'] ?? ''
+                                ),
+                                ENT_QUOTES,
+                                'UTF-8'
                             );
-
                             ?>
 
                         </td>
-
 
 
                         <!-- DAMAGE LEVEL -->
@@ -118,21 +163,17 @@
                         <td>
 
                             <?php
-
                             echo htmlspecialchars(
-
                                 ucfirst(
-
-                                    $report['damage_level'] ?? 'Not specified'
-
-                                )
-
+                                    $report['damage_level']
+                                    ?? 'Not specified'
+                                ),
+                                ENT_QUOTES,
+                                'UTF-8'
                             );
-
                             ?>
 
                         </td>
-
 
 
                         <!-- LOCATION -->
@@ -140,17 +181,14 @@
                         <td>
 
                             <?php
-
                             echo htmlspecialchars(
-
-                                $report['location']
-
+                                $report['location'] ?? '',
+                                ENT_QUOTES,
+                                'UTF-8'
                             );
-
                             ?>
 
                         </td>
-
 
 
                         <!-- INCIDENT DATE -->
@@ -158,17 +196,14 @@
                         <td>
 
                             <?php
-
                             echo htmlspecialchars(
-
-                                $report['incident_date']
-
+                                $report['incident_date'] ?? '',
+                                ENT_QUOTES,
+                                'UTF-8'
                             );
-
                             ?>
 
                         </td>
-
 
 
                         <!-- STATUS -->
@@ -176,21 +211,17 @@
                         <td>
 
                             <?php
-
                             echo htmlspecialchars(
-
                                 ucfirst(
-
-                                    $report['status'] ?? 'pending'
-
-                                )
-
+                                    $report['status']
+                                    ?? 'pending'
+                                ),
+                                ENT_QUOTES,
+                                'UTF-8'
                             );
-
                             ?>
 
                         </td>
-
 
 
                         <!-- ACTION -->
@@ -201,13 +232,9 @@
                             <!-- VIEW -->
 
                             <a
-
                                 href="index.php?page=witness-report-view&id=<?php echo (int)$report['id']; ?>"
-
                             >
-
                                 View
-
                             </a>
 
 
@@ -217,13 +244,9 @@
                             <!-- EDIT -->
 
                             <a
-
                                 href="index.php?page=witness-report-edit&id=<?php echo (int)$report['id']; ?>"
-
                             >
-
                                 Edit
-
                             </a>
 
 
@@ -233,32 +256,21 @@
                             <!-- DELETE -->
 
                             <form
-
                                 method="POST"
-
                                 action="index.php?page=witness-report-delete"
-
+                                class="witness-delete-form"
                                 style="display:inline;"
-
                                 onsubmit="return confirm('Are you sure you want to delete this report?');"
-
                             >
 
                                 <input
-
                                     type="hidden"
-
                                     name="id"
-
                                     value="<?php echo (int)$report['id']; ?>"
-
                                 >
 
-
                                 <button type="submit">
-
                                     Delete
-
                                 </button>
 
                             </form>
@@ -271,12 +283,20 @@
 
                 <?php endforeach; ?>
 
-            </tbody>
 
-        </table>
+            <?php endif; ?>
+
+        </tbody>
+
+    </table>
 
 
-    <?php endif; ?>
+    <!-- AJAX ERROR / INFORMATION -->
+
+    <p
+        id="witnessSearchMessage"
+        aria-live="polite"
+    ></p>
 
 
 </div>
