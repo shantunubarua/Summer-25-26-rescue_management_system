@@ -5,49 +5,28 @@ require_once "models/NotificationModel.php";
 
 /*
 |--------------------------------------------------------------------------
-| CREATE NOTIFICATION
+| NOTIFICATION VALIDATION HELPERS
 |--------------------------------------------------------------------------
 */
 
-function handleCreateNotification($conn)
+function isValidNotificationAlertType($alert_type)
 {
-    $title =
-        trim($_POST['title'] ?? '');
-
-    $message =
-        trim($_POST['message'] ?? '');
-
-    $alert_type =
-        $_POST['alert_type'] ?? 'normal';
-
-    $target_audience =
-        $_POST['target_audience'] ?? 'all';
-
-    $status =
-        $_POST['status'] ?? 'active';
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | PHP VALIDATION
-    |--------------------------------------------------------------------------
-    */
-
-    if (
-        $title === '' ||
-        $message === ''
-    ) {
-        return "Title and message are required.";
-    }
-
-
     $allowed_types = [
         'normal',
         'important',
         'emergency'
     ];
 
+    return in_array(
+        $alert_type,
+        $allowed_types,
+        true
+    );
+}
 
+
+function isValidNotificationAudience($target_audience)
+{
     $allowed_audiences = [
         'all',
         'volunteer',
@@ -55,62 +34,130 @@ function handleCreateNotification($conn)
         'help_seeker'
     ];
 
+    return in_array(
+        $target_audience,
+        $allowed_audiences,
+        true
+    );
+}
 
+
+function isValidNotificationStatus($status)
+{
     $allowed_statuses = [
         'active',
         'inactive'
     ];
 
+    return in_array(
+        $status,
+        $allowed_statuses,
+        true
+    );
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| CREATE NOTIFICATION
+|--------------------------------------------------------------------------
+*/
+
+function handleCreateNotification($conn)
+{
+    /*
+    |--------------------------------------------------------------------------
+    | Get Form Data
+    |--------------------------------------------------------------------------
+    */
+
+    $title =
+        trim($_POST['title'] ?? '');
+
+    $message =
+        trim($_POST['message'] ?? '');
+
+    $alert_type =
+        trim($_POST['alert_type'] ?? 'normal');
+
+    $target_audience =
+        trim($_POST['target_audience'] ?? 'all');
+
+    $status =
+        trim($_POST['status'] ?? 'active');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | PHP Validation
+    |--------------------------------------------------------------------------
+    */
+
+    if ($title === '') {
+
+        return "Notification title is required.";
+    }
+
+
+    if ($message === '') {
+
+        return "Notification message is required.";
+    }
+
 
     if (
-        !in_array(
-            $alert_type,
-            $allowed_types,
-            true
+        !isValidNotificationAlertType(
+            $alert_type
         )
     ) {
+
         return "Invalid alert type.";
     }
 
 
     if (
-        !in_array(
-            $target_audience,
-            $allowed_audiences,
-            true
+        !isValidNotificationAudience(
+            $target_audience
         )
     ) {
+
         return "Invalid target audience.";
     }
 
 
     if (
-        !in_array(
-            $status,
-            $allowed_statuses,
-            true
+        !isValidNotificationStatus(
+            $status
         )
     ) {
+
         return "Invalid notification status.";
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Get Logged-in Admin ID
+    |--------------------------------------------------------------------------
+    */
 
     $created_by =
         (int)($_SESSION['user']['id'] ?? 0);
 
 
     if ($created_by <= 0) {
+
         return "Invalid admin account.";
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | CREATE
+    | Create Notification
     |--------------------------------------------------------------------------
     */
 
-    if (
+    $created =
         createNotification(
             $conn,
             $created_by,
@@ -119,8 +166,10 @@ function handleCreateNotification($conn)
             $alert_type,
             $target_audience,
             $status
-        )
-    ) {
+        );
+
+
+    if ($created) {
 
         header(
             "Location: index.php?page=notifications"
@@ -144,13 +193,27 @@ function handleUpdateNotification(
     $conn,
     $id
 ) {
+
+    /*
+    |--------------------------------------------------------------------------
+    | Validate Notification ID
+    |--------------------------------------------------------------------------
+    */
+
     $id = (int)$id;
 
 
     if ($id <= 0) {
+
         return "Invalid notification ID.";
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Get Form Data
+    |--------------------------------------------------------------------------
+    */
 
     $title =
         trim($_POST['title'] ?? '');
@@ -159,90 +222,70 @@ function handleUpdateNotification(
         trim($_POST['message'] ?? '');
 
     $alert_type =
-        $_POST['alert_type'] ?? '';
+        trim($_POST['alert_type'] ?? '');
 
     $target_audience =
-        $_POST['target_audience'] ?? '';
+        trim($_POST['target_audience'] ?? '');
 
     $status =
-        $_POST['status'] ?? '';
+        trim($_POST['status'] ?? '');
 
 
     /*
     |--------------------------------------------------------------------------
-    | PHP VALIDATION
+    | PHP Validation
     |--------------------------------------------------------------------------
     */
 
-    if (
-        $title === '' ||
-        $message === ''
-    ) {
-        return "Title and message are required.";
+    if ($title === '') {
+
+        return "Notification title is required.";
     }
 
 
-    $allowed_types = [
-        'normal',
-        'important',
-        'emergency'
-    ];
+    if ($message === '') {
 
-
-    $allowed_audiences = [
-        'all',
-        'volunteer',
-        'witness',
-        'help_seeker'
-    ];
-
-
-    $allowed_statuses = [
-        'active',
-        'inactive'
-    ];
+        return "Notification message is required.";
+    }
 
 
     if (
-        !in_array(
-            $alert_type,
-            $allowed_types,
-            true
+        !isValidNotificationAlertType(
+            $alert_type
         )
     ) {
+
         return "Invalid alert type.";
     }
 
 
     if (
-        !in_array(
-            $target_audience,
-            $allowed_audiences,
-            true
+        !isValidNotificationAudience(
+            $target_audience
         )
     ) {
+
         return "Invalid target audience.";
     }
 
 
     if (
-        !in_array(
-            $status,
-            $allowed_statuses,
-            true
+        !isValidNotificationStatus(
+            $status
         )
     ) {
+
         return "Invalid notification status.";
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | UPDATE
+    | Update Notification
     |--------------------------------------------------------------------------
     */
 
-    if (
+    $updated =
         updateNotification(
             $conn,
             $id,
@@ -251,8 +294,10 @@ function handleUpdateNotification(
             $alert_type,
             $target_audience,
             $status
-        )
-    ) {
+        );
+
+
+    if ($updated) {
 
         header(
             "Location: index.php?page=notifications"
@@ -276,20 +321,36 @@ function handleDeleteNotification(
     $conn,
     $id
 ) {
+
+    /*
+    |--------------------------------------------------------------------------
+    | Validate Notification ID
+    |--------------------------------------------------------------------------
+    */
+
     $id = (int)$id;
 
 
     if ($id <= 0) {
+
         return "Invalid notification ID.";
     }
 
 
-    if (
+    /*
+    |--------------------------------------------------------------------------
+    | Delete Notification
+    |--------------------------------------------------------------------------
+    */
+
+    $deleted =
         deleteNotification(
             $conn,
             $id
-        )
-    ) {
+        );
+
+
+    if ($deleted) {
 
         header(
             "Location: index.php?page=notifications"
@@ -301,6 +362,8 @@ function handleDeleteNotification(
 
     return "Failed to delete notification.";
 }
+
+
 /*
 |--------------------------------------------------------------------------
 | LOAD ACTIVE NOTIFICATIONS FOR ROLE DASHBOARD
@@ -311,21 +374,41 @@ function loadRoleDashboardNotifications(
     $conn,
     $role
 ) {
-    $allowedRoles = [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Validate Role
+    |--------------------------------------------------------------------------
+    */
+
+    $role =
+        trim($role);
+
+
+    $allowed_roles = [
         'volunteer',
         'witness',
         'help_seeker'
     ];
 
+
     if (
         !in_array(
             $role,
-            $allowedRoles,
+            $allowed_roles,
             true
         )
     ) {
+
         return [];
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Load Notifications
+    |--------------------------------------------------------------------------
+    */
 
     return getActiveNotificationsForRole(
         $conn,
