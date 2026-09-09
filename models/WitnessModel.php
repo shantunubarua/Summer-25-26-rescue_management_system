@@ -956,3 +956,220 @@ function searchWitnessReports(
 
     return $reports;
 }
+
+/*
+|--------------------------------------------------------------------------
+| WITNESS PROFILE
+|--------------------------------------------------------------------------
+*/
+
+function getWitnessProfile(
+    $conn,
+    $witness_id
+) {
+
+    $witness_id =
+        (int)$witness_id;
+
+
+    if ($witness_id <= 0) {
+        return null;
+    }
+
+
+    $sql = "
+        SELECT
+            id,
+            name,
+            email,
+            phone,
+            role,
+            created_at,
+            updated_at
+
+        FROM users
+
+        WHERE id = ?
+        AND role = 'witness'
+
+        LIMIT 1
+    ";
+
+
+    $stmt =
+        mysqli_prepare(
+            $conn,
+            $sql
+        );
+
+
+    if (!$stmt) {
+        return null;
+    }
+
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "i",
+        $witness_id
+    );
+
+
+    mysqli_stmt_execute(
+        $stmt
+    );
+
+
+    $result =
+        mysqli_stmt_get_result(
+            $stmt
+        );
+
+
+    $profile =
+        mysqli_fetch_assoc(
+            $result
+        );
+
+
+    mysqli_stmt_close(
+        $stmt
+    );
+
+
+    return $profile ?: null;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| CHECK EMAIL USED BY ANOTHER USER
+|--------------------------------------------------------------------------
+*/
+
+function witnessEmailExistsForOtherUser(
+    $conn,
+    $email,
+    $witness_id
+) {
+
+    $sql = "
+        SELECT id
+
+        FROM users
+
+        WHERE email = ?
+        AND id != ?
+
+        LIMIT 1
+    ";
+
+
+    $stmt =
+        mysqli_prepare(
+            $conn,
+            $sql
+        );
+
+
+    if (!$stmt) {
+        return true;
+    }
+
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "si",
+        $email,
+        $witness_id
+    );
+
+
+    mysqli_stmt_execute(
+        $stmt
+    );
+
+
+    $result =
+        mysqli_stmt_get_result(
+            $stmt
+        );
+
+
+    $exists =
+        mysqli_num_rows(
+            $result
+        ) > 0;
+
+
+    mysqli_stmt_close(
+        $stmt
+    );
+
+
+    return $exists;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| UPDATE WITNESS PROFILE
+|--------------------------------------------------------------------------
+*/
+
+function updateWitnessProfile(
+    $conn,
+    $witness_id,
+    $name,
+    $email,
+    $phone
+) {
+
+    $sql = "
+        UPDATE users
+
+        SET
+            name = ?,
+            email = ?,
+            phone = ?
+
+        WHERE id = ?
+        AND role = 'witness'
+    ";
+
+
+    $stmt =
+        mysqli_prepare(
+            $conn,
+            $sql
+        );
+
+
+    if (!$stmt) {
+        return false;
+    }
+
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "sssi",
+        $name,
+        $email,
+        $phone,
+        $witness_id
+    );
+
+
+    $success =
+        mysqli_stmt_execute(
+            $stmt
+        );
+
+
+    mysqli_stmt_close(
+        $stmt
+    );
+
+
+    return $success;
+}
