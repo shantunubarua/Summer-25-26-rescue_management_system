@@ -786,3 +786,204 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 });
+
+/*
+|--------------------------------------------------------------------------
+| WITNESS PROFILE JAVASCRIPT VALIDATION
+|--------------------------------------------------------------------------
+*/
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const form =
+            document.getElementById(
+                "witnessProfileForm"
+            );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Not Witness Profile Page
+        |--------------------------------------------------------------------------
+        */
+
+        if (!form) {
+            return;
+        }
+
+
+        const name =
+            document.getElementById("name");
+
+        const email =
+            document.getElementById("email");
+
+        const phone =
+            document.getElementById("phone");
+
+        const message =
+            document.getElementById(
+                "witnessProfileValidationMessage"
+            );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Submit Validation
+        |--------------------------------------------------------------------------
+        */
+
+        form.addEventListener(
+            "submit",
+            function (event) {
+
+                message.textContent = "";
+                message.className = "";
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Required Fields
+                |--------------------------------------------------------------------------
+                */
+
+                if (
+                    name.value.trim() === "" ||
+                    email.value.trim() === ""
+                ) {
+
+                    event.preventDefault();
+
+                    showWitnessProfileError(
+                        message,
+                        "Name and email are required."
+                    );
+
+                    return;
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Name Length
+                |--------------------------------------------------------------------------
+                */
+
+                if (
+                    name.value.trim().length < 2 ||
+                    name.value.trim().length > 100
+                ) {
+
+                    event.preventDefault();
+
+                    showWitnessProfileError(
+                        message,
+                        "Name must be between 2 and 100 characters."
+                    );
+
+                    name.focus();
+
+                    return;
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Email Format
+                |--------------------------------------------------------------------------
+                */
+
+                const emailPattern =
+                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+                if (
+                    !emailPattern.test(
+                        email.value.trim()
+                    )
+                ) {
+
+                    event.preventDefault();
+
+                    showWitnessProfileError(
+                        message,
+                        "Please enter a valid email address."
+                    );
+
+                    email.focus();
+
+                    return;
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Phone Format
+                |--------------------------------------------------------------------------
+                */
+
+                if (
+                    phone.value.trim() !== ""
+                ) {
+
+                    const phonePattern =
+                        /^[0-9+\-\s]{7,20}$/;
+
+
+                    if (
+                        !phonePattern.test(
+                            phone.value.trim()
+                        )
+                    ) {
+
+                        event.preventDefault();
+
+                        showWitnessProfileError(
+                            message,
+                            "Please enter a valid phone number."
+                        );
+
+                        phone.focus();
+
+                        return;
+                    }
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Validation Passed
+                |--------------------------------------------------------------------------
+                */
+
+                message.textContent = "";
+                message.className = "";
+            }
+        );
+    }
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| PROFILE VALIDATION ERROR DISPLAY
+|--------------------------------------------------------------------------
+*/
+
+function showWitnessProfileError(
+    messageElement,
+    text
+) {
+
+    messageElement.textContent =
+        text;
+
+    messageElement.className =
+        "alert alert-error";
+
+    messageElement.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+}
