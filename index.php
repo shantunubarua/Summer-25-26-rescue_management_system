@@ -474,8 +474,21 @@ if ($page === 'login') {
 
     requireWitness();
 
-    require_once "models/WitnessDashboardModel.php";
+    /*
+    |--------------------------------------------------------------------------
+    | Required Files
+    |--------------------------------------------------------------------------
+    */
 
+    require_once "models/WitnessDashboardModel.php";
+    require_once "controllers/NotificationController.php";
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Logged-in Witness ID
+    |--------------------------------------------------------------------------
+    */
 
     $witness_id =
         (int)($_SESSION['user']['id'] ?? 0);
@@ -488,8 +501,10 @@ if ($page === 'login') {
 
 
     /*
-     * Dashboard Overview
-     */
+    |--------------------------------------------------------------------------
+    | Dashboard Overview
+    |--------------------------------------------------------------------------
+    */
 
     $dashboardCounts =
         getWitnessDashboardCounts(
@@ -499,8 +514,10 @@ if ($page === 'login') {
 
 
     /*
-     * Recent Reports
-     */
+    |--------------------------------------------------------------------------
+    | Recent Reports
+    |--------------------------------------------------------------------------
+    */
 
     $recentReports =
         getRecentWitnessReports(
@@ -511,8 +528,10 @@ if ($page === 'login') {
 
 
     /*
-     * Recent Donations
-     */
+    |--------------------------------------------------------------------------
+    | Recent Donations
+    |--------------------------------------------------------------------------
+    */
 
     $recentDonations =
         getRecentWitnessDonations(
@@ -521,6 +540,25 @@ if ($page === 'login') {
             5
         );
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Notifications
+    |--------------------------------------------------------------------------
+    */
+
+    $dashboardNotifications =
+        loadRoleDashboardNotifications(
+            $conn,
+            'witness'
+        );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Load Witness Dashboard View
+    |--------------------------------------------------------------------------
+    */
 
     require_once "views/witness/dashboard.php";
 
