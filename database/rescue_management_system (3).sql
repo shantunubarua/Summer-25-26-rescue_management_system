@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 09, 2026 at 05:52 PM
+-- Generation Time: Sep 09, 2026 at 11:39 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -85,7 +85,8 @@ CREATE TABLE `emergency_requests` (
 --
 
 INSERT INTO `emergency_requests` (`id`, `help_seeker_id`, `emergency_type`, `location`, `description`, `priority`, `victim_type`, `victim_information`, `victim_count`, `contact_information`, `status`, `created_at`, `updated_at`, `volunteer_id`, `accepted_at`) VALUES
-(1, 3, 'medical', 'Mirpur', 'A person needs immediate medical assistance.', 'high', 'self', NULL, 1, '01300000000', 'completed', '2026-08-24 15:57:34', '2026-08-30 11:18:56', 4, '2026-08-28 21:25:54');
+(1, 3, 'medical', 'Mirpur', 'A person needs immediate medical assistance.', 'high', 'self', NULL, 1, '01300000000', 'completed', '2026-08-24 15:57:34', '2026-08-30 11:18:56', 4, '2026-08-28 21:25:54'),
+(2, 3, 'medical', 'Bashundhara R/A', 'napa', 'low', 'self', NULL, 1, '1234567890', 'pending', '2026-09-09 20:35:48', '2026-09-09 20:35:48', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -348,7 +349,7 @@ ALTER TABLE `donations`
 -- AUTO_INCREMENT for table `emergency_requests`
 --
 ALTER TABLE `emergency_requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `feedback`
