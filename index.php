@@ -1159,7 +1159,7 @@ if ($page === 'login') {
 |--------------------------------------------------------------------------
 */
 
-} elseif ($page === 'witness-report-create') {
+}  elseif ($page === 'witness-report-create') {
 
     requireWitness();
 
@@ -1168,6 +1168,8 @@ if ($page === 'login') {
     $error = '';
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        requireValidCsrfToken();
 
         $error =
             handleCreateWitnessReport($conn);
@@ -1304,11 +1306,13 @@ if ($page === 'login') {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $error = handleEditWitnessReport(
-            $conn,
-            $id,
-            $witness_id
-        );
+    requireValidCsrfToken();
+
+    $error = handleEditWitnessReport(
+        $conn,
+        $id,
+        $witness_id
+    );
 
         if ($error === '') {
 
