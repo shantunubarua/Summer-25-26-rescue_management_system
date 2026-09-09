@@ -229,3 +229,71 @@ function deleteEmergencyRequest(
         $affectedRows === 1
     );
 }
+function searchHelpSeekerRequests(
+    $conn,
+    $help_seeker_id,
+    $keyword
+) {
+    $keyword =
+        trim($keyword);
+
+    $search =
+        '%' . $keyword . '%';
+
+    $sql = "SELECT *
+            FROM emergency_requests
+            WHERE help_seeker_id = ?
+            AND (
+                emergency_type LIKE ?
+                OR location LIKE ?
+                OR description LIKE ?
+                OR priority LIKE ?
+                OR victim_type LIKE ?
+                OR victim_information LIKE ?
+                OR contact_information LIKE ?
+                OR status LIKE ?
+            )
+            ORDER BY id DESC";
+
+    $stmt =
+        mysqli_prepare(
+            $conn,
+            $sql
+        );
+
+    if (!$stmt) {
+        return [];
+    }
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "issssssss",
+        $help_seeker_id,
+        $search,
+        $search,
+        $search,
+        $search,
+        $search,
+        $search,
+        $search,
+        $search
+    );
+
+    mysqli_stmt_execute($stmt);
+
+    $result =
+        mysqli_stmt_get_result($stmt);
+
+    $requests = [];
+
+    while (
+        $row =
+        mysqli_fetch_assoc($result)
+    ) {
+        $requests[] = $row;
+    }
+
+    mysqli_stmt_close($stmt);
+
+    return $requests;
+}
