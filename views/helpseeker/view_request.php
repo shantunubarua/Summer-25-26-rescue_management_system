@@ -21,6 +21,7 @@ require_once "views/partials/sidebar.php";
             ?>
         </h3>
 
+
         <p>
             <strong>Location:</strong>
 
@@ -31,6 +32,7 @@ require_once "views/partials/sidebar.php";
             ?>
         </p>
 
+
         <p>
             <strong>Description:</strong>
 
@@ -40,6 +42,7 @@ require_once "views/partials/sidebar.php";
             );
             ?>
         </p>
+
 
         <p>
             <strong>Priority:</strong>
@@ -52,6 +55,7 @@ require_once "views/partials/sidebar.php";
             );
             ?>
         </p>
+
 
         <p>
             <strong>Victim Type:</strong>
@@ -101,6 +105,7 @@ require_once "views/partials/sidebar.php";
             ?>
         </p>
 
+
         <p>
             <strong>
                 Contact Information:
@@ -114,6 +119,7 @@ require_once "views/partials/sidebar.php";
             );
             ?>
         </p>
+
 
         <p>
             <strong>Status:</strong>
@@ -191,6 +197,7 @@ require_once "views/partials/sidebar.php";
     <?php if ($currentStatus === 'pending'): ?>
 
         <p>
+
             <a
                 href="index.php?page=helpseeker-request-edit&id=<?php
                     echo (int)$request['id'];
@@ -198,20 +205,48 @@ require_once "views/partials/sidebar.php";
             >
                 Edit Request
             </a>
+
         </p>
+
+
+        <form
+            method="POST"
+            action="index.php?page=helpseeker-request-delete"
+        >
+
+            <?php echo csrfField(); ?>
+
+
+            <input
+                type="hidden"
+                name="request_id"
+                value="<?php
+                    echo (int)$request['id'];
+                ?>"
+            >
+
+
+            <button type="submit">
+                Delete Request
+            </button>
+
+        </form>
 
     <?php endif; ?>
 
 
     <p>
+
         <a
             href="index.php?page=helpseeker-requests"
         >
             Back to My Requests
         </a>
+
     </p>
 
 </div>
+
 
 <?php
 require_once "views/partials/footer.php";
