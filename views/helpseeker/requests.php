@@ -404,6 +404,7 @@ require_once "views/partials/sidebar.php";
 
 </style>
 
+<script src="assets/js/helpseeker.js?v=1"></script>
 
 <?php
 require_once "views/partials/footer.php";
