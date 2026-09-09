@@ -37,21 +37,28 @@
 
             <div class="header-actions">
 
-                <a
-                    href="index.php?page=witness-report-create"
-                    class="secondary-action"
-                >
-                    + Report Incident
-                </a>
+    <a
+        href="index.php?page=witness-profile"
+        class="secondary-action"
+    >
+        My Profile
+    </a>
 
-                <a
-                    href="index.php?page=donation-create"
-                    class="primary-action"
-                >
-                    + Make Donation
-                </a>
+    <a
+        href="index.php?page=witness-report-create"
+        class="secondary-action"
+    >
+        + Report Incident
+    </a>
 
-            </div>
+    <a
+        href="index.php?page=donation-create"
+        class="primary-action"
+    >
+        + Make Donation
+    </a>
+
+</div>
 
         </div>
 
