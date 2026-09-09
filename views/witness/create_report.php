@@ -19,11 +19,13 @@
     <?php endif; ?>
 
 
-    <form
-        method="POST"
-        action="index.php?page=witness-report-create"
-        enctype="multipart/form-data"
-    >
+   <form
+    id="witnessReportForm"
+    method="POST"
+    action="index.php?page=witness-report-create"
+    enctype="multipart/form-data"
+    novalidate
+>
 
 
         <!-- Incident Title -->
@@ -102,6 +104,10 @@
         <option value="high">
             High
         </option>
+
+        <option value="critical">
+    Critical
+</option>
 
     </select>
 
@@ -242,5 +248,6 @@
 
 </div>
 
+<script src="assets/js/witness.js"></script>
 
 <?php require_once "views/partials/footer.php"; ?>
