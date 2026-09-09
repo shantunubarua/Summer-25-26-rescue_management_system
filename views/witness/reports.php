@@ -9,6 +9,7 @@
 
 
     <!-- CREATE REPORT -->
+
     <p>
         <a href="index.php?page=witness-report-create">
             Report New Incident
@@ -46,14 +47,35 @@
             ?>
 
             Showing
+
             <strong id="witnessSearchCount">
                 <?php echo $initialCount; ?>
             </strong>
+
             report(s).
 
         </p>
 
     </div>
+
+
+    <!--
+    |--------------------------------------------------------------------------
+    | CSRF TOKEN FOR AJAX-GENERATED DELETE FORMS
+    |--------------------------------------------------------------------------
+    -->
+
+    <input
+        type="hidden"
+        id="witnessCsrfToken"
+        value="<?php
+            echo htmlspecialchars(
+                getCsrfToken(),
+                ENT_QUOTES,
+                'UTF-8'
+            );
+        ?>"
+    >
 
 
     <!--
@@ -71,23 +93,14 @@
         <thead>
 
             <tr>
-
                 <th>ID</th>
-
                 <th>Title</th>
-
                 <th>Incident Type</th>
-
                 <th>Damage Level</th>
-
                 <th>Location</th>
-
                 <th>Incident Date</th>
-
                 <th>Status</th>
-
                 <th>Action</th>
-
             </tr>
 
         </thead>
@@ -100,9 +113,7 @@
                 <tr id="witnessNoReportsRow">
 
                     <td colspan="8">
-
                         You have not submitted any incident reports yet.
-
                     </td>
 
                 </tr>
@@ -118,11 +129,9 @@
                         <!-- ID -->
 
                         <td>
-
                             <?php
                             echo (int)$report['id'];
                             ?>
-
                         </td>
 
 
@@ -263,6 +272,8 @@
                                 onsubmit="return confirm('Are you sure you want to delete this report?');"
                             >
 
+                                <?php echo csrfField(); ?>
+
                                 <input
                                     type="hidden"
                                     name="id"
@@ -300,6 +311,7 @@
 
 
 </div>
+
 
 <script src="assets/js/witness.js"></script>
 
