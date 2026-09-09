@@ -111,3 +111,61 @@ function getHelpSeekerRequestById(
 
     return $request;
 }
+
+function updateEmergencyRequest(
+    $conn,
+    $request_id,
+    $help_seeker_id,
+    $emergency_type,
+    $location,
+    $description,
+    $priority,
+    $victim_type,
+    $victim_information,
+    $victim_count,
+    $contact_information
+) {
+    $sql = "UPDATE emergency_requests
+            SET
+                emergency_type = ?,
+                location = ?,
+                description = ?,
+                priority = ?,
+                victim_type = ?,
+                victim_information = ?,
+                victim_count = ?,
+                contact_information = ?
+            WHERE id = ?
+            AND help_seeker_id = ?";
+
+    $stmt = mysqli_prepare(
+        $conn,
+        $sql
+    );
+
+    if (!$stmt) {
+        return false;
+    }
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "ssssssisii",
+        $emergency_type,
+        $location,
+        $description,
+        $priority,
+        $victim_type,
+        $victim_information,
+        $victim_count,
+        $contact_information,
+        $request_id,
+        $help_seeker_id
+    );
+
+    $success =
+        mysqli_stmt_execute($stmt);
+
+    mysqli_stmt_close($stmt);
+
+    return $success;
+}
