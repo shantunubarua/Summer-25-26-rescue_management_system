@@ -25,6 +25,8 @@
         action="index.php?page=donation-create"
     >
 
+    <?php echo csrfField(); ?>
+
         <!-- Amount -->
         <div>
 
@@ -121,7 +123,7 @@
                 </option>
 
                 <option
-                
+
     value="water"
     <?php
     echo (
