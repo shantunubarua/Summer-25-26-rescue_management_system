@@ -164,6 +164,52 @@ function handleCreateWitnessReport($conn)
             return "Invalid evidence file type. Allowed: JPG, JPEG, PNG, PDF.";
         }
 
+/*
+ * Validate actual MIME type
+ */
+
+$finfo =
+    finfo_open(
+        FILEINFO_MIME_TYPE
+    );
+
+
+if (!$finfo) {
+
+    return "Unable to validate evidence file.";
+}
+
+
+$mime_type =
+    finfo_file(
+        $finfo,
+        $file['tmp_name']
+    );
+
+
+finfo_close(
+    $finfo
+);
+
+
+$allowed_mime_types = [
+    'image/jpeg',
+    'image/png',
+    'application/pdf'
+];
+
+
+if (
+    !in_array(
+        $mime_type,
+        $allowed_mime_types,
+        true
+    )
+) {
+
+    return "Invalid evidence file content.";
+}
+
 
         /*
          * Maximum file size: 5 MB
@@ -191,7 +237,7 @@ function handleCreateWitnessReport($conn)
             if (
                 !mkdir(
                     $upload_dir,
-                    0777,
+                    0755,
                     true
                 )
             ) {
