@@ -480,7 +480,7 @@ if ($page === 'login') {
     |--------------------------------------------------------------------------
     */
 
-    require_once "models/WitnessDashboardModel.php";
+    require_once "models/WitnessModel.php";
     require_once "controllers/NotificationController.php";
 
 
