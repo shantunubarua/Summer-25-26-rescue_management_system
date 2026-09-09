@@ -172,7 +172,7 @@ require_once "views/partials/sidebar.php";
 
     </div>
 
-
+<p><strong>EDIT BLOCK TEST</strong></p>
     <?php
 
     $currentStatus =
