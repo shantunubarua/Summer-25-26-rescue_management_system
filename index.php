@@ -1027,7 +1027,6 @@ if ($page === 'login') {
 
     require_once "views/helpseeker/feedback.php";
 
-
 /*
 |--------------------------------------------------------------------------
 | WITNESS CREATE REPORT
@@ -1044,10 +1043,26 @@ if ($page === 'login') {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $error = handleCreateWitnessReport($conn);
+        $error =
+            handleCreateWitnessReport($conn);
     }
 
     require_once "views/witness/create_report.php";
+
+
+/*
+|--------------------------------------------------------------------------
+| WITNESS REPORT AJAX SEARCH
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'witness-report-search') {
+
+    requireWitness();
+
+    require_once "controllers/WitnessController.php";
+
+    handleWitnessReportSearch($conn);
 
 
 /*
@@ -1066,13 +1081,15 @@ if ($page === 'login') {
         (int)($_SESSION['user']['id'] ?? 0);
 
     if ($witness_id <= 0) {
+
         die("Invalid witness account.");
     }
 
-    $reports = getWitnessReports(
-        $conn,
-        $witness_id
-    );
+    $reports =
+        getWitnessReports(
+            $conn,
+            $witness_id
+        );
 
     require_once "views/witness/reports.php";
 
@@ -1097,27 +1114,29 @@ if ($page === 'login') {
         : 0;
 
     if ($witness_id <= 0) {
+
         die("Invalid witness account.");
     }
 
     if ($report_id <= 0) {
+
         die("Invalid report ID.");
     }
 
-    $report = getWitnessReportById(
-        $conn,
-        $report_id,
-        $witness_id
-    );
+    $report =
+        getWitnessReportById(
+            $conn,
+            $report_id,
+            $witness_id
+        );
 
     if (!$report) {
+
         die("Report not found.");
     }
 
     require_once "views/witness/view_report.php";
-
-
-/*
+/*    
 |--------------------------------------------------------------------------
 | WITNESS REPORT EDIT
 |--------------------------------------------------------------------------
