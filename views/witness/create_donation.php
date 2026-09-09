@@ -121,6 +121,19 @@
                 </option>
 
                 <option
+                
+    value="water"
+    <?php
+    echo (
+        ($_POST['donation_type'] ?? '')
+        === 'water'
+    ) ? 'selected' : '';
+    ?>
+>
+    Water
+</option>
+
+                <option
                     value="other"
                     <?php
                     echo (
