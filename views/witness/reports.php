@@ -301,5 +301,6 @@
 
 </div>
 
+<script src="assets/js/witness.js"></script>
 
 <?php require_once "views/partials/footer.php"; ?>
