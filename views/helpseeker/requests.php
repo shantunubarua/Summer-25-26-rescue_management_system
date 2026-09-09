@@ -10,7 +10,7 @@ require_once "views/partials/sidebar.php";
     <h1>My Emergency Requests</h1>
 
     <p>
-        View the emergency requests you have submitted.
+        View and search the emergency requests you have submitted.
     </p>
 
     <p>
@@ -20,266 +20,347 @@ require_once "views/partials/sidebar.php";
     </p>
 
 
-    <?php if (empty($requests)): ?>
+    <!-- SEARCH -->
 
-        <div class="card">
+    <div class="card">
 
-            <h3>No Emergency Requests</h3>
+        <label for="helpSeekerRequestSearch">
+            <strong>Search Emergency Requests</strong>
+        </label>
 
-            <p>
-                You have not submitted any emergency requests yet.
-            </p>
+        <input
+            type="search"
+            id="helpSeekerRequestSearch"
+            placeholder="Search by type, location, priority, status..."
+            autocomplete="off"
+        >
 
-            <p>
-                <a href="index.php?page=helpseeker-request-create">
-                    Create Emergency Request
-                </a>
-            </p>
+        <p id="helpSeekerSearchMessage">
+            Showing
 
-        </div>
+            <strong id="helpSeekerRequestCount">
+                <?php echo count($requests); ?>
+            </strong>
 
-    <?php else: ?>
+            request(s).
+        </p>
+
+    </div>
 
 
-        <?php foreach ($requests as $request): ?>
+    <!-- REQUEST RESULTS -->
+
+    <div id="helpSeekerRequestList">
+
+        <?php if (empty($requests)): ?>
 
             <div class="card">
 
-                <!-- EMERGENCY TYPE -->
-
-                <h3>
-                    <?php
-                    echo htmlspecialchars(
-                        ucfirst($request['emergency_type'])
-                    );
-                    ?>
-                </h3>
-
-
-                <!-- REQUEST ID -->
+                <h3>No Emergency Requests</h3>
 
                 <p>
-                    <strong>Request ID:</strong>
-
-                    <?php
-                    echo (int)$request['id'];
-                    ?>
+                    You have not submitted any emergency requests yet.
                 </p>
 
-
-                <!-- LOCATION -->
-
                 <p>
-                    <strong>Location:</strong>
-
-                    <?php
-                    echo htmlspecialchars(
-                        $request['location']
-                    );
-                    ?>
-                </p>
-
-
-                <!-- DESCRIPTION -->
-
-                <p>
-                    <strong>Description:</strong>
-
-                    <?php
-                    echo htmlspecialchars(
-                        $request['description']
-                    );
-                    ?>
-                </p>
-
-
-                <!-- PRIORITY -->
-
-                <p>
-                    <strong>Priority:</strong>
-
-                    <?php
-                    echo htmlspecialchars(
-                        ucfirst($request['priority'])
-                    );
-                    ?>
-                </p>
-
-
-                <!-- VICTIM TYPE -->
-
-                <p>
-                    <strong>Victim Type:</strong>
-
-                    <?php
-                    echo htmlspecialchars(
-                        ucfirst($request['victim_type'])
-                    );
-                    ?>
-                </p>
-
-
-                <!-- VICTIM INFORMATION -->
-
-                <?php if (!empty($request['victim_information'])): ?>
-
-                    <p>
-                        <strong>Victim Information:</strong>
-
-                        <?php
-                        echo htmlspecialchars(
-                            $request['victim_information']
-                        );
-                        ?>
-                    </p>
-
-                <?php endif; ?>
-
-
-                <!-- VICTIM COUNT -->
-
-                <p>
-                    <strong>Victim Count:</strong>
-
-                    <?php
-                    echo (int)$request['victim_count'];
-                    ?>
-                </p>
-
-
-                <!-- CONTACT INFORMATION -->
-
-                <p>
-                    <strong>Contact Information:</strong>
-
-                    <?php
-                    echo htmlspecialchars(
-                        $request['contact_information']
-                    );
-                    ?>
-                </p>
-
-
-                <!-- STATUS -->
-
-                <p>
-
-                    <strong>Status:</strong>
-
-                    <?php
-
-                    $status = $request['status'] ?? 'pending';
-
-                    $statusText = ucfirst($status);
-
-                    $statusClass = 'status-pending';
-
-                    if ($status === 'assigned') {
-
-                        $statusClass = 'status-assigned';
-
-                    } elseif ($status === 'ongoing') {
-
-                        $statusClass = 'status-ongoing';
-
-                    } elseif ($status === 'completed') {
-
-                        $statusClass = 'status-completed';
-
-                    } elseif ($status === 'cancelled') {
-
-                        $statusClass = 'status-cancelled';
-
-                    }
-
-                    ?>
-
-                    <span class="<?php echo $statusClass; ?>">
-
-                        <?php
-                        echo htmlspecialchars($statusText);
-                        ?>
-
-                    </span>
-
-                </p>
-
-
-                <!-- ACCEPTED AT -->
-
-                <?php if (!empty($request['accepted_at'])): ?>
-
-                    <p>
-
-                        <strong>Accepted At:</strong>
-
-                        <?php
-                        echo htmlspecialchars(
-                            $request['accepted_at']
-                        );
-                        ?>
-
-                    </p>
-
-                <?php endif; ?>
-
-
-                <!-- CREATED AT -->
-
-                <p>
-
-                    <strong>Created At:</strong>
-
-                    <?php
-                    echo htmlspecialchars(
-                        $request['created_at'] ?? ''
-                    );
-                    ?>
-
-                </p>
-
-
-                <!-- VIEW DETAILS -->
-
-                <p>
-
-                    <a
-                        href="index.php?page=helpseeker-request-view&id=<?php echo (int)$request['id']; ?>"
-                    >
-                        View Details
+                    <a href="index.php?page=helpseeker-request-create">
+                        Create Emergency Request
                     </a>
-
                 </p>
 
+            </div>
 
-                <!-- GIVE FEEDBACK -->
+        <?php else: ?>
 
-                <?php if ($status === 'completed'): ?>
+
+            <?php foreach ($requests as $request): ?>
+
+                <div class="card">
+
+                    <!-- EMERGENCY TYPE -->
+
+                    <h3>
+                        <?php
+                        echo htmlspecialchars(
+                            ucfirst(
+                                $request['emergency_type']
+                            )
+                        );
+                        ?>
+                    </h3>
+
+
+                    <!-- REQUEST ID -->
+
+                    <p>
+                        <strong>Request ID:</strong>
+
+                        <?php
+                        echo (int)$request['id'];
+                        ?>
+                    </p>
+
+
+                    <!-- LOCATION -->
+
+                    <p>
+                        <strong>Location:</strong>
+
+                        <?php
+                        echo htmlspecialchars(
+                            $request['location']
+                        );
+                        ?>
+                    </p>
+
+
+                    <!-- DESCRIPTION -->
+
+                    <p>
+                        <strong>Description:</strong>
+
+                        <?php
+                        echo htmlspecialchars(
+                            $request['description']
+                        );
+                        ?>
+                    </p>
+
+
+                    <!-- PRIORITY -->
+
+                    <p>
+                        <strong>Priority:</strong>
+
+                        <?php
+                        echo htmlspecialchars(
+                            ucfirst(
+                                $request['priority']
+                            )
+                        );
+                        ?>
+                    </p>
+
+
+                    <!-- VICTIM TYPE -->
+
+                    <p>
+                        <strong>Victim Type:</strong>
+
+                        <?php
+                        echo htmlspecialchars(
+                            ucfirst(
+                                $request['victim_type']
+                            )
+                        );
+                        ?>
+                    </p>
+
+
+                    <!-- VICTIM INFORMATION -->
+
+                    <?php
+                    if (
+                        !empty(
+                            $request['victim_information']
+                        )
+                    ):
+                    ?>
+
+                        <p>
+                            <strong>
+                                Victim Information:
+                            </strong>
+
+                            <?php
+                            echo htmlspecialchars(
+                                $request[
+                                    'victim_information'
+                                ]
+                            );
+                            ?>
+                        </p>
+
+                    <?php endif; ?>
+
+
+                    <!-- VICTIM COUNT -->
+
+                    <p>
+                        <strong>Victim Count:</strong>
+
+                        <?php
+                        echo (int)$request[
+                            'victim_count'
+                        ];
+                        ?>
+                    </p>
+
+
+                    <!-- CONTACT INFORMATION -->
+
+                    <p>
+                        <strong>
+                            Contact Information:
+                        </strong>
+
+                        <?php
+                        echo htmlspecialchars(
+                            $request[
+                                'contact_information'
+                            ]
+                        );
+                        ?>
+                    </p>
+
+
+                    <!-- STATUS -->
+
+                    <p>
+
+                        <strong>Status:</strong>
+
+                        <?php
+
+                        $status =
+                            $request['status']
+                            ?? 'pending';
+
+                        $statusText =
+                            ucfirst($status);
+
+                        $statusClass =
+                            'status-pending';
+
+                        if ($status === 'assigned') {
+
+                            $statusClass =
+                                'status-assigned';
+
+                        } elseif ($status === 'ongoing') {
+
+                            $statusClass =
+                                'status-ongoing';
+
+                        } elseif ($status === 'completed') {
+
+                            $statusClass =
+                                'status-completed';
+
+                        } elseif ($status === 'cancelled') {
+
+                            $statusClass =
+                                'status-cancelled';
+                        }
+
+                        ?>
+
+                        <span
+                            class="<?php
+                                echo $statusClass;
+                            ?>"
+                        >
+                            <?php
+                            echo htmlspecialchars(
+                                $statusText
+                            );
+                            ?>
+                        </span>
+
+                    </p>
+
+
+                    <!-- ACCEPTED AT -->
+
+                    <?php
+                    if (
+                        !empty(
+                            $request['accepted_at']
+                        )
+                    ):
+                    ?>
+
+                        <p>
+                            <strong>Accepted At:</strong>
+
+                            <?php
+                            echo htmlspecialchars(
+                                $request['accepted_at']
+                            );
+                            ?>
+                        </p>
+
+                    <?php endif; ?>
+
+
+                    <!-- CREATED AT -->
+
+                    <p>
+                        <strong>Created At:</strong>
+
+                        <?php
+                        echo htmlspecialchars(
+                            $request['created_at']
+                            ?? ''
+                        );
+                        ?>
+                    </p>
+
+
+                    <!-- VIEW DETAILS -->
 
                     <p>
 
                         <a
-                            href="index.php?page=helpseeker-feedback&id=<?php echo (int)$request['id']; ?>"
+                            href="index.php?page=helpseeker-request-view&id=<?php
+                                echo (int)$request['id'];
+                            ?>"
                         >
-                            Give Feedback
+                            View Details
                         </a>
 
                     </p>
 
-                <?php endif; ?>
+
+                    <!-- GIVE FEEDBACK -->
+
+                    <?php if ($status === 'completed'): ?>
+
+                        <p>
+
+                            <a
+                                href="index.php?page=helpseeker-feedback&id=<?php
+                                    echo (int)$request['id'];
+                                ?>"
+                            >
+                                Give Feedback
+                            </a>
+
+                        </p>
+
+                    <?php endif; ?>
+
+                </div>
+
+            <?php endforeach; ?>
 
 
-            </div>
+        <?php endif; ?>
 
-        <?php endforeach; ?>
-
-
-    <?php endif; ?>
+    </div>
 
 </div>
 
 
 <style>
+
+#helpSeekerRequestSearch {
+    width: 100%;
+    max-width: 600px;
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 15px;
+}
 
 .status-pending {
     color: #856404;
@@ -324,4 +405,6 @@ require_once "views/partials/sidebar.php";
 </style>
 
 
-<?php require_once "views/partials/footer.php"; ?>
+<?php
+require_once "views/partials/footer.php";
+?>
