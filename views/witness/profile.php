@@ -64,6 +64,8 @@
             novalidate
         >
 
+<?php echo csrfField(); ?>
+
             <div class="form-group">
 
                 <label for="name">
