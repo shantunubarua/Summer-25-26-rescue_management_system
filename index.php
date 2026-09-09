@@ -1365,6 +1365,8 @@ if ($page === 'login') {
         die("Invalid request method.");
     }
 
+    requireValidCsrfToken();
+    
     require_once "models/WitnessModel.php";
 
     $witness_id =
