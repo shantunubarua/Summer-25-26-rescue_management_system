@@ -123,6 +123,18 @@
             High
         </option>
 
+        <option value="critical"
+    <?php
+    echo (
+        ($report['damage_level'] ?? '') === 'critical'
+    )
+        ? 'selected'
+        : '';
+    ?>
+>
+    Critical
+</option>
+
     </select>
 
 </div>
