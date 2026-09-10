@@ -56,6 +56,20 @@
 
 
     <?php
+    if (
+        isset($_GET['reset']) &&
+        $_GET['reset'] === '1'
+    ):
+    ?>
+
+        <p>
+            Password reset successful. You can now log in.
+        </p>
+
+    <?php endif; ?>
+
+
+    <?php
 
     /*
     |--------------------------------------------------------------------------
@@ -174,6 +188,13 @@
 
 
     </form>
+
+
+    <p>
+        <a href="index.php?page=forgot-password">
+            Forgot Password?
+        </a>
+    </p>
 
 
     <p>
