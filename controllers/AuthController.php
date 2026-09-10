@@ -7,67 +7,152 @@ function loginUser()
 {
     global $conn;
 
-    $email = trim($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
+    $login =
+        trim(
+            $_POST['login']
+            ?? $_POST['email']
+            ?? ''
+        );
 
-    if ($email === '' || $password === '') {
-        return "Email and password are required.";
+    $password =
+        $_POST['password']
+        ?? '';
+
+    if (
+        $login === '' ||
+        $password === ''
+    ) {
+        return "Username or email and password are required.";
     }
 
-    $sql = "SELECT id, name, email, password, role
-            FROM users
-            WHERE email = ?
-            LIMIT 1";
 
-    $stmt = mysqli_prepare($conn, $sql);
+    /*
+    |--------------------------------------------------------------------------
+    | FIND USER BY USERNAME OR EMAIL
+    |--------------------------------------------------------------------------
+    */
 
-    mysqli_stmt_bind_param($stmt, "s", $email);
+    $sql =
+        "SELECT
+            id,
+            name,
+            username,
+            email,
+            password,
+            role
+         FROM users
+         WHERE email = ?
+            OR username = ?
+         LIMIT 1";
+
+    $stmt =
+        mysqli_prepare(
+            $conn,
+            $sql
+        );
+
+    if (!$stmt) {
+        return "Unable to process login.";
+    }
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "ss",
+        $login,
+        $login
+    );
 
     mysqli_stmt_execute($stmt);
 
-    $result = mysqli_stmt_get_result($stmt);
+    $result =
+        mysqli_stmt_get_result($stmt);
 
-    $user = mysqli_fetch_assoc($result);
+    $user =
+        mysqli_fetch_assoc($result);
 
     mysqli_stmt_close($stmt);
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | VERIFY LOGIN
+    |--------------------------------------------------------------------------
+    */
+
     if (!$user) {
-        return "Invalid email or password.";
+        return "Invalid username/email or password.";
     }
 
-    if (!password_verify($password, $user['password'])) {
-        return "Invalid email or password.";
+    if (
+        !password_verify(
+            $password,
+            $user['password']
+        )
+    ) {
+        return "Invalid username/email or password.";
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | CREATE SESSION
+    |--------------------------------------------------------------------------
+    */
 
     session_regenerate_id(true);
 
-    unset($user['password']);
+    unset(
+        $user['password']
+    );
 
-    $_SESSION['user'] = $user;
+    $_SESSION['user'] =
+        $user;
 
-   if ($user['role'] === 'admin') {
 
-    header("Location: index.php?page=admin-dashboard");
-    exit;
+    /*
+    |--------------------------------------------------------------------------
+    | ROLE REDIRECT
+    |--------------------------------------------------------------------------
+    */
 
-} elseif ($user['role'] === 'witness') {
+    if ($user['role'] === 'admin') {
 
-    header("Location: index.php?page=witness-dashboard");
-    exit;
+        header(
+            "Location: index.php?page=admin-dashboard"
+        );
 
-}
-elseif ($user['role'] === 'help_seeker') {
+        exit;
 
-    header("Location: index.php?page=helpseeker-dashboard");
-    exit;
+    } elseif (
+        $user['role'] === 'witness'
+    ) {
 
-}
-elseif ($user['role'] === 'volunteer') {
+        header(
+            "Location: index.php?page=witness-dashboard"
+        );
 
-    header("Location: index.php?page=volunteer-dashboard");
-    exit;
+        exit;
 
-}
+    } elseif (
+        $user['role'] === 'help_seeker'
+    ) {
+
+        header(
+            "Location: index.php?page=helpseeker-dashboard"
+        );
+
+        exit;
+
+    } elseif (
+        $user['role'] === 'volunteer'
+    ) {
+
+        header(
+            "Location: index.php?page=volunteer-dashboard"
+        );
+
+        exit;
+    }
 
     return "Invalid role.";
 }
