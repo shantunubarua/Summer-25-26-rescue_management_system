@@ -401,15 +401,24 @@ if ($page === 'login') {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $error = handleUpdateRescueReportStatus($conn);
+        requireValidCsrfToken();
+
+        $error =
+            handleUpdateRescueReportStatus(
+                $conn
+            );
     }
 
-    $reports = loadAllRescueReports($conn);
+    $reports =
+        loadAllRescueReports(
+            $conn
+        );
 
-    require_once "views/admin/rescue_reports/index.php";
+    require_once
+        "views/admin/rescue_reports/index.php";
 
 
-    /*
+/*
 |--------------------------------------------------------------------------
 | VIEW DETAILED RESCUE REPORT
 |--------------------------------------------------------------------------
@@ -419,37 +428,54 @@ if ($page === 'login') {
 
     requireAdmin();
 
-    require_once "controllers/RescueReportController.php";
+    require_once
+        "controllers/RescueReportController.php";
 
-    $report_id = isset($_GET['id'])
-        ? (int)$_GET['id']
-        : 0;
+    $report_id =
+        isset($_GET['id'])
+            ? (int)$_GET['id']
+            : 0;
 
     showDetailedRescueReport(
         $conn,
         $report_id
     );
+
+
+/*
+|--------------------------------------------------------------------------
+| CREATE RESCUE REPORT
+|--------------------------------------------------------------------------
+*/
+
 } elseif ($page === 'rescue-report-create') {
 
     requireAdmin();
 
-    require_once "controllers/RescueReportController.php";
+    require_once
+        "controllers/RescueReportController.php";
 
     $error = '';
 
     $emergencyRequests =
-        loadRescueReportCreatePageData($conn);
+        loadRescueReportCreatePageData(
+            $conn
+        );
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    requireValidCsrfToken();
+        requireValidCsrfToken();
 
-    $error = handleCreateRescueReport(
-        $conn
-    );
-}
+        $error =
+            handleCreateRescueReport(
+                $conn
+            );
+    }
 
-    require_once "views/admin/rescue_reports/create.php";
+    require_once
+        "views/admin/rescue_reports/create.php";
+
+
 /*
 |--------------------------------------------------------------------------
 | EDIT RESCUE REPORT
@@ -460,34 +486,53 @@ if ($page === 'login') {
 
     requireAdmin();
 
-    require_once "models/RescueReportModel.php";
-    require_once "controllers/RescueReportController.php";
+    require_once
+        "models/RescueReportModel.php";
 
-    $id = isset($_GET['id'])
-        ? (int)$_GET['id']
-        : 0;
+    require_once
+        "controllers/RescueReportController.php";
+
+
+    $id =
+        isset($_GET['id'])
+            ? (int)$_GET['id']
+            : 0;
+
 
     if ($id <= 0) {
-        die("Invalid rescue report ID.");
+        die(
+            "Invalid rescue report ID."
+        );
     }
 
-    $report = getRescueReportById(
-        $conn,
-        $id
-    );
 
-    if (!$report) {
-        die("Rescue report not found.");
-    }
-
-    $error = '';
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-        $error = handleEditRescueReport(
+    $report =
+        getRescueReportById(
             $conn,
             $id
         );
+
+
+    if (!$report) {
+        die(
+            "Rescue report not found."
+        );
+    }
+
+
+    $error = '';
+
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        requireValidCsrfToken();
+
+        $error =
+            handleEditRescueReport(
+                $conn,
+                $id
+            );
+
 
         if ($error !== '') {
 
@@ -501,7 +546,9 @@ if ($page === 'login') {
         }
     }
 
-    require_once "views/admin/rescue_reports/edit.php";
+
+    require_once
+        "views/admin/rescue_reports/edit.php";
 
 
 /*
@@ -514,14 +561,25 @@ if ($page === 'login') {
 
     requireAdmin();
 
+
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        die("Invalid request method.");
+
+        die(
+            "Invalid request method."
+        );
     }
 
-    require_once "controllers/RescueReportController.php";
 
-    handleDeleteRescueReport($conn);
+    requireValidCsrfToken();
 
+
+    require_once
+        "controllers/RescueReportController.php";
+
+
+    handleDeleteRescueReport(
+        $conn
+    );
 
 
 /*
