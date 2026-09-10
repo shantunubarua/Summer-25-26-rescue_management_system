@@ -55,10 +55,34 @@
     <?php endif; ?>
 
 
+    <?php
+
+    /*
+    |--------------------------------------------------------------------------
+    | LOGIN FIELD VALUE
+    |--------------------------------------------------------------------------
+    |
+    | Priority:
+    | 1. Submitted login value
+    | 2. Remembered email cookie
+    |
+    */
+
+    $loginValue =
+        $_POST['login']
+        ?? $_POST['email']
+        ?? $_COOKIE['remember_email']
+        ?? '';
+
+    ?>
+
+
     <form
         method="POST"
         action="index.php?page=login"
     >
+
+        <?php echo csrfField(); ?>
 
 
         <!-- USERNAME OR EMAIL -->
@@ -75,9 +99,7 @@
                 name="login"
                 value="<?php
                     echo htmlspecialchars(
-                        $_POST['login']
-                        ?? $_POST['email']
-                        ?? ''
+                        $loginValue
                     );
                 ?>"
                 placeholder="Enter username or email"
@@ -106,6 +128,39 @@
                 autocomplete="current-password"
                 required
             >
+
+        </div>
+
+
+        <br>
+
+
+        <!-- REMEMBER EMAIL -->
+
+        <div>
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    name="remember_email"
+                    value="1"
+                    <?php
+                    echo (
+                        isset($_POST['remember_email']) ||
+                        (
+                            $_SERVER['REQUEST_METHOD'] !== 'POST' &&
+                            !empty($_COOKIE['remember_email'])
+                        )
+                    )
+                        ? 'checked'
+                        : '';
+                    ?>
+                >
+
+                Remember Email
+
+            </label>
 
         </div>
 
