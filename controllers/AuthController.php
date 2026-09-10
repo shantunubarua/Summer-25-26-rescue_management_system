@@ -3,9 +3,100 @@
 require_once "config/database.php";
 require_once "helpers/auth.php";
 
+
+/*
+|--------------------------------------------------------------------------
+| REMEMBER EMAIL COOKIE
+|--------------------------------------------------------------------------
+*/
+
+function updateRememberEmailCookie($email)
+{
+    $rememberEmail =
+        isset($_POST['remember_email']) &&
+        $_POST['remember_email'] === '1';
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | COOKIE SECURITY
+    |--------------------------------------------------------------------------
+    */
+
+    $secureCookie =
+        !empty($_SERVER['HTTPS']) &&
+        $_SERVER['HTTPS'] !== 'off';
+
+
+    if ($rememberEmail) {
+
+        /*
+        |--------------------------------------------------------------------------
+        | REMEMBER EMAIL FOR 30 DAYS
+        |--------------------------------------------------------------------------
+        */
+
+        setcookie(
+            'remember_email',
+            $email,
+            [
+                'expires' =>
+                    time() + (60 * 60 * 24 * 30),
+
+                'path' => '/',
+
+                'secure' =>
+                    $secureCookie,
+
+                'httponly' =>
+                    true,
+
+                'samesite' =>
+                    'Lax'
+            ]
+        );
+
+    } else {
+
+        /*
+        |--------------------------------------------------------------------------
+        | REMOVE EXISTING REMEMBER EMAIL COOKIE
+        |--------------------------------------------------------------------------
+        */
+
+        setcookie(
+            'remember_email',
+            '',
+            [
+                'expires' =>
+                    time() - 3600,
+
+                'path' => '/',
+
+                'secure' =>
+                    $secureCookie,
+
+                'httponly' =>
+                    true,
+
+                'samesite' =>
+                    'Lax'
+            ]
+        );
+    }
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| LOGIN USER
+|--------------------------------------------------------------------------
+*/
+
 function loginUser()
 {
     global $conn;
+
 
     $login =
         trim(
@@ -14,15 +105,25 @@ function loginUser()
             ?? ''
         );
 
+
     $password =
         $_POST['password']
         ?? '';
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | REQUIRED VALIDATION
+    |--------------------------------------------------------------------------
+    */
 
     if (
         $login === '' ||
         $password === ''
     ) {
-        return "Username or email and password are required.";
+
+        return
+            "Username or email and password are required.";
     }
 
 
@@ -45,15 +146,20 @@ function loginUser()
             OR username = ?
          LIMIT 1";
 
+
     $stmt =
         mysqli_prepare(
             $conn,
             $sql
         );
 
+
     if (!$stmt) {
-        return "Unable to process login.";
+
+        return
+            "Unable to process login.";
     }
+
 
     mysqli_stmt_bind_param(
         $stmt,
@@ -62,15 +168,27 @@ function loginUser()
         $login
     );
 
-    mysqli_stmt_execute($stmt);
+
+    mysqli_stmt_execute(
+        $stmt
+    );
+
 
     $result =
-        mysqli_stmt_get_result($stmt);
+        mysqli_stmt_get_result(
+            $stmt
+        );
+
 
     $user =
-        mysqli_fetch_assoc($result);
+        mysqli_fetch_assoc(
+            $result
+        );
 
-    mysqli_stmt_close($stmt);
+
+    mysqli_stmt_close(
+        $stmt
+    );
 
 
     /*
@@ -79,31 +197,76 @@ function loginUser()
     |--------------------------------------------------------------------------
     */
 
-    if (!$user) {
-        return "Invalid username/email or password.";
-    }
-
     if (
+        !$user ||
         !password_verify(
             $password,
             $user['password']
         )
     ) {
-        return "Invalid username/email or password.";
+
+        return
+            "Invalid username/email or password.";
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | CREATE SESSION
+    | VALID ROLE CHECK
     |--------------------------------------------------------------------------
     */
 
-    session_regenerate_id(true);
+    $allowedRoles = [
+        'admin',
+        'volunteer',
+        'witness',
+        'help_seeker'
+    ];
+
+
+    if (
+        !in_array(
+            $user['role'],
+            $allowedRoles,
+            true
+        )
+    ) {
+
+        return
+            "Invalid role.";
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | REMEMBER EMAIL COOKIE
+    |--------------------------------------------------------------------------
+    |
+    | Even if the user logged in using username,
+    | the real account email is stored.
+    |
+    */
+
+    updateRememberEmailCookie(
+        $user['email']
+    );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | CREATE SECURE SESSION
+    |--------------------------------------------------------------------------
+    */
+
+    session_regenerate_id(
+        true
+    );
+
 
     unset(
         $user['password']
     );
+
 
     $_SESSION['user'] =
         $user;
@@ -115,15 +278,19 @@ function loginUser()
     |--------------------------------------------------------------------------
     */
 
-    if ($user['role'] === 'admin') {
+    if (
+        $user['role'] === 'admin'
+    ) {
 
         header(
             "Location: index.php?page=admin-dashboard"
         );
 
         exit;
+    }
 
-    } elseif (
+
+    if (
         $user['role'] === 'witness'
     ) {
 
@@ -132,8 +299,10 @@ function loginUser()
         );
 
         exit;
+    }
 
-    } elseif (
+
+    if (
         $user['role'] === 'help_seeker'
     ) {
 
@@ -142,8 +311,10 @@ function loginUser()
         );
 
         exit;
+    }
 
-    } elseif (
+
+    if (
         $user['role'] === 'volunteer'
     ) {
 
@@ -154,35 +325,68 @@ function loginUser()
         exit;
     }
 
-    return "Invalid role.";
+
+    return
+        "Invalid role.";
 }
+
+
+/*
+|--------------------------------------------------------------------------
+| REGISTER USER
+|--------------------------------------------------------------------------
+*/
 
 function registerUser()
 {
     global $conn;
 
+
     $name =
-        trim($_POST['name'] ?? '');
+        trim(
+            $_POST['name']
+            ?? ''
+        );
+
 
     $username =
         strtolower(
-            trim($_POST['username'] ?? '')
+            trim(
+                $_POST['username']
+                ?? ''
+            )
         );
 
+
     $email =
-        trim($_POST['email'] ?? '');
+        trim(
+            $_POST['email']
+            ?? ''
+        );
+
 
     $phone =
-        trim($_POST['phone'] ?? '');
+        trim(
+            $_POST['phone']
+            ?? ''
+        );
+
 
     $password =
-        $_POST['password'] ?? '';
+        $_POST['password']
+        ?? '';
+
 
     $confirmPassword =
-        $_POST['confirm_password'] ?? '';
+        $_POST['confirm_password']
+        ?? '';
+
 
     $role =
-        trim($_POST['role'] ?? '');
+        trim(
+            $_POST['role']
+            ?? ''
+        );
 
 
     /*
@@ -199,7 +403,9 @@ function registerUser()
         $confirmPassword === '' ||
         $role === ''
     ) {
-        return "All required fields must be completed.";
+
+        return
+            "All required fields must be completed.";
     }
 
 
@@ -213,7 +419,9 @@ function registerUser()
         strlen($name) < 2 ||
         strlen($name) > 100
     ) {
-        return "Name must be between 2 and 100 characters.";
+
+        return
+            "Name must be between 2 and 100 characters.";
     }
 
 
@@ -229,7 +437,9 @@ function registerUser()
             $username
         )
     ) {
-        return "Username must be 3-30 characters and contain only letters, numbers, and underscore.";
+
+        return
+            "Username must be 3-30 characters and contain only letters, numbers, and underscore.";
     }
 
 
@@ -245,7 +455,9 @@ function registerUser()
             FILTER_VALIDATE_EMAIL
         )
     ) {
-        return "Please enter a valid email address.";
+
+        return
+            "Please enter a valid email address.";
     }
 
 
@@ -262,7 +474,9 @@ function registerUser()
             $phone
         )
     ) {
-        return "Please enter a valid phone number.";
+
+        return
+            "Please enter a valid phone number.";
     }
 
 
@@ -273,16 +487,23 @@ function registerUser()
     */
 
     if (
-        strlen($password) < 8
+        strlen(
+            $password
+        ) < 8
     ) {
-        return "Password must be at least 8 characters.";
+
+        return
+            "Password must be at least 8 characters.";
     }
+
 
     if (
         $password !==
         $confirmPassword
     ) {
-        return "Passwords do not match.";
+
+        return
+            "Passwords do not match.";
     }
 
 
@@ -290,6 +511,9 @@ function registerUser()
     |--------------------------------------------------------------------------
     | PUBLIC ROLE VALIDATION
     |--------------------------------------------------------------------------
+    |
+    | Admin registration is intentionally blocked.
+    |
     */
 
     $allowedRoles = [
@@ -298,6 +522,7 @@ function registerUser()
         'help_seeker'
     ];
 
+
     if (
         !in_array(
             $role,
@@ -305,7 +530,9 @@ function registerUser()
             true
         )
     ) {
-        return "Invalid registration role.";
+
+        return
+            "Invalid registration role.";
     }
 
 
@@ -321,11 +548,20 @@ function registerUser()
          WHERE email = ?
          LIMIT 1";
 
+
     $stmt =
         mysqli_prepare(
             $conn,
             $sql
         );
+
+
+    if (!$stmt) {
+
+        return
+            "Unable to create account.";
+    }
+
 
     mysqli_stmt_bind_param(
         $stmt,
@@ -333,20 +569,36 @@ function registerUser()
         $email
     );
 
-    mysqli_stmt_execute($stmt);
+
+    mysqli_stmt_execute(
+        $stmt
+    );
+
 
     $result =
-        mysqli_stmt_get_result($stmt);
+        mysqli_stmt_get_result(
+            $stmt
+        );
+
 
     if (
-        mysqli_fetch_assoc($result)
+        mysqli_fetch_assoc(
+            $result
+        )
     ) {
-        mysqli_stmt_close($stmt);
 
-        return "Email address is already registered.";
+        mysqli_stmt_close(
+            $stmt
+        );
+
+        return
+            "Email address is already registered.";
     }
 
-    mysqli_stmt_close($stmt);
+
+    mysqli_stmt_close(
+        $stmt
+    );
 
 
     /*
@@ -361,11 +613,20 @@ function registerUser()
          WHERE username = ?
          LIMIT 1";
 
+
     $stmt =
         mysqli_prepare(
             $conn,
             $sql
         );
+
+
+    if (!$stmt) {
+
+        return
+            "Unable to create account.";
+    }
+
 
     mysqli_stmt_bind_param(
         $stmt,
@@ -373,20 +634,36 @@ function registerUser()
         $username
     );
 
-    mysqli_stmt_execute($stmt);
+
+    mysqli_stmt_execute(
+        $stmt
+    );
+
 
     $result =
-        mysqli_stmt_get_result($stmt);
+        mysqli_stmt_get_result(
+            $stmt
+        );
+
 
     if (
-        mysqli_fetch_assoc($result)
+        mysqli_fetch_assoc(
+            $result
+        )
     ) {
-        mysqli_stmt_close($stmt);
 
-        return "Username is already taken.";
+        mysqli_stmt_close(
+            $stmt
+        );
+
+        return
+            "Username is already taken.";
     }
 
-    mysqli_stmt_close($stmt);
+
+    mysqli_stmt_close(
+        $stmt
+    );
 
 
     /*
@@ -420,15 +697,20 @@ function registerUser()
         )
         VALUES (?, ?, ?, ?, ?, ?)";
 
+
     $stmt =
         mysqli_prepare(
             $conn,
             $sql
         );
 
+
     if (!$stmt) {
-        return "Unable to create account.";
+
+        return
+            "Unable to create account.";
     }
+
 
     mysqli_stmt_bind_param(
         $stmt,
@@ -441,14 +723,22 @@ function registerUser()
         $role
     );
 
-    $success =
-        mysqli_stmt_execute($stmt);
 
-    mysqli_stmt_close($stmt);
+    $success =
+        mysqli_stmt_execute(
+            $stmt
+        );
+
+
+    mysqli_stmt_close(
+        $stmt
+    );
 
 
     if (!$success) {
-        return "Unable to create account.";
+
+        return
+            "Unable to create account.";
     }
 
 
