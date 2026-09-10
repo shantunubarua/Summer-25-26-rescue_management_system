@@ -128,8 +128,10 @@ if ($page === 'login') {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $error = handleCreateNotification($conn);
-    }
+    requireValidCsrfToken();
+
+    $error = handleCreateNotification($conn);
+}
 
     require_once "views/admin/notifications/create.php";
 
@@ -206,11 +208,6 @@ if ($page === 'login') {
 |--------------------------------------------------------------------------
 */
 
-/*
-|--------------------------------------------------------------------------
-| DELETE NOTIFICATION
-|--------------------------------------------------------------------------
-*/
 
 } elseif ($page === 'notification-delete') {
 
