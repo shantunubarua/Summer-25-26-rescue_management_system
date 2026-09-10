@@ -7,6 +7,16 @@ require_once "views/partials/sidebar.php";
 
     <h1>Notifications</h1>
 
+    <input
+    type="hidden"
+    id="notificationCsrfToken"
+    value="<?php echo htmlspecialchars(
+        getCsrfToken(),
+        ENT_QUOTES,
+        'UTF-8'
+    ); ?>"
+>
+
 
     <p>
         <a href="index.php?page=notification-create">
