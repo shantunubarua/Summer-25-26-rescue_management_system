@@ -26,6 +26,11 @@ document.addEventListener("DOMContentLoaded", function () {
             "notificationSearchMessage"
         );
 
+    const csrfTokenInput =
+        document.getElementById(
+            "notificationCsrfToken"
+        );
+
 
     /*
     |--------------------------------------------------------------------------
@@ -37,7 +42,8 @@ document.addEventListener("DOMContentLoaded", function () {
         !searchInput ||
         !tableBody ||
         !countElement ||
-        !searchMessage
+        !searchMessage ||
+        !csrfTokenInput
     ) {
         return;
     }
@@ -50,6 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
     */
 
     function formatText(value) {
+
         if (!value) {
             return "";
         }
@@ -69,6 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
     */
 
     function createCell(value) {
+
         const cell =
             document.createElement("td");
 
@@ -86,6 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
     */
 
     function displayNotifications(notifications) {
+
         tableBody.textContent = "";
 
 
@@ -267,21 +276,75 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
 
-                const deleteLink =
-                    document.createElement("a");
+                /*
+                |--------------------------------------------------------------------------
+                | DELETE FORM - POST + CSRF
+                |--------------------------------------------------------------------------
+                */
 
-                deleteLink.href =
-                    "index.php?page=notification-delete&id=" +
-                    encodeURIComponent(
-                        notification.id
-                    );
+                const deleteForm =
+                    document.createElement("form");
 
-                deleteLink.textContent =
+                deleteForm.method =
+                    "POST";
+
+                deleteForm.action =
+                    "index.php?page=notification-delete";
+
+                deleteForm.style.display =
+                    "inline";
+
+
+                const csrfInput =
+                    document.createElement("input");
+
+                csrfInput.type =
+                    "hidden";
+
+                csrfInput.name =
+                    "csrf_token";
+
+                csrfInput.value =
+                    csrfTokenInput.value;
+
+                deleteForm.appendChild(
+                    csrfInput
+                );
+
+
+                const idInput =
+                    document.createElement("input");
+
+                idInput.type =
+                    "hidden";
+
+                idInput.name =
+                    "notification_id";
+
+                idInput.value =
+                    notification.id;
+
+                deleteForm.appendChild(
+                    idInput
+                );
+
+
+                const deleteButton =
+                    document.createElement("button");
+
+                deleteButton.type =
+                    "submit";
+
+                deleteButton.textContent =
                     "Delete";
 
+                deleteForm.appendChild(
+                    deleteButton
+                );
 
-                deleteLink.addEventListener(
-                    "click",
+
+                deleteForm.addEventListener(
+                    "submit",
                     function (event) {
 
                         const confirmed =
@@ -297,8 +360,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 actionCell.appendChild(
-                    deleteLink
+                    deleteForm
                 );
+
 
                 row.appendChild(
                     actionCell
@@ -421,14 +485,20 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 });
-/* =========================================================
-   PRINT RESCUE REPORT
-   ========================================================= */
+
+
+/*
+=========================================================
+PRINT RESCUE REPORT
+=========================================================
+*/
 
 document.addEventListener("DOMContentLoaded", function () {
 
     const printButton =
-        document.getElementById("printRescueReportBtn");
+        document.getElementById(
+            "printRescueReportBtn"
+        );
 
     if (printButton) {
 
@@ -440,7 +510,10 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         );
     }
+
 });
+
+
 /*
 |--------------------------------------------------------------------------
 | ADMIN RESOURCE REQUEST - AJAX LIVE SEARCH
@@ -530,6 +603,7 @@ document.addEventListener("DOMContentLoaded", function () {
         /*
          * Remove old table rows
          */
+
         tableBody.innerHTML = "";
 
 
@@ -744,6 +818,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         .then(function (response) {
 
                             if (!response.ok) {
+
                                 throw new Error(
                                     "Request failed."
                                 );
@@ -797,6 +872,8 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 });
+
+
 /*
 |--------------------------------------------------------------------------
 | ADMIN NOTIFICATION - CREATE FORM VALIDATION
@@ -816,19 +893,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     const titleInput =
-        document.getElementById("title");
+        document.getElementById(
+            "title"
+        );
 
     const messageInput =
-        document.getElementById("message");
+        document.getElementById(
+            "message"
+        );
 
     const alertTypeInput =
-        document.getElementById("alert_type");
+        document.getElementById(
+            "alert_type"
+        );
 
     const audienceInput =
-        document.getElementById("target_audience");
+        document.getElementById(
+            "target_audience"
+        );
 
     const statusInput =
-        document.getElementById("status");
+        document.getElementById(
+            "status"
+        );
 
     const validationMessage =
         document.getElementById(
@@ -1022,6 +1109,7 @@ document.addEventListener("DOMContentLoaded", function () {
     */
 
     function showValidationMessage(message) {
+
         validationMessage.textContent =
             message;
 
