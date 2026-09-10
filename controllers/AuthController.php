@@ -1158,22 +1158,19 @@ function handleResetPassword(
 
 function handleChangePassword($conn)
 {
-    $user_id =
+    $userId =
         (int)(
             $_SESSION['user']['id']
             ?? 0
         );
 
-
     $currentPassword =
         $_POST['current_password']
         ?? '';
 
-
     $newPassword =
         $_POST['new_password']
         ?? '';
-
 
     $confirmPassword =
         $_POST['confirm_password']
@@ -1186,46 +1183,30 @@ function handleChangePassword($conn)
     |--------------------------------------------------------------------------
     */
 
-    if ($user_id <= 0) {
-
-        return
-            "Invalid user account.";
+    if ($userId <= 0) {
+        return "Invalid user account.";
     }
-
 
     if (
         $currentPassword === '' ||
         $newPassword === '' ||
         $confirmPassword === ''
     ) {
-
-        return
-            "All password fields are required.";
+        return "All password fields are required.";
     }
 
-
-    if (
-        strlen($newPassword) < 8
-    ) {
-
-        return
-            "New password must be at least 8 characters.";
+    if (strlen($newPassword) < 8) {
+        return "New password must be at least 8 characters.";
     }
 
-
-    if (
-        $newPassword !==
-        $confirmPassword
-    ) {
-
-        return
-            "New passwords do not match.";
+    if ($newPassword !== $confirmPassword) {
+        return "New passwords do not match.";
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | GET CURRENT PASSWORD HASH
+    | GET CURRENT PASSWORD FROM DATABASE
     |--------------------------------------------------------------------------
     */
 
@@ -1235,54 +1216,43 @@ function handleChangePassword($conn)
          WHERE id = ?
          LIMIT 1";
 
-
     $stmt =
         mysqli_prepare(
             $conn,
             $sql
         );
 
-
     if (!$stmt) {
-
-        return
-            "Unable to change password.";
+        return "Unable to change password.";
     }
-
 
     mysqli_stmt_bind_param(
         $stmt,
         "i",
-        $user_id
+        $userId
     );
-
 
     mysqli_stmt_execute(
         $stmt
     );
-
 
     $result =
         mysqli_stmt_get_result(
             $stmt
         );
 
-
     $user =
         mysqli_fetch_assoc(
             $result
         );
-
 
     mysqli_stmt_close(
         $stmt
     );
 
 
-    if (!$user) {
-
-        return
-            "User account not found.";
+    if (!$user || empty($user['password'])) {
+        return "User account not found.";
     }
 
 
@@ -1290,17 +1260,21 @@ function handleChangePassword($conn)
     |--------------------------------------------------------------------------
     | VERIFY CURRENT PASSWORD
     |--------------------------------------------------------------------------
+    |
+    | IMPORTANT:
+    | Password update MUST NOT happen unless this passes.
+    |
     */
 
-    if (
-        !password_verify(
+    $currentPasswordValid =
+        password_verify(
             $currentPassword,
             $user['password']
-        )
-    ) {
+        );
 
-        return
-            "Current password is incorrect.";
+
+    if ($currentPasswordValid !== true) {
+        return "Current password is incorrect.";
     }
 
 
@@ -1316,9 +1290,7 @@ function handleChangePassword($conn)
             $user['password']
         )
     ) {
-
-        return
-            "New password must be different from your current password.";
+        return "New password must be different from your current password.";
     }
 
 
@@ -1328,11 +1300,15 @@ function handleChangePassword($conn)
     |--------------------------------------------------------------------------
     */
 
-    $hashedPassword =
+    $newPasswordHash =
         password_hash(
             $newPassword,
             PASSWORD_DEFAULT
         );
+
+    if ($newPasswordHash === false) {
+        return "Unable to change password.";
+    }
 
 
     /*
@@ -1346,66 +1322,47 @@ function handleChangePassword($conn)
          SET password = ?
          WHERE id = ?";
 
-
     $stmt =
         mysqli_prepare(
             $conn,
             $sql
         );
 
-
     if (!$stmt) {
-
-        return
-            "Unable to change password.";
+        return "Unable to change password.";
     }
-
 
     mysqli_stmt_bind_param(
         $stmt,
         "si",
-        $hashedPassword,
-        $user_id
+        $newPasswordHash,
+        $userId
     );
-
 
     $success =
         mysqli_stmt_execute(
             $stmt
         );
 
-
-    $affectedRows =
-        mysqli_stmt_affected_rows(
-            $stmt
-        );
-
-
     mysqli_stmt_close(
         $stmt
     );
 
 
-    if (
-        !$success ||
-        $affectedRows !== 1
-    ) {
-
-        return
-            "Unable to change password.";
+    if (!$success) {
+        return "Unable to change password.";
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | REGENERATE SESSION ID
+    | SESSION SECURITY
     |--------------------------------------------------------------------------
     */
 
     session_regenerate_id(
         true
     );
-
 
     $_SESSION['last_activity'] =
         time();

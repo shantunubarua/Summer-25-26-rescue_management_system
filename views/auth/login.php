@@ -64,9 +64,24 @@
 
         <p>
             Password reset successful. You can now log in.
-        </p>
+        </p>    
 
     <?php endif; ?>
+
+
+    <?php
+if (
+    isset($_GET['expired']) &&
+    $_GET['expired'] === '1'
+):
+?>
+
+    <p>
+        Your session expired due to inactivity.
+        Please log in again.
+    </p>
+
+<?php endif; ?>
 
 
     <?php
