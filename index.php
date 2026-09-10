@@ -176,17 +176,75 @@ if ($page === 'login') {
     showAdminDashboard($conn);
 /*
 |--------------------------------------------------------------------------
+| CHANGE PASSWORD
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'change-password') {
+
+    requireLogin();
+
+    require_once
+        "controllers/AuthController.php";
+
+
+    $error = '';
+
+
+    if (
+        $_SERVER['REQUEST_METHOD']
+        === 'POST'
+    ) {
+
+        requireValidCsrfToken();
+
+
+        $error =
+            handleChangePassword(
+                $conn
+            );
+    }
+
+
+    require_once
+        "views/auth/change_password.php";
+
+
+/*
+|--------------------------------------------------------------------------
 | LOGOUT
 |--------------------------------------------------------------------------
 */
 
 } elseif ($page === 'logout') {
 
+    requireLogin();
+
+
+    if (
+        $_SERVER['REQUEST_METHOD']
+        !== 'POST'
+    ) {
+
+        http_response_code(405);
+
+        die(
+            "Invalid request method."
+        );
+    }
+
+
+    requireValidCsrfToken();
+
+
     logoutUser();
 
-    header("Location: index.php?page=login");
-    exit;
 
+    header(
+        "Location: index.php?page=login"
+    );
+
+    exit;
 
 /*
 |--------------------------------------------------------------------------
