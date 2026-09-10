@@ -14,16 +14,19 @@ $page = $_GET['page'] ?? 'login';
 
 if ($page === 'login') {
 
+    $error = '';
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        requireValidCsrfToken();
 
         require_once "controllers/AuthController.php";
 
-        $error = loginUser();
+        $error =
+            loginUser();
     }
 
     require_once "views/auth/login.php";
-
-
     /*
 |--------------------------------------------------------------------------
 | REGISTER
