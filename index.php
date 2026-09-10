@@ -307,25 +307,32 @@ if ($page === 'login') {
 
     require_once "controllers/AdminController.php";
 
-    $report_id = isset($_GET['id'])
-        ? (int)$_GET['id']
-        : 0;
+    $report_id =
+        isset($_GET['id'])
+            ? (int)$_GET['id']
+            : 0;
+
+    if ($report_id <= 0) {
+        die("Invalid witness report ID.");
+    }
 
     $error = '';
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $error = handleAdminWitnessReportStatus(
-            $conn,
-            $report_id
-        );
+        requireValidCsrfToken();
+
+        $error =
+            handleAdminWitnessReportStatus(
+                $conn,
+                $report_id
+            );
     }
 
     showAdminWitnessReport(
         $conn,
         $report_id
     );
-
     /*
 |--------------------------------------------------------------------------
 | ADMIN - RESOURCE REQUESTS
@@ -353,18 +360,26 @@ if ($page === 'login') {
 
     require_once "controllers/ResourceRequestController.php";
 
-    $request_id = isset($_GET['id'])
-        ? (int)$_GET['id']
-        : 0;
+    $request_id =
+        isset($_GET['id'])
+            ? (int)$_GET['id']
+            : 0;
+
+    if ($request_id <= 0) {
+        die("Invalid resource request ID.");
+    }
 
     $error = '';
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $error = handleAdminResourceRequestStatus(
-            $conn,
-            $request_id
-        );
+        requireValidCsrfToken();
+
+        $error =
+            handleAdminResourceRequestStatus(
+                $conn,
+                $request_id
+            );
     }
 
     showAdminResourceRequest(
