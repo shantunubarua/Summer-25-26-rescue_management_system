@@ -79,6 +79,11 @@ function registerUser()
     $name =
         trim($_POST['name'] ?? '');
 
+    $username =
+        strtolower(
+            trim($_POST['username'] ?? '')
+        );
+
     $email =
         trim($_POST['email'] ?? '');
 
@@ -92,7 +97,7 @@ function registerUser()
         $_POST['confirm_password'] ?? '';
 
     $role =
-        $_POST['role'] ?? '';
+        trim($_POST['role'] ?? '');
 
 
     /*
@@ -103,12 +108,13 @@ function registerUser()
 
     if (
         $name === '' ||
+        $username === '' ||
         $email === '' ||
         $password === '' ||
         $confirmPassword === '' ||
         $role === ''
     ) {
-        return "Please complete all required fields.";
+        return "All required fields must be completed.";
     }
 
 
@@ -123,6 +129,22 @@ function registerUser()
         strlen($name) > 100
     ) {
         return "Name must be between 2 and 100 characters.";
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | USERNAME VALIDATION
+    |--------------------------------------------------------------------------
+    */
+
+    if (
+        !preg_match(
+            '/^[a-zA-Z0-9_]{3,30}$/',
+            $username
+        )
+    ) {
+        return "Username must be 3-30 characters and contain only letters, numbers, and underscore.";
     }
 
 
@@ -165,20 +187,23 @@ function registerUser()
     |--------------------------------------------------------------------------
     */
 
-    if (strlen($password) < 8) {
+    if (
+        strlen($password) < 8
+    ) {
         return "Password must be at least 8 characters.";
     }
 
-    if ($password !== $confirmPassword) {
-        return "Password and confirm password do not match.";
+    if (
+        $password !==
+        $confirmPassword
+    ) {
+        return "Passwords do not match.";
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | ROLE VALIDATION
-    |--------------------------------------------------------------------------
-    | Admin registration is NEVER allowed publicly.
+    | PUBLIC ROLE VALIDATION
     |--------------------------------------------------------------------------
     */
 
@@ -201,7 +226,7 @@ function registerUser()
 
     /*
     |--------------------------------------------------------------------------
-    | CHECK EMAIL ALREADY EXISTS
+    | CHECK DUPLICATE EMAIL
     |--------------------------------------------------------------------------
     */
 
@@ -217,10 +242,6 @@ function registerUser()
             $sql
         );
 
-    if (!$stmt) {
-        return "Unable to process registration.";
-    }
-
     mysqli_stmt_bind_param(
         $stmt,
         "s",
@@ -232,14 +253,55 @@ function registerUser()
     $result =
         mysqli_stmt_get_result($stmt);
 
-    $existingUser =
-        mysqli_fetch_assoc($result);
+    if (
+        mysqli_fetch_assoc($result)
+    ) {
+        mysqli_stmt_close($stmt);
+
+        return "Email address is already registered.";
+    }
 
     mysqli_stmt_close($stmt);
 
-    if ($existingUser) {
-        return "This email address is already registered.";
+
+    /*
+    |--------------------------------------------------------------------------
+    | CHECK DUPLICATE USERNAME
+    |--------------------------------------------------------------------------
+    */
+
+    $sql =
+        "SELECT id
+         FROM users
+         WHERE username = ?
+         LIMIT 1";
+
+    $stmt =
+        mysqli_prepare(
+            $conn,
+            $sql
+        );
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "s",
+        $username
+    );
+
+    mysqli_stmt_execute($stmt);
+
+    $result =
+        mysqli_stmt_get_result($stmt);
+
+    if (
+        mysqli_fetch_assoc($result)
+    ) {
+        mysqli_stmt_close($stmt);
+
+        return "Username is already taken.";
     }
+
+    mysqli_stmt_close($stmt);
 
 
     /*
@@ -254,10 +316,6 @@ function registerUser()
             PASSWORD_DEFAULT
         );
 
-    if ($hashedPassword === false) {
-        return "Unable to process password.";
-    }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -269,12 +327,13 @@ function registerUser()
         "INSERT INTO users
         (
             name,
+            username,
             email,
             phone,
             password,
             role
         )
-        VALUES (?, ?, ?, ?, ?)";
+        VALUES (?, ?, ?, ?, ?, ?)";
 
     $stmt =
         mysqli_prepare(
@@ -288,8 +347,9 @@ function registerUser()
 
     mysqli_stmt_bind_param(
         $stmt,
-        "sssss",
+        "ssssss",
         $name,
+        $username,
         $email,
         $phone,
         $hashedPassword,
@@ -301,16 +361,11 @@ function registerUser()
 
     mysqli_stmt_close($stmt);
 
+
     if (!$success) {
         return "Unable to create account.";
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | SUCCESS
-    |--------------------------------------------------------------------------
-    */
 
     return '';
 }
