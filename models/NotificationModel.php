@@ -276,3 +276,76 @@ function getActiveNotificationsForRole(
 
     return $notifications;
 }
+/*
+|--------------------------------------------------------------------------
+| SEARCH NOTIFICATIONS
+|--------------------------------------------------------------------------
+*/
+
+function searchNotifications(
+    $conn,
+    $keyword
+) {
+    $keyword = trim($keyword);
+
+    $search =
+        '%' . $keyword . '%';
+
+    $sql = "SELECT
+                notifications.*,
+                users.name AS admin_name
+
+            FROM notifications
+
+            INNER JOIN users
+                ON notifications.created_by = users.id
+
+            WHERE
+                notifications.title LIKE ?
+                OR notifications.message LIKE ?
+                OR notifications.alert_type LIKE ?
+                OR notifications.target_audience LIKE ?
+                OR notifications.status LIKE ?
+                OR users.name LIKE ?
+
+            ORDER BY notifications.id DESC";
+
+    $stmt =
+        mysqli_prepare(
+            $conn,
+            $sql
+        );
+
+    if (!$stmt) {
+        return [];
+    }
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "ssssss",
+        $search,
+        $search,
+        $search,
+        $search,
+        $search,
+        $search
+    );
+
+    mysqli_stmt_execute($stmt);
+
+    $result =
+        mysqli_stmt_get_result($stmt);
+
+    $notifications = [];
+
+    while (
+        $result &&
+        $row = mysqli_fetch_assoc($result)
+    ) {
+        $notifications[] = $row;
+    }
+
+    mysqli_stmt_close($stmt);
+
+    return $notifications;
+}
