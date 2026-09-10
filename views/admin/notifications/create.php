@@ -2,14 +2,22 @@
 
 <?php require_once "views/partials/sidebar.php"; ?>
 
+
 <div class="content">
 
     <h1>Create Notification</h1>
 
+
     <?php if (!empty($error)): ?>
 
         <p style="color: red;">
-            <?= htmlspecialchars($error); ?>
+
+            <?php
+            echo htmlspecialchars(
+                $error
+            );
+            ?>
+
         </p>
 
     <?php endif; ?>
@@ -18,7 +26,12 @@
     <form
         method="POST"
         action="index.php?page=notification-create"
+        id="notificationCreateForm"
+        novalidate
     >
+
+
+        <!-- TITLE -->
 
         <div>
 
@@ -33,7 +46,11 @@
                 id="title"
                 name="title"
                 maxlength="150"
-                value="<?= htmlspecialchars($_POST['title'] ?? ''); ?>"
+                value="<?php
+                    echo htmlspecialchars(
+                        $_POST['title'] ?? ''
+                    );
+                ?>"
                 required
             >
 
@@ -42,6 +59,8 @@
 
         <br>
 
+
+        <!-- MESSAGE -->
 
         <div>
 
@@ -56,13 +75,19 @@
                 name="message"
                 rows="5"
                 required
-            ><?= htmlspecialchars($_POST['message'] ?? ''); ?></textarea>
+            ><?php
+                echo htmlspecialchars(
+                    $_POST['message'] ?? ''
+                );
+            ?></textarea>
 
         </div>
 
 
         <br>
 
+
+        <!-- ALERT TYPE -->
 
         <div>
 
@@ -72,10 +97,15 @@
 
             <br>
 
+
             <?php
+
             $selectedAlertType =
-                $_POST['alert_type'] ?? 'normal';
+                $_POST['alert_type']
+                ?? 'normal';
+
             ?>
+
 
             <select
                 id="alert_type"
@@ -85,27 +115,35 @@
 
                 <option
                     value="normal"
-                    <?= $selectedAlertType === 'normal'
+                    <?php
+                    echo $selectedAlertType === 'normal'
                         ? 'selected'
-                        : ''; ?>
+                        : '';
+                    ?>
                 >
                     Normal
                 </option>
 
+
                 <option
                     value="important"
-                    <?= $selectedAlertType === 'important'
+                    <?php
+                    echo $selectedAlertType === 'important'
                         ? 'selected'
-                        : ''; ?>
+                        : '';
+                    ?>
                 >
                     Important
                 </option>
 
+
                 <option
                     value="emergency"
-                    <?= $selectedAlertType === 'emergency'
+                    <?php
+                    echo $selectedAlertType === 'emergency'
                         ? 'selected'
-                        : ''; ?>
+                        : '';
+                    ?>
                 >
                     Emergency
                 </option>
@@ -128,11 +166,15 @@
 
             <br>
 
+
             <?php
+
             $selectedAudience =
                 $_POST['target_audience']
                 ?? 'all';
+
             ?>
+
 
             <select
                 id="target_audience"
@@ -142,36 +184,47 @@
 
                 <option
                     value="all"
-                    <?= $selectedAudience === 'all'
+                    <?php
+                    echo $selectedAudience === 'all'
                         ? 'selected'
-                        : ''; ?>
+                        : '';
+                    ?>
                 >
                     All Users
                 </option>
 
+
                 <option
                     value="volunteer"
-                    <?= $selectedAudience === 'volunteer'
+                    <?php
+                    echo $selectedAudience === 'volunteer'
                         ? 'selected'
-                        : ''; ?>
+                        : '';
+                    ?>
                 >
                     Volunteers
                 </option>
 
+
                 <option
                     value="witness"
-                    <?= $selectedAudience === 'witness'
+                    <?php
+                    echo $selectedAudience === 'witness'
                         ? 'selected'
-                        : ''; ?>
+                        : '';
+                    ?>
                 >
                     Witnesses
                 </option>
 
+
                 <option
                     value="help_seeker"
-                    <?= $selectedAudience === 'help_seeker'
+                    <?php
+                    echo $selectedAudience === 'help_seeker'
                         ? 'selected'
-                        : ''; ?>
+                        : '';
+                    ?>
                 >
                     Help Seekers
                 </option>
@@ -184,6 +237,8 @@
         <br>
 
 
+        <!-- STATUS -->
+
         <div>
 
             <label for="status">
@@ -192,10 +247,15 @@
 
             <br>
 
+
             <?php
+
             $selectedStatus =
-                $_POST['status'] ?? 'active';
+                $_POST['status']
+                ?? 'active';
+
             ?>
+
 
             <select
                 id="status"
@@ -205,18 +265,23 @@
 
                 <option
                     value="active"
-                    <?= $selectedStatus === 'active'
+                    <?php
+                    echo $selectedStatus === 'active'
                         ? 'selected'
-                        : ''; ?>
+                        : '';
+                    ?>
                 >
                     Active
                 </option>
 
+
                 <option
                     value="inactive"
-                    <?= $selectedStatus === 'inactive'
+                    <?php
+                    echo $selectedStatus === 'inactive'
                         ? 'selected'
-                        : ''; ?>
+                        : '';
+                    ?>
                 >
                     Inactive
                 </option>
@@ -229,12 +294,24 @@
         <br>
 
 
+        <!-- JAVASCRIPT VALIDATION MESSAGE -->
+
+        <p
+            id="notificationValidationMessage"
+            style="display: none;"
+        ></p>
+
+
+        <!-- SUBMIT -->
+
         <button type="submit">
             Create Notification
         </button>
 
+
     </form>
 
 </div>
+
 
 <?php require_once "views/partials/footer.php"; ?>
