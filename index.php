@@ -442,9 +442,12 @@ if ($page === 'login') {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $error =
-            handleCreateRescueReport($conn);
-    }
+    requireValidCsrfToken();
+
+    $error = handleCreateRescueReport(
+        $conn
+    );
+}
 
     require_once "views/admin/rescue_reports/create.php";
 /*
