@@ -415,3 +415,34 @@ function loadRoleDashboardNotifications(
         $role
     );
 }
+/*
+|--------------------------------------------------------------------------
+| HANDLE NOTIFICATION SEARCH
+|--------------------------------------------------------------------------
+*/
+
+function handleNotificationSearch($conn)
+{
+    header(
+        'Content-Type: application/json; charset=UTF-8'
+    );
+
+    $keyword =
+        trim(
+            $_GET['q'] ?? ''
+        );
+
+    $notifications =
+        searchNotifications(
+            $conn,
+            $keyword
+        );
+
+    echo json_encode([
+        'success' => true,
+        'count' => count($notifications),
+        'data' => $notifications
+    ]);
+
+    exit;
+}
