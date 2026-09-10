@@ -251,6 +251,8 @@ if ($page === 'login') {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+        requireValidCsrfToken();
+
         $error = handleUpdateFeedbackStatus($conn);
     }
 
@@ -272,6 +274,8 @@ if ($page === 'login') {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         die("Invalid request method.");
     }
+
+    requireValidCsrfToken();
 
     require_once "controllers/FeedbackController.php";
 
