@@ -97,6 +97,134 @@ if ($page === 'login') {
 
     require_once "views/admin/notifications/index.php";
 
+/*
+|--------------------------------------------------------------------------
+| NOTIFICATION AJAX SEARCH
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'notification-search') {
+
+    requireAdmin();
+
+    require_once "models/NotificationModel.php";
+    require_once "controllers/NotificationController.php";
+
+    handleNotificationSearch($conn);    
+
+/*
+|--------------------------------------------------------------------------
+| CREATE NOTIFICATION
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'notification-create') {
+
+    requireAdmin();
+
+    require_once "controllers/NotificationController.php";
+
+    $error = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $error = handleCreateNotification($conn);
+    }
+
+    require_once "views/admin/notifications/create.php";
+
+
+/*
+|--------------------------------------------------------------------------
+| EDIT NOTIFICATION
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'notification-edit') {
+
+    requireAdmin();
+
+    require_once "models/NotificationModel.php";
+    require_once "controllers/NotificationController.php";
+
+    $id = isset($_GET['id'])
+        ? (int)$_GET['id']
+        : 0;
+
+    if ($id <= 0) {
+        die("Invalid notification ID.");
+    }
+
+    $notification = getNotificationById(
+        $conn,
+        $id
+    );
+
+    if (!$notification) {
+        die("Notification not found.");
+    }
+
+    $error = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $error = handleUpdateNotification(
+            $conn,
+            $id
+        );
+
+        if ($error !== '') {
+
+            $notification['title'] =
+                $_POST['title']
+                ?? $notification['title'];
+
+            $notification['message'] =
+                $_POST['message']
+                ?? $notification['message'];
+
+            $notification['alert_type'] =
+                $_POST['alert_type']
+                ?? $notification['alert_type'];
+            
+            $notification['target_audience'] =
+                $_POST['target_audience']
+                ?? $notification['target_audience'];    
+
+            $notification['status'] =
+                $_POST['status']
+                ?? $notification['status'];
+        }
+    }
+
+    require_once "views/admin/notifications/edit.php";
+
+
+/*
+|--------------------------------------------------------------------------
+| DELETE NOTIFICATION
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'notification-delete') {
+
+    requireAdmin();
+
+    require_once "models/NotificationModel.php";
+    require_once "controllers/NotificationController.php";
+
+    $id = isset($_GET['id'])
+        ? (int)$_GET['id']
+        : 0;
+
+    if ($id <= 0) {
+        die("Invalid notification ID.");
+    }
+
+    handleDeleteNotification(
+        $conn,
+        $id
+    );
 
 /*
 |--------------------------------------------------------------------------
@@ -378,120 +506,6 @@ if ($page === 'login') {
 
     handleDeleteRescueReport($conn);
 
-
-/*
-|--------------------------------------------------------------------------
-| CREATE NOTIFICATION
-|--------------------------------------------------------------------------
-*/
-
-} elseif ($page === 'notification-create') {
-
-    requireAdmin();
-
-    require_once "controllers/NotificationController.php";
-
-    $error = '';
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-        $error = handleCreateNotification($conn);
-    }
-
-    require_once "views/admin/notifications/create.php";
-
-
-/*
-|--------------------------------------------------------------------------
-| EDIT NOTIFICATION
-|--------------------------------------------------------------------------
-*/
-
-} elseif ($page === 'notification-edit') {
-
-    requireAdmin();
-
-    require_once "models/NotificationModel.php";
-    require_once "controllers/NotificationController.php";
-
-    $id = isset($_GET['id'])
-        ? (int)$_GET['id']
-        : 0;
-
-    if ($id <= 0) {
-        die("Invalid notification ID.");
-    }
-
-    $notification = getNotificationById(
-        $conn,
-        $id
-    );
-
-    if (!$notification) {
-        die("Notification not found.");
-    }
-
-    $error = '';
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-        $error = handleUpdateNotification(
-            $conn,
-            $id
-        );
-
-        if ($error !== '') {
-
-            $notification['title'] =
-                $_POST['title']
-                ?? $notification['title'];
-
-            $notification['message'] =
-                $_POST['message']
-                ?? $notification['message'];
-
-            $notification['alert_type'] =
-                $_POST['alert_type']
-                ?? $notification['alert_type'];
-            
-            $notification['target_audience'] =
-                $_POST['target_audience']
-                ?? $notification['target_audience'];    
-
-            $notification['status'] =
-                $_POST['status']
-                ?? $notification['status'];
-        }
-    }
-
-    require_once "views/admin/notifications/edit.php";
-
-
-/*
-|--------------------------------------------------------------------------
-| DELETE NOTIFICATION
-|--------------------------------------------------------------------------
-*/
-
-} elseif ($page === 'notification-delete') {
-
-    requireAdmin();
-
-    require_once "models/NotificationModel.php";
-    require_once "controllers/NotificationController.php";
-
-    $id = isset($_GET['id'])
-        ? (int)$_GET['id']
-        : 0;
-
-    if ($id <= 0) {
-        die("Invalid notification ID.");
-    }
-
-    handleDeleteNotification(
-        $conn,
-        $id
-    );
 
 
 /*
