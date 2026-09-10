@@ -1266,17 +1266,15 @@ function handleChangePassword($conn)
     |
     */
 
-    $currentPasswordValid =
-        password_verify(
-            $currentPassword,
-            $user['password']
-        );
+   $currentPasswordValid =
+    password_verify(
+        $currentPassword,
+        $user['password']
+    );
 
-
-    if ($currentPasswordValid !== true) {
-        return "Current password is incorrect.";
-    }
-
+if ($currentPasswordValid !== true) {
+    return "Current password is incorrect.";
+}
 
     /*
     |--------------------------------------------------------------------------
