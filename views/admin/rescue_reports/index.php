@@ -5,11 +5,22 @@
 
     <h1>Rescue Reports</h1>
 
+
+    <?php if (!empty($error)): ?>
+
+        <p class="error-message">
+            <?php echo htmlspecialchars($error); ?>
+        </p>
+
+    <?php endif; ?>
+
+
     <p>
         <a href="index.php?page=rescue-report-create">
             Create Rescue Report
         </a>
     </p>
+
 
     <?php if (empty($reports)): ?>
 
@@ -20,6 +31,7 @@
         <table>
 
             <thead>
+
                 <tr>
                     <th>ID</th>
                     <th>Emergency Request ID</th>
@@ -30,7 +42,9 @@
                     <th>Updated At</th>
                     <th>Action</th>
                 </tr>
+
             </thead>
+
 
             <tbody>
 
@@ -42,17 +56,22 @@
                             <?php echo (int)$report['id']; ?>
                         </td>
 
+
                         <td>
                             <?php
-                            echo (int)$report['emergency_request_id'];
+                            echo (int)$report[
+                                'emergency_request_id'
+                            ];
                             ?>
                         </td>
+
 
                         <td>
                             <?php
                             echo (int)$report['admin_id'];
                             ?>
                         </td>
+
 
                         <td>
 
@@ -62,59 +81,75 @@
                                 class="status-form"
                             >
 
+                                <?php echo csrfField(); ?>
+
                                 <input
                                     type="hidden"
                                     name="id"
-                                    value="<?php echo (int)$report['id']; ?>"
+                                    value="<?php
+                                        echo (int)$report['id'];
+                                    ?>"
                                 >
 
-                                <select name="rescue_status">
+
+                                <select
+                                    name="rescue_status"
+                                    required
+                                >
 
                                     <option
                                         value="pending"
                                         <?php
-                                        echo $report['rescue_status'] === 'pending'
-                                            ? 'selected'
-                                            : '';
+                                        echo $report['rescue_status']
+                                            === 'pending'
+                                                ? 'selected'
+                                                : '';
                                         ?>
                                     >
                                         Pending
                                     </option>
 
+
                                     <option
                                         value="ongoing"
                                         <?php
-                                        echo $report['rescue_status'] === 'ongoing'
-                                            ? 'selected'
-                                            : '';
+                                        echo $report['rescue_status']
+                                            === 'ongoing'
+                                                ? 'selected'
+                                                : '';
                                         ?>
                                     >
                                         Ongoing
                                     </option>
 
+
                                     <option
                                         value="completed"
                                         <?php
-                                        echo $report['rescue_status'] === 'completed'
-                                            ? 'selected'
-                                            : '';
+                                        echo $report['rescue_status']
+                                            === 'completed'
+                                                ? 'selected'
+                                                : '';
                                         ?>
                                     >
                                         Completed
                                     </option>
 
+
                                     <option
                                         value="cancelled"
                                         <?php
-                                        echo $report['rescue_status'] === 'cancelled'
-                                            ? 'selected'
-                                            : '';
+                                        echo $report['rescue_status']
+                                            === 'cancelled'
+                                                ? 'selected'
+                                                : '';
                                         ?>
                                     >
                                         Cancelled
                                     </option>
 
                                 </select>
+
 
                                 <button type="submit">
                                     Update
@@ -124,6 +159,7 @@
 
                         </td>
 
+
                         <td>
                             <?php
                             echo htmlspecialchars(
@@ -131,6 +167,7 @@
                             );
                             ?>
                         </td>
+
 
                         <td>
                             <?php
@@ -140,6 +177,7 @@
                             ?>
                         </td>
 
+
                         <td>
                             <?php
                             echo htmlspecialchars(
@@ -147,43 +185,57 @@
                             );
                             ?>
                         </td>
-                       <td class="action-links">
 
-    <a
-        href="index.php?page=rescue-report-view&id=<?php echo (int)$report['id']; ?>"
-    >
-        View Report
-    </a>
 
-    <a
-        href="index.php?page=rescue-report-edit&id=<?php echo (int)$report['id']; ?>"
-    >
-        Edit
-    </a>
+                        <td class="action-links">
 
-    <form
-        method="POST"
-        action="index.php?page=rescue-report-delete"
-        class="delete-form"
-        onsubmit="return confirm('Are you sure you want to delete this rescue report?');"
-    >
+                            <a
+                                href="index.php?page=rescue-report-view&id=<?php
+                                    echo (int)$report['id'];
+                                ?>"
+                            >
+                                View Report
+                            </a>
 
-        <input
-            type="hidden"
-            name="id"
-            value="<?php echo (int)$report['id']; ?>"
-        >
 
-        <button
-            type="submit"
-            class="delete-link"
-        >
-            Delete
-        </button>
+                            <a
+                                href="index.php?page=rescue-report-edit&id=<?php
+                                    echo (int)$report['id'];
+                                ?>"
+                            >
+                                Edit
+                            </a>
 
-    </form>
 
-</td>
+                            <form
+                                method="POST"
+                                action="index.php?page=rescue-report-delete"
+                                class="delete-form"
+                                onsubmit="return confirm(
+                                    'Are you sure you want to delete this rescue report?'
+                                );"
+                            >
+
+                                <?php echo csrfField(); ?>
+
+                                <input
+                                    type="hidden"
+                                    name="id"
+                                    value="<?php
+                                        echo (int)$report['id'];
+                                    ?>"
+                                >
+
+                                <button
+                                    type="submit"
+                                    class="delete-link"
+                                >
+                                    Delete
+                                </button>
+
+                            </form>
+
+                        </td>
 
                     </tr>
 
