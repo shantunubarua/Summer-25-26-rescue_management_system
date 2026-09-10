@@ -797,3 +797,239 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 });
+/*
+|--------------------------------------------------------------------------
+| ADMIN NOTIFICATION - CREATE FORM VALIDATION
+|--------------------------------------------------------------------------
+*/
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form =
+        document.getElementById(
+            "notificationCreateForm"
+        );
+
+    if (!form) {
+        return;
+    }
+
+
+    const titleInput =
+        document.getElementById("title");
+
+    const messageInput =
+        document.getElementById("message");
+
+    const alertTypeInput =
+        document.getElementById("alert_type");
+
+    const audienceInput =
+        document.getElementById("target_audience");
+
+    const statusInput =
+        document.getElementById("status");
+
+    const validationMessage =
+        document.getElementById(
+            "notificationValidationMessage"
+        );
+
+
+    form.addEventListener(
+        "submit",
+        function (event) {
+
+            const title =
+                titleInput.value.trim();
+
+            const message =
+                messageInput.value.trim();
+
+            const alertType =
+                alertTypeInput.value;
+
+            const audience =
+                audienceInput.value;
+
+            const status =
+                statusInput.value;
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | TITLE
+            |--------------------------------------------------------------------------
+            */
+
+            if (title === "") {
+
+                event.preventDefault();
+
+                showValidationMessage(
+                    "Notification title is required."
+                );
+
+                titleInput.focus();
+
+                return;
+            }
+
+
+            if (title.length > 150) {
+
+                event.preventDefault();
+
+                showValidationMessage(
+                    "Notification title cannot exceed 150 characters."
+                );
+
+                titleInput.focus();
+
+                return;
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | MESSAGE
+            |--------------------------------------------------------------------------
+            */
+
+            if (message === "") {
+
+                event.preventDefault();
+
+                showValidationMessage(
+                    "Notification message is required."
+                );
+
+                messageInput.focus();
+
+                return;
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | ALERT TYPE
+            |--------------------------------------------------------------------------
+            */
+
+            const allowedAlertTypes = [
+                "normal",
+                "important",
+                "emergency"
+            ];
+
+            if (
+                !allowedAlertTypes.includes(
+                    alertType
+                )
+            ) {
+
+                event.preventDefault();
+
+                showValidationMessage(
+                    "Please select a valid alert type."
+                );
+
+                alertTypeInput.focus();
+
+                return;
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | TARGET AUDIENCE
+            |--------------------------------------------------------------------------
+            */
+
+            const allowedAudiences = [
+                "all",
+                "volunteer",
+                "witness",
+                "help_seeker"
+            ];
+
+            if (
+                !allowedAudiences.includes(
+                    audience
+                )
+            ) {
+
+                event.preventDefault();
+
+                showValidationMessage(
+                    "Please select a valid target audience."
+                );
+
+                audienceInput.focus();
+
+                return;
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | STATUS
+            |--------------------------------------------------------------------------
+            */
+
+            const allowedStatuses = [
+                "active",
+                "inactive"
+            ];
+
+            if (
+                !allowedStatuses.includes(
+                    status
+                )
+            ) {
+
+                event.preventDefault();
+
+                showValidationMessage(
+                    "Please select a valid notification status."
+                );
+
+                statusInput.focus();
+
+                return;
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | VALID FORM
+            |--------------------------------------------------------------------------
+            */
+
+            validationMessage.style.display =
+                "none";
+
+            validationMessage.textContent =
+                "";
+        }
+    );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | DISPLAY VALIDATION ERROR
+    |--------------------------------------------------------------------------
+    */
+
+    function showValidationMessage(message) {
+        validationMessage.textContent =
+            message;
+
+        validationMessage.style.display =
+            "block";
+
+        validationMessage.style.color =
+            "red";
+    }
+
+});

@@ -206,16 +206,27 @@ if ($page === 'login') {
 |--------------------------------------------------------------------------
 */
 
+/*
+|--------------------------------------------------------------------------
+| DELETE NOTIFICATION
+|--------------------------------------------------------------------------
+*/
+
 } elseif ($page === 'notification-delete') {
 
     requireAdmin();
 
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        die("Invalid request method.");
+    }
+
+    requireValidCsrfToken();
+
     require_once "models/NotificationModel.php";
     require_once "controllers/NotificationController.php";
 
-    $id = isset($_GET['id'])
-        ? (int)$_GET['id']
-        : 0;
+    $id =
+        (int)($_POST['notification_id'] ?? 0);
 
     if ($id <= 0) {
         die("Invalid notification ID.");
@@ -225,7 +236,6 @@ if ($page === 'login') {
         $conn,
         $id
     );
-
 /*
 |--------------------------------------------------------------------------
 | FEEDBACK
