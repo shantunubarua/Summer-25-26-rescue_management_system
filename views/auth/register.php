@@ -81,6 +81,34 @@
 
                 </div>
 
+                <div class="form-group">
+
+    <label for="username">
+        Username
+    </label>
+
+    <input
+        type="text"
+        id="username"
+        name="username"
+        value="<?php
+            echo htmlspecialchars(
+                $_POST['username'] ?? ''
+            );
+        ?>"
+        placeholder="Choose a unique username"
+        minlength="3"
+        maxlength="30"
+        pattern="[A-Za-z0-9_]+"
+        required
+    >
+
+    <small>
+        3-30 characters. Letters, numbers and underscore only.
+    </small>
+
+</div>
+
 
                 <div class="form-group">
 
