@@ -69,6 +69,8 @@
                                 class="status-form"
                             >
 
+                                <?php echo csrfField(); ?>
+
                                 <input
                                     type="hidden"
                                     name="id"
@@ -136,6 +138,8 @@
                                 class="delete-form"
                                 onsubmit="return confirm('Are you sure you want to delete this feedback?');"
                             >
+
+                                <?php echo csrfField(); ?>
 
                                 <input
                                     type="hidden"
