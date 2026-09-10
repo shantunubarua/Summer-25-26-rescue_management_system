@@ -208,30 +208,44 @@ require_once "views/partials/sidebar.php";
 
                         <!-- ACTIONS -->
 
-                        <td>
+<td>
 
-                            <a
-                                href="index.php?page=notification-edit&id=<?php
-                                    echo (int)$notification['id'];
-                                ?>"
-                            >
-                                Edit
-                            </a>
+    <a
+        href="index.php?page=notification-edit&id=<?php
+            echo (int)$notification['id'];
+        ?>"
+    >
+        Edit
+    </a>
 
-                            |
+    |
 
-                            <a
-                                href="index.php?page=notification-delete&id=<?php
-                                    echo (int)$notification['id'];
-                                ?>"
-                                onclick="return confirm(
-                                    'Are you sure you want to delete this notification?'
-                                );"
-                            >
-                                Delete
-                            </a>
+    <form
+        method="POST"
+        action="index.php?page=notification-delete"
+        style="display: inline;"
+        onsubmit="return confirm(
+            'Are you sure you want to delete this notification?'
+        );"
+    >
 
-                        </td>
+        <?php echo csrfField(); ?>
+
+        <input
+            type="hidden"
+            name="notification_id"
+            value="<?php
+                echo (int)$notification['id'];
+            ?>"
+        >
+
+        <button type="submit">
+            Delete
+        </button>
+
+    </form>
+
+</td>
 
                     </tr>
 
