@@ -59,6 +59,110 @@ if ($page === 'login') {
 
 /*
 |--------------------------------------------------------------------------
+| FORGOT PASSWORD
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'forgot-password') {
+
+    require_once
+        "controllers/AuthController.php";
+
+
+    $error = '';
+
+    $resetToken = '';
+
+
+    if (
+        $_SERVER['REQUEST_METHOD']
+        === 'POST'
+    ) {
+
+        requireValidCsrfToken();
+
+
+        $result =
+            handleForgotPassword(
+                $conn
+            );
+
+
+        $error =
+            $result['error']
+            ?? '';
+
+
+        $resetToken =
+            $result['token']
+            ?? '';
+    }
+
+
+    require_once
+        "views/auth/forgot_password.php";
+
+
+/*
+|--------------------------------------------------------------------------
+| RESET PASSWORD
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'reset-password') {
+
+    require_once
+        "controllers/AuthController.php";
+
+
+    $error = '';
+
+
+    $token =
+        trim(
+            $_POST['reset_token']
+            ?? $_GET['token']
+            ?? ''
+        );
+
+
+    if (
+        $_SERVER['REQUEST_METHOD']
+        === 'POST'
+    ) {
+
+        requireValidCsrfToken();
+
+
+        $error =
+            handleResetPassword(
+                $conn,
+                $token
+            );
+    }
+
+
+    $showResetForm =
+        isValidPasswordResetToken(
+            $token
+        );
+
+
+    if (
+        !$showResetForm &&
+        $error === ''
+    ) {
+
+        $error =
+            'Invalid or expired password reset link.';
+    }
+
+
+    require_once
+        "views/auth/reset_password.php";    
+
+/*
+|--------------------------------------------------------------------------
 | ADMIN DASHBOARD
 |--------------------------------------------------------------------------
 */
