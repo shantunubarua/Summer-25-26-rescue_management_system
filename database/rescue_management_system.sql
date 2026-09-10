@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 09, 2026 at 11:39 PM
+-- Generation Time: Sep 11, 2026 at 12:49 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -85,8 +85,7 @@ CREATE TABLE `emergency_requests` (
 --
 
 INSERT INTO `emergency_requests` (`id`, `help_seeker_id`, `emergency_type`, `location`, `description`, `priority`, `victim_type`, `victim_information`, `victim_count`, `contact_information`, `status`, `created_at`, `updated_at`, `volunteer_id`, `accepted_at`) VALUES
-(1, 3, 'medical', 'Mirpur', 'A person needs immediate medical assistance.', 'high', 'self', NULL, 1, '01300000000', 'completed', '2026-08-24 15:57:34', '2026-08-30 11:18:56', 4, '2026-08-28 21:25:54'),
-(2, 3, 'medical', 'Bashundhara R/A', 'napa', 'low', 'self', NULL, 1, '1234567890', 'pending', '2026-09-09 20:35:48', '2026-09-09 20:35:48', NULL, NULL);
+(1, 3, 'medical', 'Mirpur', 'A person needs immediate medical assistance.', 'high', 'self', NULL, 1, '01300000000', 'completed', '2026-08-24 15:57:34', '2026-08-30 11:18:56', 4, '2026-08-28 21:25:54');
 
 -- --------------------------------------------------------
 
@@ -128,9 +127,9 @@ CREATE TABLE `notifications` (
 
 INSERT INTO `notifications` (`id`, `created_by`, `title`, `message`, `alert_type`, `target_audience`, `status`, `created_at`, `updated_at`) VALUES
 (2, 1, 'Flood emergency alert', 'Rescue operation active in zone A', 'emergency', 'all', 'inactive', '2026-08-21 08:19:14', '2026-08-21 09:35:12'),
-(4, 1, 'test', 'test', 'normal', 'all', 'active', '2026-09-07 17:46:38', '2026-09-07 17:46:38'),
 (5, 1, 'volunteet test alert', 'test', 'important', 'volunteer', 'active', '2026-09-07 17:47:43', '2026-09-07 17:47:43'),
-(6, 1, 'Witness Test', 'This is for witnesses.', 'important', 'witness', 'active', '2026-09-09 09:48:30', '2026-09-09 09:48:30');
+(6, 1, 'Witness Test', 'This is for witnesses.', 'important', 'witness', 'active', '2026-09-09 09:48:30', '2026-09-09 09:48:30'),
+(8, 1, 'test', 'test messege', 'normal', 'all', 'active', '2026-09-10 18:45:59', '2026-09-10 18:51:16');
 
 -- --------------------------------------------------------
 
@@ -153,8 +152,7 @@ CREATE TABLE `rescue_reports` (
 --
 
 INSERT INTO `rescue_reports` (`id`, `emergency_request_id`, `admin_id`, `rescue_status`, `description`, `created_at`, `updated_at`) VALUES
-(3, 2, 1, 'completed', 'test', '2026-09-07 16:14:43', '2026-09-07 16:14:43'),
-(4, 1, 1, 'completed', 'succesfully operated', '2026-09-07 16:50:38', '2026-09-07 16:50:38');
+(4, 1, 1, 'completed', 'succesfully operated', '2026-09-07 16:50:38', '2026-09-10 21:39:53');
 
 -- --------------------------------------------------------
 
@@ -181,7 +179,7 @@ INSERT INTO `resource_requests` (`id`, `volunteer_id`, `resource_type`, `quantit
 (1, 4, 'First Aid Kit', 2, 'Needed for emergency rescue activity.', 'approved', '2026-08-30 12:07:59', '2026-09-07 17:25:24'),
 (2, 4, 'First Aid Kit', 2, 'fgg', 'pending', '2026-08-30 12:13:30', '2026-08-30 12:13:30'),
 (3, 4, 'First Aid Kit', 2, 'hh', 'pending', '2026-08-30 12:17:06', '2026-08-30 12:17:06'),
-(4, 4, 'First Aid Kit 2', 2, 'qqq', 'pending', '2026-08-30 12:22:43', '2026-08-30 12:22:43');
+(4, 4, 'First Aid Kit 2', 2, 'qqq', 'approved', '2026-08-30 12:22:43', '2026-09-10 21:54:40');
 
 -- --------------------------------------------------------
 
@@ -192,6 +190,7 @@ INSERT INTO `resource_requests` (`id`, `volunteer_id`, `resource_type`, `quantit
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
+  `username` varchar(50) NOT NULL,
   `email` varchar(150) NOT NULL,
   `phone` varchar(20) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
@@ -204,12 +203,12 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `phone`, `password`, `role`, `created_at`, `updated_at`) VALUES
-(1, 'System Admin', 'admin@rescue.com', '01700000000', '$2y$10$0TxWWt5Dy4zyekIjW/gJYefYvGILexixK0i/rsl1F3fPTZtSN3vai', 'admin', '2026-08-21 07:35:46', '2026-08-21 07:35:46'),
-(2, 'Tanaka Rahman', 'tanaka@rescue.com', '01800000000', '$2y$10$lJMs7egNit.DoRe/xM7asO35.mHpp0cuKqiPA2alhtQ5s7/bZah.y', 'witness', '2026-08-21 08:18:48', '2026-09-09 12:54:48'),
-(3, 'Parvej', 'parvej@rescue.com', '01900000000', '$2y$10$UHacZYTqkzzRovwowls1fuc41RobBnObJZQkJ8UH5u/zUU9Y/T80W', 'help_seeker', '2026-08-23 05:36:16', '2026-08-23 05:36:16'),
-(4, 'Suporna', 'suporna@rescue.com', '01615000000', '$2y$10$9KF9gXFTFbPW1UwEGm5A2epXacKWrMWmjabHNztosJGFy0PAiZsJq', 'volunteer', '2026-08-27 14:12:38', '2026-08-30 11:23:26'),
-(5, 'Nasiba', 'nasiba@rescue.com', '01810000000', '$2y$10$BanhWqtFGN34lEgjtMI.ouv5v8ys6ai0sknnLDh/dFAlEVm5uJVyW', 'witness', '2026-09-09 15:35:44', '2026-09-09 15:35:44');
+INSERT INTO `users` (`id`, `name`, `username`, `email`, `phone`, `password`, `role`, `created_at`, `updated_at`) VALUES
+(1, 'System Admin', 'admin', 'admin@rescue.com', '01700000000', '$2y$10$MxT9D1y.m3iMNPBxV57TqeX7Y9qJix3fnV75PiV3wtfOL0/bn90.W', 'admin', '2026-08-21 07:35:46', '2026-09-10 22:42:06'),
+(2, 'Tanaka Rahman', 'tanaka', 'tanaka@rescue.com', '01800000000', '$2y$10$lJMs7egNit.DoRe/xM7asO35.mHpp0cuKqiPA2alhtQ5s7/bZah.y', 'witness', '2026-08-21 08:18:48', '2026-09-10 16:39:07'),
+(3, 'Parvej', 'parvej', 'parvej@rescue.com', '01900000000', '$2y$10$UHacZYTqkzzRovwowls1fuc41RobBnObJZQkJ8UH5u/zUU9Y/T80W', 'help_seeker', '2026-08-23 05:36:16', '2026-09-10 16:39:07'),
+(4, 'Suporna', 'suporna', 'suporna@rescue.com', '01615000000', '$2y$10$9KF9gXFTFbPW1UwEGm5A2epXacKWrMWmjabHNztosJGFy0PAiZsJq', 'volunteer', '2026-08-27 14:12:38', '2026-09-10 16:39:07'),
+(5, 'Nasiba', 'nasiba', 'nasiba@rescue.com', '01810000000', '$2y$10$BanhWqtFGN34lEgjtMI.ouv5v8ys6ai0sknnLDh/dFAlEVm5uJVyW', 'witness', '2026-09-09 15:35:44', '2026-09-10 16:39:07');
 
 -- --------------------------------------------------------
 
@@ -266,7 +265,7 @@ INSERT INTO `witness_reports` (`id`, `witness_id`, `title`, `description`, `dama
 (4, 2, 'Flood', 'Flood at feni', 'low', 'flood', 'Feni', '2026-12-12 00:00:00', NULL, 'pending', '2026-08-29 10:47:35', '2026-08-29 10:47:35'),
 (5, 2, 'Medical Emergency', 'Suicide', 'low', 'medical', 'Jatrabari', '2026-12-11 00:00:00', 'uploads/witness/witness_2_1788000957_6a92babd16d2b.jpeg', 'pending', '2026-08-29 10:55:57', '2026-08-29 10:55:57'),
 (6, 2, 'Gas leakage', 'At residential area', 'medium', 'other', 'Puran Dhaka', '2026-09-01 00:00:00', NULL, 'pending', '2026-09-01 03:42:30', '2026-09-01 03:42:30'),
-(7, 2, 'Earthquake', '4.2 Magnitude', 'low', 'other', 'Narshingdi', '2025-04-23 00:00:00', NULL, 'pending', '2026-09-09 14:12:46', '2026-09-09 14:13:15');
+(7, 2, 'Earthquake', '4.2 Magnitude', 'low', 'other', 'Narshingdi', '2025-04-23 00:00:00', NULL, 'approved', '2026-09-09 14:12:46', '2026-09-10 21:54:19');
 
 --
 -- Indexes for dumped tables
@@ -319,7 +318,8 @@ ALTER TABLE `resource_requests`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `unique_username` (`username`);
 
 --
 -- Indexes for table `volunteer_profiles`
@@ -349,19 +349,19 @@ ALTER TABLE `donations`
 -- AUTO_INCREMENT for table `emergency_requests`
 --
 ALTER TABLE `emergency_requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `rescue_reports`
@@ -379,7 +379,7 @@ ALTER TABLE `resource_requests`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `volunteer_profiles`
