@@ -19,6 +19,7 @@
         method="POST"
         action="index.php?page=notification-edit&id=<?= (int)$notification['id']; ?>"
     >
+    <?php echo csrfField(); ?>
 
         <div>
 
