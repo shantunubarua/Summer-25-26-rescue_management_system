@@ -8,6 +8,7 @@ require_once "views/partials/sidebar.php";
     <div class="page-header">
         <div>
             <h1>Review Witness Incident Report</h1>
+
             <p>
                 Review the complete incident report and update its status.
             </p>
@@ -44,31 +45,44 @@ require_once "views/partials/sidebar.php";
 
         <p>
             <strong>Title:</strong>
-            <?= htmlspecialchars($report['title'] ?? 'N/A'); ?>
+            <?= htmlspecialchars(
+                $report['title'] ?? 'N/A'
+            ); ?>
         </p>
 
         <p>
             <strong>Incident Type:</strong>
             <?= htmlspecialchars(
-                ucfirst($report['incident_type'] ?? 'N/A')
+                ucfirst(
+                    $report['incident_type']
+                    ?? 'N/A'
+                )
             ); ?>
         </p>
 
         <p>
             <strong>Damage Level:</strong>
             <?= htmlspecialchars(
-                ucfirst($report['damage_level'] ?? 'N/A')
+                ucfirst(
+                    $report['damage_level']
+                    ?? 'N/A'
+                )
             ); ?>
         </p>
 
         <p>
             <strong>Location:</strong>
-            <?= htmlspecialchars($report['location'] ?? 'N/A'); ?>
+            <?= htmlspecialchars(
+                $report['location'] ?? 'N/A'
+            ); ?>
         </p>
 
         <p>
             <strong>Incident Date:</strong>
-            <?= htmlspecialchars($report['incident_date'] ?? 'N/A'); ?>
+            <?= htmlspecialchars(
+                $report['incident_date']
+                ?? 'N/A'
+            ); ?>
         </p>
 
         <p>
@@ -102,21 +116,24 @@ require_once "views/partials/sidebar.php";
         <p>
             <strong>Name:</strong>
             <?= htmlspecialchars(
-                $report['witness_name'] ?? 'N/A'
+                $report['witness_name']
+                ?? 'N/A'
             ); ?>
         </p>
 
         <p>
             <strong>Email:</strong>
             <?= htmlspecialchars(
-                $report['witness_email'] ?? 'N/A'
+                $report['witness_email']
+                ?? 'N/A'
             ); ?>
         </p>
 
         <p>
             <strong>Phone:</strong>
             <?= htmlspecialchars(
-                $report['witness_phone'] ?? 'N/A'
+                $report['witness_phone']
+                ?? 'N/A'
             ); ?>
         </p>
 
@@ -147,9 +164,12 @@ require_once "views/partials/sidebar.php";
 
             <p>
                 Evidence File:
+
                 <strong>
                     <?= htmlspecialchars(
-                        basename($report['evidence_file'])
+                        basename(
+                            $report['evidence_file']
+                        )
                     ); ?>
                 </strong>
             </p>
@@ -167,7 +187,9 @@ require_once "views/partials/sidebar.php";
 
         <?php else: ?>
 
-            <p>No evidence file was submitted.</p>
+            <p>
+                No evidence file was submitted.
+            </p>
 
         <?php endif; ?>
 
@@ -192,7 +214,21 @@ require_once "views/partials/sidebar.php";
         </p>
 
 
-        <form method="POST">
+        <?php
+
+        $currentStatus =
+            $report['status']
+            ?? 'pending';
+
+        ?>
+
+
+        <form
+            method="POST"
+            action="index.php?page=admin-witness-report-view&id=<?= (int)$report['id']; ?>"
+        >
+
+            <?php echo csrfField(); ?>
 
             <div class="form-group">
 
@@ -205,14 +241,6 @@ require_once "views/partials/sidebar.php";
                     id="status"
                     required
                 >
-
-                    <?php
-
-                    $currentStatus =
-                        $report['status']
-                        ?? 'pending';
-
-                    ?>
 
                     <option
                         value="pending"
