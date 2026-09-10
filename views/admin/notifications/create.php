@@ -24,12 +24,12 @@
 
 
     <form
-        method="POST"
-        action="index.php?page=notification-create"
-        id="notificationCreateForm"
-        novalidate
-    >
-
+    method="POST"
+    action="index.php?page=notification-create"
+    id="notificationCreateForm"
+    novalidate
+>
+        <?php echo csrfField(); ?>
 
         <!-- TITLE -->
 
