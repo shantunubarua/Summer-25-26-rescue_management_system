@@ -168,12 +168,14 @@ if ($page === 'login') {
 
     $error = '';
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $error = handleUpdateNotification(
-            $conn,
-            $id
-        );
+    requireValidCsrfToken();
+
+    $error = handleUpdateNotification(
+        $conn,
+        $id
+    );
 
         if ($error !== '') {
 
