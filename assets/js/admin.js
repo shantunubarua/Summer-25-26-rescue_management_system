@@ -1,62 +1,424 @@
+/*
+|--------------------------------------------------------------------------
+| ADMIN NOTIFICATION - AJAX LIVE SEARCH
+|--------------------------------------------------------------------------
+*/
+
 document.addEventListener("DOMContentLoaded", function () {
 
     const searchInput =
-        document.getElementById("notificationSearch");
+        document.getElementById(
+            "notificationSearch"
+        );
 
-    const notificationRows =
-        document.querySelectorAll(".notification-row");
+    const tableBody =
+        document.getElementById(
+            "notificationTableBody"
+        );
 
-    const noResultMessage =
-        document.getElementById("noSearchResult");
+    const countElement =
+        document.getElementById(
+            "notificationCount"
+        );
+
+    const searchMessage =
+        document.getElementById(
+            "notificationSearchMessage"
+        );
 
 
-    if (!searchInput) {
+    /*
+    |--------------------------------------------------------------------------
+    | Stop if this is not Notification page
+    |--------------------------------------------------------------------------
+    */
+
+    if (
+        !searchInput ||
+        !tableBody ||
+        !countElement ||
+        !searchMessage
+    ) {
         return;
     }
 
 
-    searchInput.addEventListener("input", function () {
+    /*
+    |--------------------------------------------------------------------------
+    | Format database text
+    |--------------------------------------------------------------------------
+    */
 
-        const searchValue =
-            searchInput.value.toLowerCase().trim();
-
-        let visibleCount = 0;
-
-
-        notificationRows.forEach(function (row) {
-
-            const rowText =
-                row.textContent.toLowerCase();
-
-            if (rowText.includes(searchValue)) {
-
-                row.style.display = "";
-                visibleCount++;
-
-            } else {
-
-                row.style.display = "none";
-            }
-
-        });
-
-
-        if (noResultMessage) {
-
-            if (
-                visibleCount === 0 &&
-                searchValue !== ""
-            ) {
-                noResultMessage.style.display = "block";
-
-            } else {
-
-                noResultMessage.style.display = "none";
-            }
-
+    function formatText(value) {
+        if (!value) {
+            return "";
         }
 
-    });
+        return String(value)
+            .replaceAll("_", " ")
+            .replace(/\b\w/g, function (letter) {
+                return letter.toUpperCase();
+            });
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Create normal table cell
+    |--------------------------------------------------------------------------
+    */
+
+    function createCell(value) {
+        const cell =
+            document.createElement("td");
+
+        cell.textContent =
+            value ?? "";
+
+        return cell;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Display Notification Results
+    |--------------------------------------------------------------------------
+    */
+
+    function displayNotifications(notifications) {
+        tableBody.textContent = "";
+
+
+        if (
+            !Array.isArray(notifications) ||
+            notifications.length === 0
+        ) {
+
+            const row =
+                document.createElement("tr");
+
+            const cell =
+                document.createElement("td");
+
+            cell.colSpan = 9;
+
+            cell.textContent =
+                "No matching notifications found.";
+
+            row.appendChild(cell);
+
+            tableBody.appendChild(row);
+
+            return;
+        }
+
+
+        notifications.forEach(
+            function (notification) {
+
+                const row =
+                    document.createElement("tr");
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | ID
+                |--------------------------------------------------------------------------
+                */
+
+                row.appendChild(
+                    createCell(
+                        notification.id ?? ""
+                    )
+                );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | TITLE
+                |--------------------------------------------------------------------------
+                */
+
+                row.appendChild(
+                    createCell(
+                        notification.title ?? ""
+                    )
+                );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | MESSAGE
+                |--------------------------------------------------------------------------
+                */
+
+                row.appendChild(
+                    createCell(
+                        notification.message ?? ""
+                    )
+                );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | ALERT TYPE
+                |--------------------------------------------------------------------------
+                */
+
+                row.appendChild(
+                    createCell(
+                        formatText(
+                            notification.alert_type
+                        )
+                    )
+                );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | TARGET AUDIENCE
+                |--------------------------------------------------------------------------
+                */
+
+                row.appendChild(
+                    createCell(
+                        formatText(
+                            notification.target_audience
+                            ?? "all"
+                        )
+                    )
+                );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | STATUS
+                |--------------------------------------------------------------------------
+                */
+
+                row.appendChild(
+                    createCell(
+                        formatText(
+                            notification.status
+                        )
+                    )
+                );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | CREATED BY
+                |--------------------------------------------------------------------------
+                */
+
+                row.appendChild(
+                    createCell(
+                        notification.admin_name
+                        ?? ""
+                    )
+                );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | CREATED AT
+                |--------------------------------------------------------------------------
+                */
+
+                row.appendChild(
+                    createCell(
+                        notification.created_at
+                        ?? ""
+                    )
+                );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | ACTIONS
+                |--------------------------------------------------------------------------
+                */
+
+                const actionCell =
+                    document.createElement("td");
+
+
+                const editLink =
+                    document.createElement("a");
+
+                editLink.href =
+                    "index.php?page=notification-edit&id=" +
+                    encodeURIComponent(
+                        notification.id
+                    );
+
+                editLink.textContent =
+                    "Edit";
+
+                actionCell.appendChild(
+                    editLink
+                );
+
+
+                actionCell.appendChild(
+                    document.createTextNode(
+                        " | "
+                    )
+                );
+
+
+                const deleteLink =
+                    document.createElement("a");
+
+                deleteLink.href =
+                    "index.php?page=notification-delete&id=" +
+                    encodeURIComponent(
+                        notification.id
+                    );
+
+                deleteLink.textContent =
+                    "Delete";
+
+
+                deleteLink.addEventListener(
+                    "click",
+                    function (event) {
+
+                        const confirmed =
+                            confirm(
+                                "Are you sure you want to delete this notification?"
+                            );
+
+                        if (!confirmed) {
+                            event.preventDefault();
+                        }
+                    }
+                );
+
+
+                actionCell.appendChild(
+                    deleteLink
+                );
+
+                row.appendChild(
+                    actionCell
+                );
+
+
+                tableBody.appendChild(
+                    row
+                );
+            }
+        );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | AJAX LIVE SEARCH
+    |--------------------------------------------------------------------------
+    */
+
+    let searchTimer;
+
+
+    searchInput.addEventListener(
+        "input",
+        function () {
+
+            clearTimeout(
+                searchTimer
+            );
+
+
+            const keyword =
+                searchInput.value.trim();
+
+
+            searchTimer =
+                setTimeout(
+                    function () {
+
+                        searchMessage.textContent =
+                            "Searching...";
+
+
+                        fetch(
+                            "index.php?page=notification-search&q=" +
+                            encodeURIComponent(
+                                keyword
+                            )
+                        )
+
+                            .then(function (response) {
+
+                                if (!response.ok) {
+
+                                    throw new Error(
+                                        "Notification search failed."
+                                    );
+                                }
+
+                                return response.json();
+                            })
+
+
+                            .then(function (result) {
+
+                                if (
+                                    !result.success ||
+                                    !Array.isArray(
+                                        result.data
+                                    )
+                                ) {
+
+                                    throw new Error(
+                                        "Invalid search response."
+                                    );
+                                }
+
+
+                                displayNotifications(
+                                    result.data
+                                );
+
+
+                                countElement.textContent =
+                                    result.count;
+
+
+                                if (
+                                    result.count === 0
+                                ) {
+
+                                    searchMessage.textContent =
+                                        "No matching notifications found.";
+
+                                } else {
+
+                                    searchMessage.textContent =
+                                        "Showing " +
+                                        result.count +
+                                        " notification(s).";
+                                }
+                            })
+
+
+                            .catch(function (error) {
+
+                                console.error(
+                                    error
+                                );
+
+                                searchMessage.textContent =
+                                    "Unable to search notifications.";
+                            });
+
+                    },
+                    300
+                );
+        }
+    );
 
 });
 /* =========================================================
