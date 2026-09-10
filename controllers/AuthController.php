@@ -744,3 +744,407 @@ function registerUser()
 
     return '';
 }
+/*
+|--------------------------------------------------------------------------
+| VALIDATE PASSWORD RESET TOKEN
+|--------------------------------------------------------------------------
+*/
+
+function isValidPasswordResetToken($token)
+{
+    $token =
+        trim($token);
+
+
+    if ($token === '') {
+        return false;
+    }
+
+
+    $resetData =
+        $_SESSION['password_reset']
+        ?? null;
+
+
+    if (
+        !is_array($resetData) ||
+        empty($resetData['user_id']) ||
+        empty($resetData['token_hash']) ||
+        empty($resetData['expires_at'])
+    ) {
+        return false;
+    }
+
+
+    if (
+        time() >
+        (int)$resetData['expires_at']
+    ) {
+
+        unset(
+            $_SESSION['password_reset']
+        );
+
+        return false;
+    }
+
+
+    $submittedHash =
+        hash(
+            'sha256',
+            $token
+        );
+
+
+    return hash_equals(
+        $resetData['token_hash'],
+        $submittedHash
+    );
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| FORGOT PASSWORD
+|--------------------------------------------------------------------------
+*/
+
+function handleForgotPassword($conn)
+{
+    $login =
+        trim(
+            $_POST['login']
+            ?? ''
+        );
+
+
+    $phone =
+        trim(
+            $_POST['phone']
+            ?? ''
+        );
+
+
+    if (
+        $login === '' ||
+        $phone === ''
+    ) {
+
+        return [
+            'error' =>
+                'Username/email and registered phone number are required.',
+
+            'token' => ''
+        ];
+    }
+
+
+    if (
+        strlen($login) > 150 ||
+        strlen($phone) > 20
+    ) {
+
+        return [
+            'error' =>
+                'The provided account information could not be verified.',
+
+            'token' => ''
+        ];
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | VERIFY ACCOUNT
+    |--------------------------------------------------------------------------
+    */
+
+    $sql =
+        "SELECT
+            id,
+            username,
+            email,
+            phone
+         FROM users
+         WHERE
+            (email = ? OR username = ?)
+            AND phone = ?
+         LIMIT 1";
+
+
+    $stmt =
+        mysqli_prepare(
+            $conn,
+            $sql
+        );
+
+
+    if (!$stmt) {
+
+        return [
+            'error' =>
+                'Unable to process password reset request.',
+
+            'token' => ''
+        ];
+    }
+
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "sss",
+        $login,
+        $login,
+        $phone
+    );
+
+
+    mysqli_stmt_execute(
+        $stmt
+    );
+
+
+    $result =
+        mysqli_stmt_get_result(
+            $stmt
+        );
+
+
+    $user =
+        mysqli_fetch_assoc(
+            $result
+        );
+
+
+    mysqli_stmt_close(
+        $stmt
+    );
+
+
+    if (!$user) {
+
+        return [
+            'error' =>
+                'The provided account information could not be verified.',
+
+            'token' => ''
+        ];
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | GENERATE ONE-TIME TOKEN
+    |--------------------------------------------------------------------------
+    */
+
+    $token =
+        bin2hex(
+            random_bytes(32)
+        );
+
+
+    $_SESSION['password_reset'] = [
+
+        'user_id' =>
+            (int)$user['id'],
+
+        'token_hash' =>
+            hash(
+                'sha256',
+                $token
+            ),
+
+        'expires_at' =>
+            time() + 600
+    ];
+
+
+    return [
+        'error' => '',
+        'token' => $token
+    ];
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| RESET PASSWORD
+|--------------------------------------------------------------------------
+*/
+
+function handleResetPassword(
+    $conn,
+    $token
+) {
+
+    $password =
+        $_POST['password']
+        ?? '';
+
+
+    $confirmPassword =
+        $_POST['confirm_password']
+        ?? '';
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | TOKEN VALIDATION
+    |--------------------------------------------------------------------------
+    */
+
+    if (
+        !isValidPasswordResetToken(
+            $token
+        )
+    ) {
+
+        return
+            'Invalid or expired password reset link.';
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | PASSWORD VALIDATION
+    |--------------------------------------------------------------------------
+    */
+
+    if (
+        strlen($password) < 8
+    ) {
+
+        return
+            'Password must be at least 8 characters.';
+    }
+
+
+    if (
+        $password !==
+        $confirmPassword
+    ) {
+
+        return
+            'Passwords do not match.';
+    }
+
+
+    $resetData =
+        $_SESSION['password_reset'];
+
+
+    $user_id =
+        (int)$resetData['user_id'];
+
+
+    if ($user_id <= 0) {
+
+        return
+            'Invalid password reset request.';
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | HASH NEW PASSWORD
+    |--------------------------------------------------------------------------
+    */
+
+    $hashedPassword =
+        password_hash(
+            $password,
+            PASSWORD_DEFAULT
+        );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | UPDATE PASSWORD
+    |--------------------------------------------------------------------------
+    */
+
+    $sql =
+        "UPDATE users
+         SET
+            password = ?,
+            updated_at = NOW()
+         WHERE id = ?";
+
+
+    $stmt =
+        mysqli_prepare(
+            $conn,
+            $sql
+        );
+
+
+    if (!$stmt) {
+
+        return
+            'Unable to reset password.';
+    }
+
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "si",
+        $hashedPassword,
+        $user_id
+    );
+
+
+    $success =
+        mysqli_stmt_execute(
+            $stmt
+        );
+
+
+    $affectedRows =
+        mysqli_stmt_affected_rows(
+            $stmt
+        );
+
+
+    mysqli_stmt_close(
+        $stmt
+    );
+
+
+    if (
+        !$success ||
+        $affectedRows !== 1
+    ) {
+
+        return
+            'Unable to reset password.';
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | DESTROY ONE-TIME RESET TOKEN
+    |--------------------------------------------------------------------------
+    */
+
+    unset(
+        $_SESSION['password_reset']
+    );
+
+
+    unset(
+        $_SESSION['csrf_token']
+    );
+
+
+    session_regenerate_id(
+        true
+    );
+
+
+    header(
+        "Location: index.php?page=login&reset=1"
+    );
+
+    exit;
+}
