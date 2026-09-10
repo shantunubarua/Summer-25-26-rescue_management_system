@@ -9,7 +9,7 @@
         Update rescue report status and description.
     </p>
 
-    <?php if ($error !== ''): ?>
+    <?php if (!empty($error)): ?>
 
         <p class="error-message">
             <?php echo htmlspecialchars($error); ?>
@@ -17,26 +17,44 @@
 
     <?php endif; ?>
 
+
     <form
         method="POST"
-        action="index.php?page=rescue-report-edit&id=<?php echo (int)$report['id']; ?>"
+        action="index.php?page=rescue-report-edit&id=<?php
+            echo (int)$report['id'];
+        ?>"
     >
 
+        <?php echo csrfField(); ?>
+
+
         <div>
-            <label>Emergency Request ID</label>
+
+            <label for="emergency_request_id">
+                Emergency Request ID
+            </label>
 
             <input
                 type="text"
-                value="<?php echo (int)$report['emergency_request_id']; ?>"
+                id="emergency_request_id"
+                value="<?php
+                    echo (int)$report['emergency_request_id'];
+                ?>"
                 readonly
             >
+
         </div>
 
+
         <div>
-            <label>Rescue Status</label>
+
+            <label for="rescue_status">
+                Rescue Status
+            </label>
 
             <select
                 name="rescue_status"
+                id="rescue_status"
                 required
             >
 
@@ -85,20 +103,28 @@
                 </option>
 
             </select>
+
         </div>
 
+
         <div>
-            <label>Description</label>
+
+            <label for="description">
+                Description
+            </label>
 
             <textarea
                 name="description"
+                id="description"
                 required
             ><?php
                 echo htmlspecialchars(
                     $report['description']
                 );
             ?></textarea>
+
         </div>
+
 
         <button type="submit">
             Save Changes
