@@ -2,35 +2,102 @@
 
 require_once "models/RescueReportModel.php";
 
+
+/*
+|--------------------------------------------------------------------------
+| ALLOWED RESCUE STATUSES
+|--------------------------------------------------------------------------
+*/
+
+function isValidRescueReportStatus($status)
+{
+    $allowedStatuses = [
+        'pending',
+        'ongoing',
+        'completed',
+        'cancelled'
+    ];
+
+    return in_array(
+        $status,
+        $allowedStatuses,
+        true
+    );
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| LOAD ALL RESCUE REPORTS
+|--------------------------------------------------------------------------
+*/
+
 function loadAllRescueReports($conn)
 {
     return getAllRescueReports($conn);
 }
 
+
+/*
+|--------------------------------------------------------------------------
+| UPDATE RESCUE REPORT STATUS
+|--------------------------------------------------------------------------
+*/
+
 function handleUpdateRescueReportStatus($conn)
 {
-    $id = isset($_POST['id'])
-        ? (int)$_POST['id']
-        : 0;
+    $id =
+        (int)($_POST['id'] ?? 0);
 
-    $status = trim($_POST['rescue_status'] ?? '');
+    $status =
+        trim($_POST['rescue_status'] ?? '');
+
 
     if ($id <= 0) {
         return "Invalid rescue report ID.";
     }
 
-    if (
-        !updateRescueReportStatus(
+
+    if (!isValidRescueReportStatus($status)) {
+        return "Please select a valid rescue status.";
+    }
+
+
+    $report =
+        getRescueReportById(
+            $conn,
+            $id
+        );
+
+
+    if (!$report) {
+        return "Rescue report not found.";
+    }
+
+
+    $updated =
+        updateRescueReportStatus(
             $conn,
             $id,
             $status
-        )
-    ) {
+        );
+
+
+    if (!$updated) {
         return "Failed to update rescue report status.";
     }
 
+
     return '';
 }
+
+
+/*
+|--------------------------------------------------------------------------
+| CREATE RESCUE REPORT
+|--------------------------------------------------------------------------
+*/
+
 function handleCreateRescueReport($conn)
 {
     $emergency_request_id =
@@ -58,7 +125,7 @@ function handleCreateRescueReport($conn)
 
     /*
     |--------------------------------------------------------------------------
-    | PHP VALIDATION - CHECK REAL EMERGENCY REQUEST
+    | CHECK REAL EMERGENCY REQUEST
     |--------------------------------------------------------------------------
     */
 
@@ -72,20 +139,9 @@ function handleCreateRescueReport($conn)
     }
 
 
-    $allowedStatuses = [
-        'pending',
-        'ongoing',
-        'completed',
-        'cancelled'
-    ];
-
-
     if (
-        $rescue_status === '' ||
-        !in_array(
-            $rescue_status,
-            $allowedStatuses,
-            true
+        !isValidRescueReportStatus(
+            $rescue_status
         )
     ) {
         return "Please select a valid rescue status.";
@@ -118,9 +174,21 @@ function handleCreateRescueReport($conn)
 
     exit;
 }
-function handleEditRescueReport($conn, $report_id)
-{
-    require_once "models/RescueReportModel.php";
+
+
+/*
+|--------------------------------------------------------------------------
+| EDIT RESCUE REPORT
+|--------------------------------------------------------------------------
+*/
+
+function handleEditRescueReport(
+    $conn,
+    $report_id
+) {
+
+    $report_id =
+        (int)$report_id;
 
     $rescue_status =
         trim($_POST['rescue_status'] ?? '');
@@ -128,57 +196,121 @@ function handleEditRescueReport($conn, $report_id)
     $description =
         trim($_POST['description'] ?? '');
 
+
     if ($report_id <= 0) {
-        return "Invalid report ID.";
+        return "Invalid rescue report ID.";
     }
 
-    if ($rescue_status === '') {
-        return "Please select rescue status.";
+
+    $report =
+        getRescueReportById(
+            $conn,
+            $report_id
+        );
+
+
+    if (!$report) {
+        return "Rescue report not found.";
     }
+
+
+    if (
+        !isValidRescueReportStatus(
+            $rescue_status
+        )
+    ) {
+        return "Please select a valid rescue status.";
+    }
+
 
     if ($description === '') {
         return "Please enter report description.";
     }
 
-    $updated = updateRescueReport(
-        $conn,
-        $report_id,
-        $rescue_status,
-        $description
-    );
+
+    $updated =
+        updateRescueReport(
+            $conn,
+            $report_id,
+            $rescue_status,
+            $description
+        );
+
 
     if (!$updated) {
         return "Failed to update rescue report.";
     }
 
-    header("Location: index.php?page=rescue-reports");
-    exit;
-}
-function handleDeleteRescueReport($conn)
-{
-    require_once "models/RescueReportModel.php";
 
-    $report_id = (int)($_POST['id'] ?? 0);
-
-    if ($report_id <= 0) {
-        die("Invalid rescue report ID.");
-    }
-
-    $deleted = deleteRescueReport(
-        $conn,
-        $report_id
+    header(
+        "Location: index.php?page=rescue-reports"
     );
 
-    if (!$deleted) {
-        die("Failed to delete rescue report.");
-    }
-
-    header("Location: index.php?page=rescue-reports");
     exit;
 }
+
+
 /*
 |--------------------------------------------------------------------------
-| ADMIN - VIEW DETAILED RESCUE REPORT
+| DELETE RESCUE REPORT
+|--------------------------------------------------------------------------
+*/
+
+function handleDeleteRescueReport($conn)
+{
+    $report_id =
+        (int)($_POST['id'] ?? 0);
+
+
+    if ($report_id <= 0) {
+
+        die(
+            "Invalid rescue report ID."
+        );
+    }
+
+
+    $report =
+        getRescueReportById(
+            $conn,
+            $report_id
+        );
+
+
+    if (!$report) {
+
+        die(
+            "Rescue report not found."
+        );
+    }
+
+
+    $deleted =
+        deleteRescueReport(
+            $conn,
+            $report_id
+        );
+
+
+    if (!$deleted) {
+
+        die(
+            "Failed to delete rescue report."
+        );
+    }
+
+
+    header(
+        "Location: index.php?page=rescue-reports"
+    );
+
+    exit;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| VIEW DETAILED RESCUE REPORT
 |--------------------------------------------------------------------------
 */
 
@@ -187,30 +319,47 @@ function showDetailedRescueReport(
     $report_id
 ) {
 
-    $report_id = (int)$report_id;
+    $report_id =
+        (int)$report_id;
 
 
     if ($report_id <= 0) {
 
-        die("Invalid rescue report ID.");
+        die(
+            "Invalid rescue report ID."
+        );
     }
 
 
-    $report = getDetailedRescueReportById(
-        $conn,
-        $report_id
-    );
+    $report =
+        getDetailedRescueReportById(
+            $conn,
+            $report_id
+        );
 
 
     if (!$report) {
 
-        die("Rescue report not found.");
+        die(
+            "Rescue report not found."
+        );
     }
 
 
-    require_once "views/admin/rescue_reports/view.php";
+    require_once
+        "views/admin/rescue_reports/view.php";
 }
+
+
+/*
+|--------------------------------------------------------------------------
+| CREATE PAGE DATA
+|--------------------------------------------------------------------------
+*/
+
 function loadRescueReportCreatePageData($conn)
 {
-    return getEmergencyRequestsForRescueReport($conn);
+    return getEmergencyRequestsForRescueReport(
+        $conn
+    );
 }
