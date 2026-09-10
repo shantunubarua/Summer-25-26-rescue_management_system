@@ -54,6 +54,7 @@ $description =
                 method="POST"
                 action="index.php?page=rescue-report-create"
             >
+            <?php echo csrfField(); ?>
 
                 <!-- EMERGENCY REQUEST -->
 
