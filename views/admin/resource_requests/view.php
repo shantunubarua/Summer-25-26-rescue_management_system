@@ -276,7 +276,13 @@ require_once "views/partials/sidebar.php";
 
         ?>
 
-        <form method="POST">
+
+        <form
+            method="POST"
+            action="index.php?page=admin-resource-request-view&id=<?= (int)$request['id']; ?>"
+        >
+
+            <?php echo csrfField(); ?>
 
             <div class="form-group">
 
