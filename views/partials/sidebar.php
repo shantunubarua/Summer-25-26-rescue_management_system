@@ -1,10 +1,13 @@
 <?php
 
-$role = $_SESSION['user']['role'] ?? '';
+$role =
+    $_SESSION['user']['role']
+    ?? '';
 
 ?>
 
 <div class="sidebar">
+
 
     <?php if ($role === 'admin'): ?>
 
@@ -41,16 +44,34 @@ $role = $_SESSION['user']['role'] ?? '';
                     Rescue Reports
                 </a>
             </li>
+
             <li>
-                 <a href="index.php?page=admin-resource-requests">
+                <a href="index.php?page=admin-resource-requests">
                     Resource Requests
                 </a>
             </li>
 
             <li>
-                <a href="index.php?page=logout">
-                    Logout
+                <a href="index.php?page=change-password">
+                    Change Password
                 </a>
+            </li>
+
+            <li>
+
+                <form
+                    method="POST"
+                    action="index.php?page=logout"
+                >
+
+                    <?php echo csrfField(); ?>
+
+                    <button type="submit">
+                        Logout
+                    </button>
+
+                </form>
+
             </li>
 
         </ul>
@@ -68,13 +89,11 @@ $role = $_SESSION['user']['role'] ?? '';
                 </a>
             </li>
 
-
             <li>
                 <a href="index.php?page=witness-report-create">
                     Report Incident
                 </a>
             </li>
-
 
             <li>
                 <a href="index.php?page=witness-reports">
@@ -82,17 +101,11 @@ $role = $_SESSION['user']['role'] ?? '';
                 </a>
             </li>
 
-
-            <!-- DONATION CREATE -->
-
             <li>
                 <a href="index.php?page=donation-create">
                     Make Donation
                 </a>
             </li>
-
-
-            <!-- MY DONATIONS -->
 
             <li>
                 <a href="index.php?page=donations">
@@ -100,11 +113,27 @@ $role = $_SESSION['user']['role'] ?? '';
                 </a>
             </li>
 
+            <li>
+                <a href="index.php?page=change-password">
+                    Change Password
+                </a>
+            </li>
 
             <li>
-                <a href="index.php?page=logout">
-                    Logout
-                </a>
+
+                <form
+                    method="POST"
+                    action="index.php?page=logout"
+                >
+
+                    <?php echo csrfField(); ?>
+
+                    <button type="submit">
+                        Logout
+                    </button>
+
+                </form>
+
             </li>
 
         </ul>
@@ -122,13 +151,11 @@ $role = $_SESSION['user']['role'] ?? '';
                 </a>
             </li>
 
-
             <li>
                 <a href="index.php?page=volunteer-emergency-requests">
                     Emergency Requests
                 </a>
             </li>
-
 
             <li>
                 <a href="index.php?page=volunteer-activities">
@@ -136,13 +163,11 @@ $role = $_SESSION['user']['role'] ?? '';
                 </a>
             </li>
 
-
             <li>
                 <a href="index.php?page=volunteer-profile">
                     My Profile
                 </a>
             </li>
-
 
             <li>
                 <a href="index.php?page=volunteer-availability">
@@ -150,13 +175,11 @@ $role = $_SESSION['user']['role'] ?? '';
                 </a>
             </li>
 
-
             <li>
                 <a href="index.php?page=volunteer-resource-request">
                     Resource Request
                 </a>
             </li>
-
 
             <li>
                 <a href="index.php?page=volunteer-resource-requests">
@@ -164,48 +187,81 @@ $role = $_SESSION['user']['role'] ?? '';
                 </a>
             </li>
 
+            <li>
+                <a href="index.php?page=change-password">
+                    Change Password
+                </a>
+            </li>
 
             <li>
-                <a href="index.php?page=logout">
-                    Logout
-                </a>
+
+                <form
+                    method="POST"
+                    action="index.php?page=logout"
+                >
+
+                    <?php echo csrfField(); ?>
+
+                    <button type="submit">
+                        Logout
+                    </button>
+
+                </form>
+
             </li>
 
         </ul>
 
 
-   <?php elseif ($role === 'help_seeker'): ?>
+    <?php elseif ($role === 'help_seeker'): ?>
 
-    <h2>Help Seeker Panel</h2>
+        <h2>Help Seeker Panel</h2>
 
-    <ul>
+        <ul>
 
-        <li>
-            <a href="index.php?page=helpseeker-dashboard">
-                Dashboard
-            </a>
-        </li>
+            <li>
+                <a href="index.php?page=helpseeker-dashboard">
+                    Dashboard
+                </a>
+            </li>
 
-        <li>
-            <a href="index.php?page=helpseeker-request-create">
-                Request Rescue
-            </a>
-        </li>
+            <li>
+                <a href="index.php?page=helpseeker-request-create">
+                    Request Rescue
+                </a>
+            </li>
 
-        <li>
-            <a href="index.php?page=helpseeker-requests">
-                My Requests
-            </a>
-        </li>
+            <li>
+                <a href="index.php?page=helpseeker-requests">
+                    My Requests
+                </a>
+            </li>
 
-        <li>
-            <a href="index.php?page=logout">
-                Logout
-            </a>
-        </li>
+            <li>
+                <a href="index.php?page=change-password">
+                    Change Password
+                </a>
+            </li>
 
-    </ul>
+            <li>
 
-<?php endif; ?>
+                <form
+                    method="POST"
+                    action="index.php?page=logout"
+                >
+
+                    <?php echo csrfField(); ?>
+
+                    <button type="submit">
+                        Logout
+                    </button>
+
+                </form>
+
+            </li>
+
+        </ul>
+
+    <?php endif; ?>
 
 </div>
