@@ -271,6 +271,8 @@ function loginUser()
     $_SESSION['user'] =
         $user;
 
+    $_SESSION['last_activity'] =
+    time();
 
     /*
     |--------------------------------------------------------------------------
