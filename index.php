@@ -1322,17 +1322,30 @@ requireValidCsrfToken();
 
     requireHelpSeeker();
 
-    require_once "controllers/HelpSeekerController.php";
+    require_once
+        "controllers/HelpSeekerController.php";
+
 
     $error = '';
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $error = handleCreateEmergencyRequest($conn);
+    if (
+        $_SERVER['REQUEST_METHOD']
+        === 'POST'
+    ) {
+
+        requireValidCsrfToken();
+
+
+        $error =
+            handleCreateEmergencyRequest(
+                $conn
+            );
     }
 
-    require_once "views/helpseeker/create_request.php";
 
+    require_once
+        "views/helpseeker/create_request.php";
     /*
 |--------------------------------------------------------------------------
 | HELP SEEKER REQUEST AJAX SEARCH
@@ -1413,7 +1426,7 @@ requireValidCsrfToken();
 
     require_once "views/helpseeker/view_request.php";
 
-    /*
+ /*
 |--------------------------------------------------------------------------
 | HELP SEEKER REQUEST EDIT
 |--------------------------------------------------------------------------
@@ -1423,24 +1436,39 @@ requireValidCsrfToken();
 
     requireHelpSeeker();
 
-    require_once "models/HelpSeekerModel.php";
-    require_once "controllers/HelpSeekerController.php";
+    require_once
+        "models/HelpSeekerModel.php";
+
+    require_once
+        "controllers/HelpSeekerController.php";
+
 
     $request_id =
         isset($_GET['id'])
             ? (int)$_GET['id']
             : 0;
 
+
     $help_seeker_id =
-        (int)($_SESSION['user']['id'] ?? 0);
+        (int)(
+            $_SESSION['user']['id']
+            ?? 0
+        );
 
 
     if ($request_id <= 0) {
-        die("Invalid emergency request ID.");
+
+        die(
+            "Invalid emergency request ID."
+        );
     }
 
+
     if ($help_seeker_id <= 0) {
-        die("Invalid help seeker account.");
+
+        die(
+            "Invalid help seeker account."
+        );
     }
 
 
@@ -1451,11 +1479,100 @@ requireValidCsrfToken();
             $help_seeker_id
         );
 
+
     if (!$request) {
-        die("Emergency request not found.");
+
+        die(
+            "Emergency request not found."
+        );
     }
 
+
     /*
+    |--------------------------------------------------------------------------
+    | ONLY PENDING REQUEST CAN BE EDITED
+    |--------------------------------------------------------------------------
+    */
+
+    if (
+        ($request['status'] ?? '')
+        !== 'pending'
+    ) {
+
+        die(
+            "Only pending emergency requests can be edited."
+        );
+    }
+
+
+    $error = '';
+
+
+    if (
+        $_SERVER['REQUEST_METHOD']
+        === 'POST'
+    ) {
+
+        requireValidCsrfToken();
+
+
+        $error =
+            handleUpdateEmergencyRequest(
+                $conn,
+                $request_id,
+                $help_seeker_id
+            );
+
+
+        if ($error === '') {
+
+            header(
+                "Location: index.php?page=helpseeker-request-view&id=" .
+                $request_id
+            );
+
+            exit;
+        }
+
+
+        $request['emergency_type'] =
+            $_POST['emergency_type']
+            ?? $request['emergency_type'];
+
+        $request['location'] =
+            $_POST['location']
+            ?? $request['location'];
+
+        $request['description'] =
+            $_POST['description']
+            ?? $request['description'];
+
+        $request['priority'] =
+            $_POST['priority']
+            ?? $request['priority'];
+
+        $request['victim_type'] =
+            $_POST['victim_type']
+            ?? $request['victim_type'];
+
+        $request['victim_information'] =
+            $_POST['victim_information']
+            ?? $request['victim_information'];
+
+        $request['victim_count'] =
+            $_POST['victim_count']
+            ?? $request['victim_count'];
+
+        $request['contact_information'] =
+            $_POST['contact_information']
+            ?? $request['contact_information'];
+    }
+
+
+    require_once
+        "views/helpseeker/edit_request.php";
+
+ /*
 |--------------------------------------------------------------------------
 | HELP SEEKER REQUEST DELETE
 |--------------------------------------------------------------------------
@@ -1465,26 +1582,51 @@ requireValidCsrfToken();
 
     requireHelpSeeker();
 
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        die("Invalid request method.");
+
+    if (
+        $_SERVER['REQUEST_METHOD']
+        !== 'POST'
+    ) {
+
+        http_response_code(405);
+
+        die(
+            "Invalid request method."
+        );
     }
+
 
     requireValidCsrfToken();
 
-    require_once "models/HelpSeekerModel.php";
+
+    require_once
+        "models/HelpSeekerModel.php";
+
 
     $request_id =
-        (int)($_POST['request_id'] ?? 0);
+        (int)(
+            $_POST['request_id']
+            ?? 0
+        );
+
 
     $help_seeker_id =
-        (int)($_SESSION['user']['id'] ?? 0);
+        (int)(
+            $_SESSION['user']['id']
+            ?? 0
+        );
+
 
     if (
         $request_id <= 0 ||
         $help_seeker_id <= 0
     ) {
-        die("Invalid emergency request.");
+
+        die(
+            "Invalid emergency request."
+        );
     }
+
 
     $deleted =
         deleteEmergencyRequest(
@@ -1493,11 +1635,14 @@ requireValidCsrfToken();
             $help_seeker_id
         );
 
+
     if (!$deleted) {
+
         die(
             "Only your pending emergency request can be deleted."
         );
     }
+
 
     header(
         "Location: index.php?page=helpseeker-requests"
@@ -1594,50 +1739,91 @@ requireValidCsrfToken();
 
     requireHelpSeeker();
 
-    require_once "models/HelpSeekerModel.php";
-    require_once "controllers/FeedbackController.php";
 
-    $request_id = isset($_GET['id'])
-        ? (int)$_GET['id']
-        : (int)($_POST['rescue_request_id'] ?? 0);
+    require_once
+        "models/HelpSeekerModel.php";
+
+    require_once
+        "controllers/FeedbackController.php";
+
+
+    $request_id =
+        isset($_GET['id'])
+            ? (int)$_GET['id']
+            : 0;
+
 
     $help_seeker_id =
-        (int)($_SESSION['user']['id'] ?? 0);
+        (int)(
+            $_SESSION['user']['id']
+            ?? 0
+        );
+
 
     if ($request_id <= 0) {
-        die("Invalid emergency request ID.");
+
+        die(
+            "Invalid emergency request ID."
+        );
     }
+
 
     if ($help_seeker_id <= 0) {
-        die("Invalid help seeker account.");
+
+        die(
+            "Invalid help seeker account."
+        );
     }
 
-    $request = getHelpSeekerRequestById(
-        $conn,
-        $request_id,
-        $help_seeker_id
-    );
+
+    $request =
+        getHelpSeekerRequestById(
+            $conn,
+            $request_id,
+            $help_seeker_id
+        );
+
 
     if (!$request) {
-        die("Emergency request not found.");
+
+        die(
+            "Emergency request not found."
+        );
     }
 
-    if (($request['status'] ?? '') !== 'completed') {
+
+    if (
+        ($request['status'] ?? '')
+        !== 'completed'
+    ) {
 
         die(
             "Feedback can only be submitted after the rescue is completed."
         );
     }
 
+
     $error = '';
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $error = handleCreateFeedback($conn);
+    if (
+        $_SERVER['REQUEST_METHOD']
+        === 'POST'
+    ) {
+
+        requireValidCsrfToken();
+
+
+        $error =
+            handleCreateFeedback(
+                $conn,
+                $request_id
+            );
     }
 
-    require_once "views/helpseeker/feedback.php";
 
+    require_once
+        "views/helpseeker/feedback.php";
 /*
 |--------------------------------------------------------------------------
 | WITNESS CREATE REPORT
