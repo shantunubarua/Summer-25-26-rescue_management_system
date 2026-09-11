@@ -52,6 +52,12 @@ $role =
             </li>
 
             <li>
+                <a href="index.php?page=admin-donations">
+                    Donations
+                </a>
+            </li>
+
+            <li>
                 <a href="index.php?page=change-password">
                     Change Password
                 </a>
