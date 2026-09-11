@@ -147,7 +147,7 @@ require_once
         <div class="card">
 
             <h3>
-                Money Donation Total
+               Total Donated Amount
             </h3>
 
             <p class="dashboard-count">
@@ -165,7 +165,7 @@ require_once
             </p>
 
             <p>
-                Total completed money-type donation amount.
+                Total amount of all completed donations.
             </p>
 
         </div>
