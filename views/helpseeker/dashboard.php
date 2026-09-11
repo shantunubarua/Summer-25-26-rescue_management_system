@@ -1,238 +1,204 @@
 <?php
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+require_once
+    "views/partials/header.php";
 
-require_once "helpers/auth.php";
+require_once
+    "views/partials/sidebar.php";
 
-requireHelpSeeker();
 
-$user = $_SESSION['user'];
+$user =
+    $_SESSION['user']
+    ?? [];
 
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<div class="content">
 
-<head>
+    <div class="page-header">
 
-    <meta charset="UTF-8">
+        <div>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+            <h1>
+                Help Seeker Dashboard
+            </h1>
 
-    <title>Help Seeker Dashboard</title>
+            <p>
+                Welcome,
+                <?= htmlspecialchars(
+                    $user['name']
+                    ?? 'Help Seeker'
+                ); ?>.
+            </p>
 
-    <style>
+        </div>
 
-        * {
-            box-sizing: border-box;
-        }
+    </div>
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-        }
 
-        .layout {
-            display: flex;
-            min-height: 100vh;
-        }
+    <div class="card">
 
-        /* Sidebar */
+        <h2>
+            Request Rescue
+        </h2>
 
-        .sidebar {
-            width: 280px;
-            background: #344256;
-            color: white;
-            padding: 22px 25px;
-            min-height: 100vh;
-        }
+        <p>
+            Create a new emergency request when rescue assistance is needed.
+        </p>
 
-        .sidebar h1 {
-            margin: 0 0 25px 0;
-            font-size: 27px;
-        }
-
-        .sidebar a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-
-        .sidebar a:hover {
-            text-decoration: underline;
-        }
-
-        /* Main Content */
-
-        .main {
-            flex: 1;
-            background: white;
-            padding: 45px 25px;
-        }
-
-        .main h2 {
-            margin-top: 0;
-            font-size: 36px;
-            color: #111;
-        }
-
-        .welcome {
-            font-size: 18px;
-            margin-bottom: 25px;
-        }
-
-        /* Cards */
-
-        .card {
-            border: 1px solid #ddd;
-            padding: 25px 22px;
-            margin-bottom: 22px;
-            min-height: 135px;
-        }
-
-        .card h3 {
-            margin: 0 0 18px 0;
-            font-size: 21px;
-        }
-
-        .card p {
-            margin: 0;
-            font-size: 17px;
-        }
-
-        .card a {
-            display: inline-block;
-            margin-top: 15px;
-            color: #344256;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .card a:hover {
-            text-decoration: underline;
-        }
-
-    </style>
-
-</head>
-
-<body>
-
-<div class="layout">
-
-    <!-- Sidebar -->
-
-    <div class="sidebar">
-
-        <h1>Help Seeker Panel</h1>
-
-        <a href="index.php?page=helpseeker-dashboard">
-            Dashboard
-        </a>
-
-        <a href="index.php?page=helpseeker-request-create">
-    Request Rescue
-</a>
-        <a href="#">
-            My Requests
-        </a>
-
-        <a href="#">
-            Profile
-        </a>
-
-        <a href="index.php?page=logout">
-            Logout
+        <a
+            href="index.php?page=helpseeker-request-create"
+            class="btn btn-primary"
+        >
+            Request Rescue
         </a>
 
     </div>
 
 
-    <!-- Main Content -->
+    <div class="card">
 
-    <div class="main">
+        <h2>
+            My Emergency Requests
+        </h2>
 
-        <h2>Help Seeker Dashboard</h2>
+        <p>
+            View, search and manage your submitted emergency requests.
+        </p>
 
-        <div class="welcome">
+        <a
+            href="index.php?page=helpseeker-requests"
+            class="btn"
+        >
+            View My Requests
+        </a>
 
-            Welcome,
-            <?php echo htmlspecialchars($user['name']); ?>
-
-        </div>
+    </div>
 
 
-        <div class="card">
+    <div class="card">
 
-            <h3>Request Rescue</h3>
+        <h2>
+            Nearby Volunteers
+        </h2>
+
+        <p>
+            Find currently available volunteers by area.
+        </p>
+
+        <a
+            href="index.php?page=helpseeker-nearby-volunteers"
+            class="btn"
+        >
+            Find Volunteers
+        </a>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>
+            My Profile
+        </h2>
+
+        <p>
+            View and update your account information.
+        </p>
+
+        <a
+            href="index.php?page=helpseeker-profile"
+            class="btn"
+        >
+            View Profile
+        </a>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>
+            Notifications & Alerts
+        </h2>
+
+
+        <?php if (empty($dashboardNotifications)): ?>
 
             <p>
-                Create a new rescue request when you need help.
+                No active notifications at this time.
             </p>
 
-            <a href="index.php?page=helpseeker-request-create">
-    Request Rescue
-</a>
+        <?php else: ?>
 
-        </div>
+            <?php foreach ($dashboardNotifications as $notification): ?>
 
+                <div class="notification-item">
 
-        <div class="card">
-
-            <h3>My Requests</h3>
-
-            <p>
-                View and manage your submitted rescue requests.
-            </p>
-
-            <a href="#">
-                View My Requests
-            </a>
-
-        </div>
+                    <h3>
+                        <?= htmlspecialchars(
+                            $notification['title']
+                            ?? 'Notification'
+                        ); ?>
+                    </h3>
 
 
-        <div class="card">
-
-            <h3>Request Status</h3>
-
-            <p>
-                Check the current status of your rescue requests.
-            </p>
-
-            <a href="#">
-                Check Status
-            </a>
-
-        </div>
+                    <p>
+                        <?= nl2br(
+                            htmlspecialchars(
+                                $notification['message']
+                                ?? ''
+                            )
+                        ); ?>
+                    </p>
 
 
-        <div class="card">
+                    <p>
 
-            <h3>Profile</h3>
+                        <strong>
+                            Alert:
+                        </strong>
 
-            <p>
-                View your account information.
-            </p>
+                        <?= htmlspecialchars(
+                            ucfirst(
+                                $notification['alert_type']
+                                ?? 'normal'
+                            )
+                        ); ?>
 
-            <a href="#">
-                View Profile
-            </a>
+                    </p>
 
-        </div>
+
+                    <?php if (!empty($notification['created_at'])): ?>
+
+                        <p>
+                            <small>
+                                <?= htmlspecialchars(
+                                    date(
+                                        'd M Y, h:i A',
+                                        strtotime(
+                                            $notification['created_at']
+                                        )
+                                    )
+                                ); ?>
+                            </small>
+                        </p>
+
+                    <?php endif; ?>
+
+                </div>
+
+                <hr>
+
+            <?php endforeach; ?>
+
+        <?php endif; ?>
 
     </div>
 
 </div>
 
-</body>
-
-</html>
+<?php
+require_once
+    "views/partials/footer.php";
+?>
