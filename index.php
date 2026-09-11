@@ -1309,8 +1309,20 @@ requireValidCsrfToken();
 
     requireHelpSeeker();
 
-    require_once "views/helpseeker/dashboard.php";
 
+    require_once
+        "controllers/NotificationController.php";
+
+
+    $dashboardNotifications =
+        loadRoleDashboardNotifications(
+            $conn,
+            'help_seeker'
+        );
+
+
+    require_once
+        "views/helpseeker/dashboard.php";
 
 /*
 |--------------------------------------------------------------------------
