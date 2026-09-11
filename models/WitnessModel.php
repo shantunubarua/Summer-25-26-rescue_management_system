@@ -508,9 +508,10 @@ function getWitnessDashboardCounts(
     */
 
     $sql = "
-        SELECT COUNT(*) AS total
-        FROM witness_reports
+        SELECT COALESCE(SUM(amount), 0)
+        FROM donations
         WHERE witness_id = ?
+        AND status = 'completed'
     ";
 
 
