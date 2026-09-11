@@ -2,34 +2,114 @@
 
 require_once "models/HelpSeekerModel.php";
 
-function handleCreateEmergencyRequest($conn)
+
+/*
+|--------------------------------------------------------------------------
+| GET EMERGENCY REQUEST FORM DATA
+|--------------------------------------------------------------------------
+*/
+
+function getEmergencyRequestFormData()
 {
-    $emergency_type = trim($_POST['emergency_type'] ?? '');
-    $location = trim($_POST['location'] ?? '');
-    $description = trim($_POST['description'] ?? '');
-    $priority = trim($_POST['priority'] ?? '');
-    $victim_type = trim($_POST['victim_type'] ?? '');
-    $victim_information = trim($_POST['victim_information'] ?? '');
-    $victim_count = isset($_POST['victim_count'])
-        ? (int)$_POST['victim_count']
-        : 1;
+    $victimCountRaw =
+        trim(
+            (string)(
+                $_POST['victim_count']
+                ?? ''
+            )
+        );
 
-    $contact_information = trim(
-        $_POST['contact_information'] ?? ''
-    );
 
-    if (
-        $emergency_type === '' ||
-        $location === '' ||
-        $description === '' ||
-        $priority === '' ||
-        $victim_type === '' ||
-        $contact_information === ''
-    ) {
-        return "All required fields must be completed.";
+    $victimCount =
+        filter_var(
+            $victimCountRaw,
+            FILTER_VALIDATE_INT,
+            [
+                'options' => [
+                    'min_range' => 1
+                ]
+            ]
+        );
+
+
+    if ($victimCount === false) {
+        $victimCount = 0;
     }
 
-    $allowed_types = [
+
+    return [
+
+        'emergency_type' =>
+            trim(
+                $_POST['emergency_type']
+                ?? ''
+            ),
+
+        'location' =>
+            trim(
+                $_POST['location']
+                ?? ''
+            ),
+
+        'description' =>
+            trim(
+                $_POST['description']
+                ?? ''
+            ),
+
+        'priority' =>
+            trim(
+                $_POST['priority']
+                ?? ''
+            ),
+
+        'victim_type' =>
+            trim(
+                $_POST['victim_type']
+                ?? ''
+            ),
+
+        'victim_information' =>
+            trim(
+                $_POST['victim_information']
+                ?? ''
+            ),
+
+        'victim_count' =>
+            (int)$victimCount,
+
+        'contact_information' =>
+            trim(
+                $_POST['contact_information']
+                ?? ''
+            )
+    ];
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| VALIDATE EMERGENCY REQUEST DATA
+|--------------------------------------------------------------------------
+*/
+
+function validateEmergencyRequestData($data)
+{
+    if (
+        $data['emergency_type'] === '' ||
+        $data['location'] === '' ||
+        $data['description'] === '' ||
+        $data['priority'] === '' ||
+        $data['victim_type'] === '' ||
+        $data['contact_information'] === ''
+    ) {
+
+        return
+            "All required fields must be completed.";
+    }
+
+
+    $allowedTypes = [
         'accident',
         'fire',
         'flood',
@@ -37,276 +117,356 @@ function handleCreateEmergencyRequest($conn)
         'other'
     ];
 
-    if (!in_array($emergency_type, $allowed_types, true)) {
-        return "Invalid emergency type.";
+
+    if (
+        !in_array(
+            $data['emergency_type'],
+            $allowedTypes,
+            true
+        )
+    ) {
+
+        return
+            "Invalid emergency type.";
     }
 
-    $allowed_priorities = [
+
+    $allowedPriorities = [
         'low',
         'medium',
         'high',
         'critical'
     ];
 
-    if (!in_array($priority, $allowed_priorities, true)) {
-        return "Invalid priority.";
+
+    if (
+        !in_array(
+            $data['priority'],
+            $allowedPriorities,
+            true
+        )
+    ) {
+
+        return
+            "Invalid priority.";
     }
 
-    $allowed_victim_types = [
+
+    $allowedVictimTypes = [
         'self',
         'other'
     ];
 
-    if (!in_array($victim_type, $allowed_victim_types, true)) {
-        return "Invalid victim type.";
-    }
-
-    if ($victim_count < 1) {
-        return "Victim count must be at least 1.";
-    }
 
     if (
-        $victim_type === 'other' &&
-        $victim_information === ''
-    ) {
-        return "Please provide information about the victim.";
-    }
-
-    if ($victim_type === 'self') {
-        $victim_information = null;
-    }
-
-    $help_seeker_id = $_SESSION['user']['id'];
-
-    if (
-        createEmergencyRequest(
-            $conn,
-            $help_seeker_id,
-            $emergency_type,
-            $location,
-            $description,
-            $priority,
-            $victim_type,
-            $victim_information,
-            $victim_count,
-            $contact_information
+        !in_array(
+            $data['victim_type'],
+            $allowedVictimTypes,
+            true
         )
     ) {
-        header(
-            "Location: index.php?page=helpseeker-requests"
-        );
-        exit;
+
+        return
+            "Invalid victim type.";
     }
 
-    return "Failed to submit emergency request.";
+
+    if (
+        strlen(
+            $data['location']
+        ) > 255
+    ) {
+
+        return
+            "Location must not exceed 255 characters.";
+    }
+
+
+    if (
+        strlen(
+            $data['contact_information']
+        ) > 150
+    ) {
+
+        return
+            "Contact information must not exceed 150 characters.";
+    }
+
+
+    if (
+        $data['victim_count'] < 1
+    ) {
+
+        return
+            "Victim count must be a valid number of at least 1.";
+    }
+
+
+    if (
+        $data['victim_type'] === 'other' &&
+        $data['victim_information'] === ''
+    ) {
+
+        return
+            "Please provide information about the victim.";
+    }
+
+
+    return '';
 }
+
+
+/*
+|--------------------------------------------------------------------------
+| CREATE EMERGENCY REQUEST
+|--------------------------------------------------------------------------
+*/
+
+function handleCreateEmergencyRequest($conn)
+{
+    $helpSeekerId =
+        (int)(
+            $_SESSION['user']['id']
+            ?? 0
+        );
+
+
+    if ($helpSeekerId <= 0) {
+
+        return
+            "Invalid help seeker account.";
+    }
+
+
+    $data =
+        getEmergencyRequestFormData();
+
+
+    $error =
+        validateEmergencyRequestData(
+            $data
+        );
+
+
+    if ($error !== '') {
+        return $error;
+    }
+
+
+    if (
+        $data['victim_type']
+        === 'self'
+    ) {
+
+        $data['victim_information'] =
+            null;
+    }
+
+
+    $created =
+        createEmergencyRequest(
+            $conn,
+            $helpSeekerId,
+            $data['emergency_type'],
+            $data['location'],
+            $data['description'],
+            $data['priority'],
+            $data['victim_type'],
+            $data['victim_information'],
+            $data['victim_count'],
+            $data['contact_information']
+        );
+
+
+    if (!$created) {
+
+        return
+            "Failed to submit emergency request.";
+    }
+
+
+    header(
+        "Location: index.php?page=helpseeker-requests"
+    );
+
+    exit;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| UPDATE EMERGENCY REQUEST
+|--------------------------------------------------------------------------
+*/
 
 function handleUpdateEmergencyRequest(
     $conn,
-    $request_id,
-    $help_seeker_id
+    $requestId,
+    $helpSeekerId
 ) {
-    $request_id =
-        (int)$request_id;
 
-    $help_seeker_id =
-        (int)$help_seeker_id;
+    $requestId =
+        (int)$requestId;
 
-    if (
-        $request_id <= 0 ||
-        $help_seeker_id <= 0
-    ) {
-        return "Invalid emergency request.";
-    }
-
-
-    $emergency_type =
-        trim(
-            $_POST['emergency_type']
-            ?? ''
-        );
-
-    $location =
-        trim(
-            $_POST['location']
-            ?? ''
-        );
-
-    $description =
-        trim(
-            $_POST['description']
-            ?? ''
-        );
-
-    $priority =
-        trim(
-            $_POST['priority']
-            ?? ''
-        );
-
-    $victim_type =
-        trim(
-            $_POST['victim_type']
-            ?? ''
-        );
-
-    $victim_information =
-        trim(
-            $_POST['victim_information']
-            ?? ''
-        );
-
-    $victim_count =
-        isset($_POST['victim_count'])
-            ? (int)$_POST['victim_count']
-            : 1;
-
-    $contact_information =
-        trim(
-            $_POST['contact_information']
-            ?? ''
-        );
+    $helpSeekerId =
+        (int)$helpSeekerId;
 
 
     if (
-        $emergency_type === '' ||
-        $location === '' ||
-        $description === '' ||
-        $priority === '' ||
-        $victim_type === '' ||
-        $contact_information === ''
+        $requestId <= 0 ||
+        $helpSeekerId <= 0
     ) {
-        return "All required fields must be completed.";
+
+        return
+            "Invalid emergency request.";
     }
 
 
-    $allowed_types = [
-        'accident',
-        'fire',
-        'flood',
-        'medical',
-        'other'
-    ];
-
-    if (
-        !in_array(
-            $emergency_type,
-            $allowed_types,
-            true
-        )
-    ) {
-        return "Invalid emergency type.";
-    }
+    $data =
+        getEmergencyRequestFormData();
 
 
-    $allowed_priorities = [
-        'low',
-        'medium',
-        'high',
-        'critical'
-    ];
-
-    if (
-        !in_array(
-            $priority,
-            $allowed_priorities,
-            true
-        )
-    ) {
-        return "Invalid priority.";
-    }
+    $error =
+        validateEmergencyRequestData(
+            $data
+        );
 
 
-    $allowed_victim_types = [
-        'self',
-        'other'
-    ];
-
-    if (
-        !in_array(
-            $victim_type,
-            $allowed_victim_types,
-            true
-        )
-    ) {
-        return "Invalid victim type.";
-    }
-
-
-    if ($victim_count < 1) {
-        return "Victim count must be at least 1.";
+    if ($error !== '') {
+        return $error;
     }
 
 
     if (
-        $victim_type === 'other' &&
-        $victim_information === ''
+        $data['victim_type']
+        === 'self'
     ) {
-        return "Please provide information about the victim.";
-    }
 
-
-    if ($victim_type === 'self') {
-        $victim_information = null;
+        $data['victim_information'] =
+            null;
     }
 
 
     $updated =
         updateEmergencyRequest(
             $conn,
-            $request_id,
-            $help_seeker_id,
-            $emergency_type,
-            $location,
-            $description,
-            $priority,
-            $victim_type,
-            $victim_information,
-            $victim_count,
-            $contact_information
+            $requestId,
+            $helpSeekerId,
+            $data['emergency_type'],
+            $data['location'],
+            $data['description'],
+            $data['priority'],
+            $data['victim_type'],
+            $data['victim_information'],
+            $data['victim_count'],
+            $data['contact_information']
         );
 
 
     if (!$updated) {
-        return "Failed to update emergency request.";
+
+        return
+            "Failed to update emergency request.";
     }
 
 
     return '';
 }
+
+
+/*
+|--------------------------------------------------------------------------
+| HELP SEEKER REQUEST AJAX SEARCH
+|--------------------------------------------------------------------------
+*/
+
 function handleHelpSeekerRequestSearch($conn)
 {
-    header('Content-Type: application/json; charset=UTF-8');
+    header(
+        'Content-Type: application/json; charset=UTF-8'
+    );
 
-    $help_seeker_id =
-        (int)($_SESSION['user']['id'] ?? 0);
 
-    $keyword =
-        trim($_GET['q'] ?? '');
+    if (
+        $_SERVER['REQUEST_METHOD']
+        !== 'GET'
+    ) {
 
-    if ($help_seeker_id <= 0) {
+        http_response_code(405);
 
         echo json_encode([
             'success' => false,
-            'message' => 'Invalid help seeker account.',
+            'message' =>
+                'Invalid request method.',
             'data' => []
         ]);
 
         exit;
     }
 
+
+    $helpSeekerId =
+        (int)(
+            $_SESSION['user']['id']
+            ?? 0
+        );
+
+
+    if ($helpSeekerId <= 0) {
+
+        http_response_code(401);
+
+        echo json_encode([
+            'success' => false,
+            'message' =>
+                'Invalid help seeker account.',
+            'data' => []
+        ]);
+
+        exit;
+    }
+
+
+    $keyword =
+        trim(
+            $_GET['q']
+            ?? ''
+        );
+
+
+    if (
+        strlen($keyword) > 100
+    ) {
+
+        http_response_code(422);
+
+        echo json_encode([
+            'success' => false,
+            'message' =>
+                'Search text is too long.',
+            'data' => []
+        ]);
+
+        exit;
+    }
+
+
     $requests =
         searchHelpSeekerRequests(
             $conn,
-            $help_seeker_id,
+            $helpSeekerId,
             $keyword
         );
 
+
     echo json_encode([
         'success' => true,
-        'count' => count($requests),
-        'data' => $requests
+        'count' =>
+            count($requests),
+        'data' =>
+            $requests
     ]);
+
 
     exit;
 }
