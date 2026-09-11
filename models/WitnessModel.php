@@ -493,6 +493,10 @@ function getWitnessDashboardCounts(
     $witness_id
 ) {
 
+    $witness_id =
+        (int)$witness_id;
+
+
     $dashboardCounts = [
         'total_reports' => 0,
         'critical_reports' => 0,
@@ -501,72 +505,31 @@ function getWitnessDashboardCounts(
     ];
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Total Reports
-    |--------------------------------------------------------------------------
-    */
-
-    $sql = "
-        SELECT COALESCE(SUM(amount), 0)
-        FROM donations
-        WHERE witness_id = ?
-        AND status = 'completed'
-    ";
-
-
-    $stmt = mysqli_prepare(
-        $conn,
-        $sql
-    );
-
-
-    if ($stmt) {
-
-        mysqli_stmt_bind_param(
-            $stmt,
-            "i",
-            $witness_id
-        );
-
-
-        mysqli_stmt_execute($stmt);
-
-
-        $result =
-            mysqli_stmt_get_result($stmt);
-
-
-        $row =
-            mysqli_fetch_assoc($result);
-
-
-        $dashboardCounts['total_reports'] =
-            (int)($row['total'] ?? 0);
-
-
-        mysqli_stmt_close($stmt);
+    if ($witness_id <= 0) {
+        return $dashboardCounts;
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | Critical Reports
+    | TOTAL INCIDENT REPORTS
     |--------------------------------------------------------------------------
     */
 
     $sql = "
         SELECT COUNT(*) AS total
+
         FROM witness_reports
+
         WHERE witness_id = ?
-        AND damage_level = 'critical'
     ";
 
 
-    $stmt = mysqli_prepare(
-        $conn,
-        $sql
-    );
+    $stmt =
+        mysqli_prepare(
+            $conn,
+            $sql
+        );
 
 
     if ($stmt) {
@@ -578,34 +541,112 @@ function getWitnessDashboardCounts(
         );
 
 
-        mysqli_stmt_execute($stmt);
+        mysqli_stmt_execute(
+            $stmt
+        );
 
 
         $result =
-            mysqli_stmt_get_result($stmt);
+            mysqli_stmt_get_result(
+                $stmt
+            );
 
 
         $row =
-            mysqli_fetch_assoc($result);
+            mysqli_fetch_assoc(
+                $result
+            );
 
 
-        $dashboardCounts['critical_reports'] =
-            (int)($row['total'] ?? 0);
+        $dashboardCounts['total_reports'] =
+            (int)(
+                $row['total']
+                ?? 0
+            );
 
 
-        mysqli_stmt_close($stmt);
+        mysqli_stmt_close(
+            $stmt
+        );
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | Total Donations + Donated Amount
+    | CRITICAL INCIDENT REPORTS
     |--------------------------------------------------------------------------
+    */
+
+    $sql = "
+        SELECT COUNT(*) AS total
+
+        FROM witness_reports
+
+        WHERE witness_id = ?
+        AND damage_level = 'critical'
+    ";
+
+
+    $stmt =
+        mysqli_prepare(
+            $conn,
+            $sql
+        );
+
+
+    if ($stmt) {
+
+        mysqli_stmt_bind_param(
+            $stmt,
+            "i",
+            $witness_id
+        );
+
+
+        mysqli_stmt_execute(
+            $stmt
+        );
+
+
+        $result =
+            mysqli_stmt_get_result(
+                $stmt
+            );
+
+
+        $row =
+            mysqli_fetch_assoc(
+                $result
+            );
+
+
+        $dashboardCounts['critical_reports'] =
+            (int)(
+                $row['total']
+                ?? 0
+            );
+
+
+        mysqli_stmt_close(
+            $stmt
+        );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | COMPLETED DONATIONS + TOTAL DONATED AMOUNT
+    |--------------------------------------------------------------------------
+    |
+    | Dashboard summary only counts successfully completed donations.
+    | Pending donation records remain visible in My Donations history.
+    |
     */
 
     $sql = "
         SELECT
             COUNT(*) AS total,
+
             COALESCE(
                 SUM(amount),
                 0
@@ -614,13 +655,15 @@ function getWitnessDashboardCounts(
         FROM donations
 
         WHERE witness_id = ?
+        AND status = 'completed'
     ";
 
 
-    $stmt = mysqli_prepare(
-        $conn,
-        $sql
-    );
+    $stmt =
+        mysqli_prepare(
+            $conn,
+            $sql
+        );
 
 
     if ($stmt) {
@@ -632,26 +675,40 @@ function getWitnessDashboardCounts(
         );
 
 
-        mysqli_stmt_execute($stmt);
+        mysqli_stmt_execute(
+            $stmt
+        );
 
 
         $result =
-            mysqli_stmt_get_result($stmt);
+            mysqli_stmt_get_result(
+                $stmt
+            );
 
 
         $row =
-            mysqli_fetch_assoc($result);
+            mysqli_fetch_assoc(
+                $result
+            );
 
 
         $dashboardCounts['total_donations'] =
-            (int)($row['total'] ?? 0);
+            (int)(
+                $row['total']
+                ?? 0
+            );
 
 
         $dashboardCounts['total_donated_amount'] =
-            (float)($row['total_amount'] ?? 0);
+            (float)(
+                $row['total_amount']
+                ?? 0
+            );
 
 
-        mysqli_stmt_close($stmt);
+        mysqli_stmt_close(
+            $stmt
+        );
     }
 
 
