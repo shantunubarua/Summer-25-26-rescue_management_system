@@ -437,3 +437,85 @@ function handleConfirmDonation($conn)
 
     exit;
 }
+/*
+|--------------------------------------------------------------------------
+| ADMIN - LOAD DONATIONS
+|--------------------------------------------------------------------------
+*/
+
+function loadAdminDonations(
+    $conn,
+    $search = ''
+) {
+    $search =
+        trim($search);
+
+
+    if (
+        strlen($search) > 100
+    ) {
+
+        return [
+            'error' =>
+                'Search text must not exceed 100 characters.',
+
+            'donations' =>
+                []
+        ];
+    }
+
+
+    $donations =
+        getAllDonationsForAdmin(
+            $conn,
+            $search
+        );
+
+
+    return [
+        'error' => '',
+        'donations' =>
+            $donations
+    ];
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN - LOAD DONATION DETAILS
+|--------------------------------------------------------------------------
+*/
+
+function loadAdminDonationDetails(
+    $conn,
+    $donation_id
+) {
+    $donation_id =
+        (int)$donation_id;
+
+
+    if ($donation_id <= 0) {
+
+        die(
+            "Invalid donation ID."
+        );
+    }
+
+
+    $donation =
+        getDonationForAdminById(
+            $conn,
+            $donation_id
+        );
+
+
+    if (!$donation) {
+
+        die(
+            "Donation not found."
+        );
+    }
+
+
+    return $donation;
+}
