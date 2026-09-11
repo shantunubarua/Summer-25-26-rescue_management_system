@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 11, 2026 at 12:49 AM
+-- Generation Time: Sep 11, 2026 at 09:14 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -85,7 +85,8 @@ CREATE TABLE `emergency_requests` (
 --
 
 INSERT INTO `emergency_requests` (`id`, `help_seeker_id`, `emergency_type`, `location`, `description`, `priority`, `victim_type`, `victim_information`, `victim_count`, `contact_information`, `status`, `created_at`, `updated_at`, `volunteer_id`, `accepted_at`) VALUES
-(1, 3, 'medical', 'Mirpur', 'A person needs immediate medical assistance.', 'high', 'self', NULL, 1, '01300000000', 'completed', '2026-08-24 15:57:34', '2026-08-30 11:18:56', 4, '2026-08-28 21:25:54');
+(1, 3, 'medical', 'Mirpur', 'A person needs immediate medical assistance.', 'high', 'self', NULL, 1, '01300000000', 'completed', '2026-08-24 15:57:34', '2026-08-30 11:18:56', 4, '2026-08-28 21:25:54'),
+(2, 3, 'medical', 'Bashundhara R/A', 'headache', 'critical', 'self', NULL, 1, '1234567890', 'pending', '2026-09-11 17:35:10', '2026-09-11 17:35:10', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -102,6 +103,14 @@ CREATE TABLE `feedback` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `feedback`
+--
+
+INSERT INTO `feedback` (`id`, `help_seeker_id`, `rescue_request_id`, `message`, `status`, `created_at`, `updated_at`) VALUES
+(5, 3, 1, 'welll', 'pending', '2026-09-11 17:39:09', '2026-09-11 17:39:09'),
+(6, 3, 1, 'cd*', 'pending', '2026-09-11 17:39:33', '2026-09-11 17:39:33');
 
 -- --------------------------------------------------------
 
@@ -349,13 +358,13 @@ ALTER TABLE `donations`
 -- AUTO_INCREMENT for table `emergency_requests`
 --
 ALTER TABLE `emergency_requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `notifications`
