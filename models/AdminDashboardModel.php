@@ -81,12 +81,11 @@ function getAdminDashboardCounts($conn)
 
             (
                 SELECT COALESCE(
-                    SUM(amount),
-                    0
-                )
+                SUM(amount),
+                0
+            )
                 FROM donations
-                WHERE donation_type = 'money'
-                AND status = 'completed'
+                WHERE status = 'completed'
             )
             AS money_donated,
 
