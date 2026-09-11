@@ -2,22 +2,49 @@
 
 require_once "models/FeedbackModel.php";
 
+
+/*
+|--------------------------------------------------------------------------
+| LOAD ALL FEEDBACK
+|--------------------------------------------------------------------------
+*/
+
 function loadAllFeedback($conn)
 {
-    return getAllFeedback($conn);
+    return
+        getAllFeedback(
+            $conn
+        );
 }
+
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN - UPDATE FEEDBACK STATUS
+|--------------------------------------------------------------------------
+*/
 
 function handleUpdateFeedbackStatus($conn)
 {
-    $id = isset($_POST['id'])
-        ? (int)$_POST['id']
-        : 0;
+    $id =
+        isset($_POST['id'])
+            ? (int)$_POST['id']
+            : 0;
 
-    $status = trim($_POST['status'] ?? '');
+
+    $status =
+        trim(
+            $_POST['status']
+            ?? ''
+        );
+
 
     if ($id <= 0) {
-        return "Invalid feedback ID.";
+
+        return
+            "Invalid feedback ID.";
     }
+
 
     if (
         !updateFeedbackStatus(
@@ -26,77 +53,140 @@ function handleUpdateFeedbackStatus($conn)
             $status
         )
     ) {
-        return "Failed to update feedback status.";
+
+        return
+            "Failed to update feedback status.";
     }
+
 
     return '';
 }
+
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN - DELETE FEEDBACK
+|--------------------------------------------------------------------------
+*/
+
 function handleDeleteFeedback($conn)
 {
-    require_once "models/FeedbackModel.php";
+    $feedbackId =
+        (int)(
+            $_POST['id']
+            ?? 0
+        );
 
-    $feedback_id =
-        (int)($_POST['id'] ?? 0);
 
-    if ($feedback_id <= 0) {
-        die("Invalid feedback ID.");
+    if ($feedbackId <= 0) {
+
+        die(
+            "Invalid feedback ID."
+        );
     }
 
-    $deleted = deleteFeedback(
-        $conn,
-        $feedback_id
-    );
+
+    $deleted =
+        deleteFeedback(
+            $conn,
+            $feedbackId
+        );
+
 
     if (!$deleted) {
-        die("Failed to delete feedback.");
+
+        die(
+            "Failed to delete feedback."
+        );
     }
 
-    header("Location: index.php?page=feedback");
+
+    header(
+        "Location: index.php?page=feedback"
+    );
+
     exit;
 }
-function handleCreateFeedback($conn)
-{
-    $help_seeker_id = (int)(
-        $_SESSION['user']['id'] ?? 0
-    );
 
-    $rescue_request_id = (int)(
-        $_POST['rescue_request_id'] ?? 0
-    );
 
-    $message = trim(
-        $_POST['message'] ?? ''
-    );
+/*
+|--------------------------------------------------------------------------
+| HELP SEEKER - CREATE FEEDBACK
+|--------------------------------------------------------------------------
+*/
 
-    if ($help_seeker_id <= 0) {
-        return "Invalid help seeker.";
+function handleCreateFeedback(
+    $conn,
+    $rescueRequestId
+) {
+
+    $helpSeekerId =
+        (int)(
+            $_SESSION['user']['id']
+            ?? 0
+        );
+
+
+    $rescueRequestId =
+        (int)$rescueRequestId;
+
+
+    $message =
+        trim(
+            $_POST['message']
+            ?? ''
+        );
+
+
+    if ($helpSeekerId <= 0) {
+
+        return
+            "Invalid help seeker account.";
     }
 
-    if ($rescue_request_id <= 0) {
-        return "Invalid emergency request.";
+
+    if ($rescueRequestId <= 0) {
+
+        return
+            "Invalid emergency request.";
     }
+
 
     if ($message === '') {
-        return "Feedback message is required.";
+
+        return
+            "Feedback message is required.";
     }
 
-    if (strlen($message) > 1000) {
-        return "Feedback message is too long.";
-    }
 
     if (
-        createFeedback(
-            $conn,
-            $help_seeker_id,
-            $rescue_request_id,
-            $message
-        )
+        strlen($message) > 1000
     ) {
-        header(
-            "Location: index.php?page=helpseeker-requests"
-        );
-        exit;
+
+        return
+            "Feedback message must not exceed 1000 characters.";
     }
 
-    return "Failed to submit feedback.";
+
+    $created =
+        createFeedback(
+            $conn,
+            $helpSeekerId,
+            $rescueRequestId,
+            $message
+        );
+
+
+    if (!$created) {
+
+        return
+            "Failed to submit feedback.";
+    }
+
+
+    header(
+        "Location: index.php?page=helpseeker-requests"
+    );
+
+    exit;
 }
