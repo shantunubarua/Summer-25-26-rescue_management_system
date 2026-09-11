@@ -213,54 +213,66 @@ $role =
         </ul>
 
 
-    <?php elseif ($role === 'help_seeker'): ?>
+<?php elseif ($role === 'help_seeker'): ?>
 
-        <h2>Help Seeker Panel</h2>
+    <h2>Help Seeker Panel</h2>
 
-        <ul>
+    <ul>
 
-            <li>
-                <a href="index.php?page=helpseeker-dashboard">
-                    Dashboard
-                </a>
-            </li>
+        <li>
+            <a href="index.php?page=helpseeker-dashboard">
+                Dashboard
+            </a>
+        </li>
 
-            <li>
-                <a href="index.php?page=helpseeker-request-create">
-                    Request Rescue
-                </a>
-            </li>
+        <li>
+            <a href="index.php?page=helpseeker-request-create">
+                Request Rescue
+            </a>
+        </li>
 
-            <li>
-                <a href="index.php?page=helpseeker-requests">
-                    My Requests
-                </a>
-            </li>
+        <li>
+            <a href="index.php?page=helpseeker-requests">
+                My Requests
+            </a>
+        </li>
 
-            <li>
-                <a href="index.php?page=change-password">
-                    Change Password
-                </a>
-            </li>
+        <li>
+            <a href="index.php?page=helpseeker-nearby-volunteers">
+                Nearby Volunteers
+            </a>
+        </li>
 
-            <li>
+        <li>
+            <a href="index.php?page=helpseeker-profile">
+                My Profile
+            </a>
+        </li>
 
-                <form
-                    method="POST"
-                    action="index.php?page=logout"
-                >
+        <li>
+            <a href="index.php?page=change-password">
+                Change Password
+            </a>
+        </li>
 
-                    <?php echo csrfField(); ?>
+        <li>
 
-                    <button type="submit">
-                        Logout
-                    </button>
+            <form
+                method="POST"
+                action="index.php?page=logout"
+            >
 
-                </form>
+                <?php echo csrfField(); ?>
 
-            </li>
+                <button type="submit">
+                    Logout
+                </button>
 
-        </ul>
+            </form>
+
+        </li>
+
+    </ul>
 
     <?php endif; ?>
 
