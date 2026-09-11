@@ -1326,6 +1326,147 @@ requireValidCsrfToken();
 
 /*
 |--------------------------------------------------------------------------
+| HELP SEEKER PROFILE
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'helpseeker-profile') {
+
+    requireHelpSeeker();
+
+
+    require_once
+        "models/HelpSeekerModel.php";
+
+    require_once
+        "controllers/HelpSeekerController.php";
+
+
+    $help_seeker_id =
+        (int)(
+            $_SESSION['user']['id']
+            ?? 0
+        );
+
+
+    if ($help_seeker_id <= 0) {
+
+        die(
+            "Invalid help seeker account."
+        );
+    }
+
+
+    $profile =
+        getHelpSeekerProfile(
+            $conn,
+            $help_seeker_id
+        );
+
+
+    if (!$profile) {
+
+        die(
+            "Help seeker profile not found."
+        );
+    }
+
+
+    $error = '';
+    $success = '';
+
+
+    if (
+        $_SERVER['REQUEST_METHOD']
+        === 'POST'
+    ) {
+
+        requireValidCsrfToken();
+
+
+        $error =
+            handleUpdateHelpSeekerProfile(
+                $conn,
+                $help_seeker_id
+            );
+
+
+        if ($error === '') {
+
+            $success =
+                "Profile updated successfully.";
+
+
+            $profile =
+                getHelpSeekerProfile(
+                    $conn,
+                    $help_seeker_id
+                );
+
+        } else {
+
+            $profile['name'] =
+                $_POST['name']
+                ?? $profile['name'];
+
+            $profile['email'] =
+                $_POST['email']
+                ?? $profile['email'];
+
+            $profile['phone'] =
+                $_POST['phone']
+                ?? $profile['phone'];
+        }
+    }
+
+
+    require_once
+        "views/helpseeker/profile.php";
+
+/*
+|--------------------------------------------------------------------------
+| HELP SEEKER NEARBY VOLUNTEERS
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'helpseeker-nearby-volunteers') {
+
+    requireHelpSeeker();
+
+
+    require_once
+        "controllers/HelpSeekerController.php";
+
+
+    $area =
+        trim(
+            $_GET['area']
+            ?? ''
+        );
+
+
+    $result =
+        loadNearbyVolunteersForHelpSeeker(
+            $conn,
+            $area
+        );
+
+
+    $error =
+        $result['error']
+        ?? '';
+
+
+    $nearbyVolunteers =
+        $result['volunteers']
+        ?? [];
+
+
+    require_once
+        "views/helpseeker/nearby_volunteers.php";
+
+/*
+|--------------------------------------------------------------------------
 | HELP SEEKER CREATE EMERGENCY REQUEST
 |--------------------------------------------------------------------------
 */
