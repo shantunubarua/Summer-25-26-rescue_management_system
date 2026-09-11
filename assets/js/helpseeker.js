@@ -542,3 +542,446 @@ document.addEventListener(
 
     }
 );
+/*
+|--------------------------------------------------------------------------
+| HELP SEEKER FORM VALIDATION
+|--------------------------------------------------------------------------
+*/
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        /*
+        |--------------------------------------------------------------------------
+        | EMERGENCY REQUEST VALIDATION
+        |--------------------------------------------------------------------------
+        */
+
+        const emergencyForm =
+            document.getElementById(
+                "helpSeekerEmergencyForm"
+            );
+
+
+        if (
+            emergencyForm &&
+            emergencyForm.dataset.validationBound
+                !== "1"
+        ) {
+
+            emergencyForm.dataset.validationBound =
+                "1";
+
+
+            const emergencyType =
+                document.getElementById(
+                    "emergency_type"
+                );
+
+            const location =
+                document.getElementById(
+                    "location"
+                );
+
+            const description =
+                document.getElementById(
+                    "description"
+                );
+
+            const priority =
+                document.getElementById(
+                    "priority"
+                );
+
+            const victimType =
+                document.getElementById(
+                    "victim_type"
+                );
+
+            const victimInformation =
+                document.getElementById(
+                    "victim_information"
+                );
+
+            const victimCount =
+                document.getElementById(
+                    "victim_count"
+                );
+
+            const contactInformation =
+                document.getElementById(
+                    "contact_information"
+                );
+
+            const errorBox =
+                document.getElementById(
+                    "helpSeekerClientError"
+                );
+
+
+            const allowedEmergencyTypes = [
+                "accident",
+                "fire",
+                "flood",
+                "medical",
+                "other"
+            ];
+
+
+            const allowedPriorities = [
+                "low",
+                "medium",
+                "high",
+                "critical"
+            ];
+
+
+            const allowedVictimTypes = [
+                "self",
+                "other"
+            ];
+
+
+            function showEmergencyError(message)
+            {
+                if (!errorBox) {
+                    return;
+                }
+
+                errorBox.textContent =
+                    message;
+
+                errorBox.hidden =
+                    false;
+            }
+
+
+            function clearEmergencyError()
+            {
+                if (!errorBox) {
+                    return;
+                }
+
+                errorBox.textContent =
+                    "";
+
+                errorBox.hidden =
+                    true;
+            }
+
+
+            function updateVictimInformation()
+            {
+                if (
+                    !victimType ||
+                    !victimInformation
+                ) {
+                    return;
+                }
+
+
+                const isOther =
+                    victimType.value ===
+                    "other";
+
+
+                victimInformation.required =
+                    isOther;
+
+
+                if (!isOther) {
+
+                    victimInformation.value =
+                        "";
+                }
+            }
+
+
+            if (victimType) {
+
+                victimType.addEventListener(
+                    "change",
+                    updateVictimInformation
+                );
+
+
+                updateVictimInformation();
+            }
+
+
+            emergencyForm.addEventListener(
+                "submit",
+                function (event) {
+
+                    clearEmergencyError();
+
+
+                    if (
+                        !emergencyType ||
+                        !allowedEmergencyTypes.includes(
+                            emergencyType.value
+                        )
+                    ) {
+
+                        event.preventDefault();
+
+                        showEmergencyError(
+                            "Please select a valid emergency type."
+                        );
+
+                        return;
+                    }
+
+
+                    if (
+                        !location ||
+                        location.value.trim() === ""
+                    ) {
+
+                        event.preventDefault();
+
+                        showEmergencyError(
+                            "Location is required."
+                        );
+
+                        return;
+                    }
+
+
+                    if (
+                        location.value.trim()
+                            .length > 255
+                    ) {
+
+                        event.preventDefault();
+
+                        showEmergencyError(
+                            "Location must not exceed 255 characters."
+                        );
+
+                        return;
+                    }
+
+
+                    if (
+                        !description ||
+                        description.value.trim()
+                            === ""
+                    ) {
+
+                        event.preventDefault();
+
+                        showEmergencyError(
+                            "Description is required."
+                        );
+
+                        return;
+                    }
+
+
+                    if (
+                        !priority ||
+                        !allowedPriorities.includes(
+                            priority.value
+                        )
+                    ) {
+
+                        event.preventDefault();
+
+                        showEmergencyError(
+                            "Please select a valid priority."
+                        );
+
+                        return;
+                    }
+
+
+                    if (
+                        !victimType ||
+                        !allowedVictimTypes.includes(
+                            victimType.value
+                        )
+                    ) {
+
+                        event.preventDefault();
+
+                        showEmergencyError(
+                            "Please select who needs help."
+                        );
+
+                        return;
+                    }
+
+
+                    if (
+                        victimType.value ===
+                            "other" &&
+                        (
+                            !victimInformation ||
+                            victimInformation.value
+                                .trim() === ""
+                        )
+                    ) {
+
+                        event.preventDefault();
+
+                        showEmergencyError(
+                            "Please provide information about the victim."
+                        );
+
+                        return;
+                    }
+
+
+                    const victimCountValue =
+                        Number(
+                            victimCount
+                                ? victimCount.value
+                                : 0
+                        );
+
+
+                    if (
+                        !Number.isInteger(
+                            victimCountValue
+                        ) ||
+                        victimCountValue < 1
+                    ) {
+
+                        event.preventDefault();
+
+                        showEmergencyError(
+                            "Victim count must be a whole number of at least 1."
+                        );
+
+                        return;
+                    }
+
+
+                    if (
+                        !contactInformation ||
+                        contactInformation.value
+                            .trim() === ""
+                    ) {
+
+                        event.preventDefault();
+
+                        showEmergencyError(
+                            "Contact information is required."
+                        );
+
+                        return;
+                    }
+
+
+                    if (
+                        contactInformation.value
+                            .trim().length > 150
+                    ) {
+
+                        event.preventDefault();
+
+                        showEmergencyError(
+                            "Contact information must not exceed 150 characters."
+                        );
+
+                        return;
+                    }
+                }
+            );
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | FEEDBACK VALIDATION
+        |--------------------------------------------------------------------------
+        */
+
+        const feedbackForm =
+            document.getElementById(
+                "helpSeekerFeedbackForm"
+            );
+
+
+        if (
+            feedbackForm &&
+            feedbackForm.dataset.validationBound
+                !== "1"
+        ) {
+
+            feedbackForm.dataset.validationBound =
+                "1";
+
+
+            const message =
+                document.getElementById(
+                    "message"
+                );
+
+
+            const feedbackError =
+                document.getElementById(
+                    "helpSeekerFeedbackError"
+                );
+
+
+            feedbackForm.addEventListener(
+                "submit",
+                function (event) {
+
+                    const value =
+                        message
+                            ? message.value.trim()
+                            : "";
+
+
+                    if (feedbackError) {
+
+                        feedbackError.hidden =
+                            true;
+
+                        feedbackError.textContent =
+                            "";
+                    }
+
+
+                    if (value === "") {
+
+                        event.preventDefault();
+
+
+                        if (feedbackError) {
+
+                            feedbackError.textContent =
+                                "Feedback message is required.";
+
+                            feedbackError.hidden =
+                                false;
+                        }
+
+                        return;
+                    }
+
+
+                    if (value.length > 1000) {
+
+                        event.preventDefault();
+
+
+                        if (feedbackError) {
+
+                            feedbackError.textContent =
+                                "Feedback message must not exceed 1000 characters.";
+
+                            feedbackError.hidden =
+                                false;
+                        }
+                    }
+                }
+            );
+        }
+
+    }
+);
