@@ -500,6 +500,79 @@ if ($page === 'login') {
     );
     /*
 |--------------------------------------------------------------------------
+| ADMIN - DONATIONS
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'admin-donations') {
+
+    requireAdmin();
+
+
+    require_once
+        "controllers/DonationController.php";
+
+
+    $search =
+        trim(
+            $_GET['search']
+            ?? ''
+        );
+
+
+    $result =
+        loadAdminDonations(
+            $conn,
+            $search
+        );
+
+
+    $error =
+        $result['error']
+        ?? '';
+
+
+    $donations =
+        $result['donations']
+        ?? [];
+
+
+    require_once
+        "views/admin/donations/index.php";
+
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN - DONATION DETAILS
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'admin-donation-view') {
+
+    requireAdmin();
+
+
+    require_once
+        "controllers/DonationController.php";
+
+
+    $donation_id =
+        isset($_GET['id'])
+            ? (int)$_GET['id']
+            : 0;
+
+
+    $donation =
+        loadAdminDonationDetails(
+            $conn,
+            $donation_id
+        );
+
+
+    require_once
+        "views/admin/donations/view.php";
+    /*
+|--------------------------------------------------------------------------
 | ADMIN - RESOURCE REQUESTS
 |--------------------------------------------------------------------------
 */
