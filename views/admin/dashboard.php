@@ -1,102 +1,268 @@
-<?php require_once "views/partials/header.php"; ?>
-<?php require_once "views/partials/sidebar.php"; ?>
+<?php
+
+require_once
+    "views/partials/header.php";
+
+require_once
+    "views/partials/sidebar.php";
+
+?>
 
 <div class="content">
 
-    <h1>Admin Dashboard</h1>
+    <h1>
+        Admin Dashboard
+    </h1>
+
 
     <p>
+
         Welcome,
-        <?php
-        echo htmlspecialchars(
+
+        <?= htmlspecialchars(
             $_SESSION['user']['name']
-        );
-        ?>
+            ?? 'Admin'
+        ); ?>
+
     </p>
+
 
     <div class="dashboard-cards">
 
-    <!-- USER OVERVIEW -->
 
-    <div class="card">
-        <h3>Registered Volunteers</h3>
+        <!-- USER OVERVIEW -->
 
-        <p class="dashboard-count">
-            <?php echo $dashboardCounts['volunteers']; ?>
-        </p>
+        <div class="card">
 
-        <p>Volunteer accounts registered in the system.</p>
-    </div>
+            <h3>
+                Registered Volunteers
+            </h3>
 
-    <div class="card">
-        <h3>Registered Witnesses</h3>
+            <p class="dashboard-count">
 
-        <p class="dashboard-count">
-            <?php echo $dashboardCounts['witnesses']; ?>
-        </p>
+                <?= (int)(
+                    $dashboardCounts['volunteers']
+                    ?? 0
+                ); ?>
 
-        <p>Witness accounts registered in the system.</p>
-    </div>
+            </p>
 
-    <div class="card">
-        <h3>Registered Help Seekers</h3>
+            <p>
+                Volunteer accounts registered in the system.
+            </p>
 
-        <p class="dashboard-count">
-            <?php echo $dashboardCounts['help_seekers']; ?>
-        </p>
-
-        <p>Help Seeker accounts registered in the system.</p>
-    </div>
+        </div>
 
 
-    <!-- SYSTEM OVERVIEW -->
+        <div class="card">
 
-    <div class="card">
-        <h3>Notifications</h3>
+            <h3>
+                Registered Witnesses
+            </h3>
 
-        <p class="dashboard-count">
-            <?php echo $dashboardCounts['notifications']; ?>
-        </p>
+            <p class="dashboard-count">
 
-        <a href="index.php?page=notifications">
-            View Notifications
-        </a>
-    </div>
+                <?= (int)(
+                    $dashboardCounts['witnesses']
+                    ?? 0
+                ); ?>
 
-    <div class="card">
-        <h3>Feedback</h3>
+            </p>
 
-        <p class="dashboard-count">
-            <?php echo $dashboardCounts['feedback']; ?>
-        </p>
+            <p>
+                Witness accounts registered in the system.
+            </p>
 
-        <a href="index.php?page=feedback">
-            View Feedback
-        </a>
-    </div>
+        </div>
 
-    <div class="card">
-        <h3>Rescue Reports</h3>
 
-        <p class="dashboard-count">
-            <?php echo $dashboardCounts['rescue_reports']; ?>
-        </p>
+        <div class="card">
 
-        <a href="index.php?page=rescue-reports">
-            View Rescue Reports
-        </a>
-    </div>
+            <h3>
+                Registered Help Seekers
+            </h3>
 
-    <div class="card">
-        <h3>Emergency Requests</h3>
+            <p class="dashboard-count">
 
-        <p class="dashboard-count">
-            <?php echo $dashboardCounts['emergency_requests']; ?>
-        </p>
+                <?= (int)(
+                    $dashboardCounts['help_seekers']
+                    ?? 0
+                ); ?>
+
+            </p>
+
+            <p>
+                Help Seeker accounts registered in the system.
+            </p>
+
+        </div>
+
+
+        <!-- DONATION OVERVIEW -->
+
+        <div class="card">
+
+            <h3>
+                Total Donations
+            </h3>
+
+            <p class="dashboard-count">
+
+                <?= (int)(
+                    $dashboardCounts['donations']
+                    ?? 0
+                ); ?>
+
+            </p>
+
+            <a href="index.php?page=admin-donations">
+                View Donations
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                Witness Donors
+            </h3>
+
+            <p class="dashboard-count">
+
+                <?= (int)(
+                    $dashboardCounts['donors']
+                    ?? 0
+                ); ?>
+
+            </p>
+
+            <p>
+                Witnesses who have submitted donations.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                Money Donation Total
+            </h3>
+
+            <p class="dashboard-count">
+
+                <?= htmlspecialchars(
+                    number_format(
+                        (float)(
+                            $dashboardCounts['money_donated']
+                            ?? 0
+                        ),
+                        2
+                    )
+                ); ?>
+
+            </p>
+
+            <p>
+                Total completed money-type donation amount.
+            </p>
+
+        </div>
+
+
+        <!-- SYSTEM OVERVIEW -->
+
+        <div class="card">
+
+            <h3>
+                Notifications
+            </h3>
+
+            <p class="dashboard-count">
+
+                <?= (int)(
+                    $dashboardCounts['notifications']
+                    ?? 0
+                ); ?>
+
+            </p>
+
+            <a href="index.php?page=notifications">
+                View Notifications
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                Feedback
+            </h3>
+
+            <p class="dashboard-count">
+
+                <?= (int)(
+                    $dashboardCounts['feedback']
+                    ?? 0
+                ); ?>
+
+            </p>
+
+            <a href="index.php?page=feedback">
+                View Feedback
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                Rescue Reports
+            </h3>
+
+            <p class="dashboard-count">
+
+                <?= (int)(
+                    $dashboardCounts['rescue_reports']
+                    ?? 0
+                ); ?>
+
+            </p>
+
+            <a href="index.php?page=rescue-reports">
+                View Rescue Reports
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                Emergency Requests
+            </h3>
+
+            <p class="dashboard-count">
+
+                <?= (int)(
+                    $dashboardCounts['emergency_requests']
+                    ?? 0
+                ); ?>
+
+            </p>
+
+        </div>
+
     </div>
 
 </div>
 
-</div>
+<?php
 
-<?php require_once "views/partials/footer.php"; ?>
+require_once
+    "views/partials/footer.php";
+
+?>
