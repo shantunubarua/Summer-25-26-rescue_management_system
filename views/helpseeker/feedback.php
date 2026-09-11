@@ -3,54 +3,73 @@
 require_once "views/partials/header.php";
 require_once "views/partials/sidebar.php";
 
+$message =
+    $_POST['message']
+    ?? '';
+
 ?>
 
 <div class="content">
 
-    <h1>Give Feedback</h1>
+    <div class="page-header">
 
-    <p>
-        Share your feedback about the completed rescue activity.
-    </p>
+        <div>
+
+            <h1>
+                Give Feedback
+            </h1>
+
+            <p>
+                Share your feedback about the completed rescue activity.
+            </p>
+
+        </div>
+
+    </div>
 
 
     <div class="card">
 
         <h3>
             Emergency Request #
-            <?php echo (int)$request['id']; ?>
+            <?= (int)$request['id']; ?>
         </h3>
 
 
         <p>
-            <strong>Emergency Type:</strong>
+            <strong>
+                Emergency Type:
+            </strong>
 
-            <?php
-            echo htmlspecialchars(
-                ucfirst($request['emergency_type'])
-            );
-            ?>
+            <?= htmlspecialchars(
+                ucfirst(
+                    $request['emergency_type']
+                    ?? 'N/A'
+                )
+            ); ?>
         </p>
 
 
         <p>
-            <strong>Location:</strong>
+            <strong>
+                Location:
+            </strong>
 
-            <?php
-            echo htmlspecialchars(
+            <?= htmlspecialchars(
                 $request['location']
-            );
-            ?>
+                ?? 'N/A'
+            ); ?>
         </p>
 
 
         <p>
-            <strong>Status:</strong>
+            <strong>
+                Status:
+            </strong>
 
             <span class="status-completed">
                 Completed
             </span>
-
         </p>
 
     </div>
@@ -60,30 +79,37 @@ require_once "views/partials/sidebar.php";
 
         <div class="error">
 
-            <?php
-            echo htmlspecialchars($error);
-            ?>
+            <?= htmlspecialchars(
+                $error
+            ); ?>
 
         </div>
 
     <?php endif; ?>
 
 
+    <div
+        id="helpSeekerFeedbackError"
+        class="error"
+        hidden
+    ></div>
+
+
     <div class="card">
 
-        <h3>Your Feedback</h3>
+        <h3>
+            Your Feedback
+        </h3>
 
 
         <form
+            id="helpSeekerFeedbackForm"
             method="POST"
-            action="index.php?page=helpseeker-feedback&id=<?php echo (int)$request['id']; ?>"
+            action="index.php?page=helpseeker-feedback&id=<?= (int)$request['id']; ?>"
+            novalidate
         >
 
-            <input
-                type="hidden"
-                name="rescue_request_id"
-                value="<?php echo (int)$request['id']; ?>"
-            >
+            <?php echo csrfField(); ?>
 
 
             <p>
@@ -104,19 +130,25 @@ require_once "views/partials/sidebar.php";
                     maxlength="1000"
                     placeholder="Write your feedback here..."
                     required
-                ></textarea>
+                ><?= htmlspecialchars(
+                    $message
+                ); ?></textarea>
 
             </p>
 
 
             <p>
 
-                <button type="submit">
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
                     Submit Feedback
                 </button>
 
                 <a
                     href="index.php?page=helpseeker-requests"
+                    class="btn"
                 >
                     Cancel
                 </a>
@@ -159,12 +191,11 @@ textarea {
     box-sizing: border-box;
 }
 
-button {
-    padding: 10px 18px;
-    cursor: pointer;
-}
-
 </style>
 
 
-<?php require_once "views/partials/footer.php"; ?>
+<script src="assets/js/helpseeker.js"></script>
+
+<?php
+require_once "views/partials/footer.php";
+?>
