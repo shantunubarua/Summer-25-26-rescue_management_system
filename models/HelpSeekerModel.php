@@ -297,3 +297,197 @@ function searchHelpSeekerRequests(
 
     return $requests;
 }
+/*
+|--------------------------------------------------------------------------
+| HELP SEEKER PROFILE
+|--------------------------------------------------------------------------
+*/
+
+function getHelpSeekerProfile(
+    $conn,
+    $help_seeker_id
+) {
+    $sql =
+        "SELECT
+            id,
+            name,
+            username,
+            email,
+            phone,
+            role
+         FROM users
+         WHERE id = ?
+         AND role = 'help_seeker'
+         LIMIT 1";
+
+
+    $stmt =
+        mysqli_prepare(
+            $conn,
+            $sql
+        );
+
+
+    if (!$stmt) {
+        return false;
+    }
+
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "i",
+        $help_seeker_id
+    );
+
+
+    mysqli_stmt_execute(
+        $stmt
+    );
+
+
+    $result =
+        mysqli_stmt_get_result(
+            $stmt
+        );
+
+
+    $profile =
+        mysqli_fetch_assoc(
+            $result
+        );
+
+
+    mysqli_stmt_close(
+        $stmt
+    );
+
+
+    return $profile;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| CHECK DUPLICATE HELP SEEKER EMAIL
+|--------------------------------------------------------------------------
+*/
+
+function helpSeekerEmailExistsForAnotherUser(
+    $conn,
+    $email,
+    $help_seeker_id
+) {
+    $sql =
+        "SELECT id
+         FROM users
+         WHERE email = ?
+         AND id <> ?
+         LIMIT 1";
+
+
+    $stmt =
+        mysqli_prepare(
+            $conn,
+            $sql
+        );
+
+
+    if (!$stmt) {
+        return true;
+    }
+
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "si",
+        $email,
+        $help_seeker_id
+    );
+
+
+    mysqli_stmt_execute(
+        $stmt
+    );
+
+
+    $result =
+        mysqli_stmt_get_result(
+            $stmt
+        );
+
+
+    $exists =
+        mysqli_fetch_assoc(
+            $result
+        )
+        ? true
+        : false;
+
+
+    mysqli_stmt_close(
+        $stmt
+    );
+
+
+    return $exists;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| UPDATE HELP SEEKER PROFILE
+|--------------------------------------------------------------------------
+*/
+
+function updateHelpSeekerProfile(
+    $conn,
+    $help_seeker_id,
+    $name,
+    $email,
+    $phone
+) {
+    $sql =
+        "UPDATE users
+         SET
+            name = ?,
+            email = ?,
+            phone = ?
+         WHERE id = ?
+         AND role = 'help_seeker'";
+
+
+    $stmt =
+        mysqli_prepare(
+            $conn,
+            $sql
+        );
+
+
+    if (!$stmt) {
+        return false;
+    }
+
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "sssi",
+        $name,
+        $email,
+        $phone,
+        $help_seeker_id
+    );
+
+
+    $success =
+        mysqli_stmt_execute(
+            $stmt
+        );
+
+
+    mysqli_stmt_close(
+        $stmt
+    );
+
+
+    return $success;
+}
