@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 11, 2026 at 09:14 PM
+-- Generation Time: Sep 12, 2026 at 12:18 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -44,15 +44,6 @@ CREATE TABLE `donations` (
 --
 
 INSERT INTO `donations` (`id`, `witness_id`, `amount`, `donation_type`, `payment_method`, `transaction_id`, `message`, `status`, `created_at`) VALUES
-(1, 2, 300.00, 'money', 'bkash', 'TXN0000000000001', 'good luck', 'pending', '2026-09-01 05:31:15'),
-(2, 2, 300.00, 'money', 'bkash', 'TXN0000000000002', 'good luck', 'pending', '2026-09-01 05:31:28'),
-(3, 2, 300.00, 'money', 'bkash', 'TXN0000000000003', 'good luck', 'pending', '2026-09-01 05:48:24'),
-(4, 2, 300.00, 'money', 'bkash', 'TXN0000000000004', 'good luck', 'pending', '2026-09-01 05:53:52'),
-(5, 2, 300.00, 'money', 'bkash', 'TXN0000000000005', 'good luck', 'pending', '2026-09-01 05:54:01'),
-(6, 2, 300.00, 'money', 'card', 'TXN0000000000006', 'good initiative', 'pending', '2026-09-01 06:47:02'),
-(7, 2, 100.00, 'money', 'cash', 'TXN453f3943bf9cd', 'keep up the good work', 'pending', '2026-09-01 08:02:35'),
-(8, 2, 200.00, 'medicine', 'bank', 'TXN881b6d1b13c52', 'good', 'pending', '2026-09-01 08:05:43'),
-(9, 2, 100.00, 'water', 'cash', '', 'TXNd0b66fd6641b8', 'pending', '2026-09-09 12:08:30'),
 (10, 2, 10000.00, 'water', 'cash', 'TXNe313a30c55157', 'Water donation for affected families', 'completed', '2026-09-09 12:24:20'),
 (11, 2, 20000.00, 'money', 'card', 'TXN334d3e84f9574', 'Money for food', 'completed', '2026-09-09 15:08:08');
 
@@ -135,7 +126,7 @@ CREATE TABLE `notifications` (
 --
 
 INSERT INTO `notifications` (`id`, `created_by`, `title`, `message`, `alert_type`, `target_audience`, `status`, `created_at`, `updated_at`) VALUES
-(2, 1, 'Flood emergency alert', 'Rescue operation active in zone A', 'emergency', 'all', 'inactive', '2026-08-21 08:19:14', '2026-08-21 09:35:12'),
+(2, 1, 'Flood emergency alert', 'Rescue operation active in zone A', 'emergency', 'all', 'active', '2026-08-21 08:19:14', '2026-09-11 21:25:53'),
 (5, 1, 'volunteet test alert', 'test', 'important', 'volunteer', 'active', '2026-09-07 17:47:43', '2026-09-07 17:47:43'),
 (6, 1, 'Witness Test', 'This is for witnesses.', 'important', 'witness', 'active', '2026-09-09 09:48:30', '2026-09-09 09:48:30'),
 (8, 1, 'test', 'test messege', 'normal', 'all', 'active', '2026-09-10 18:45:59', '2026-09-10 18:51:16');
