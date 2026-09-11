@@ -470,3 +470,216 @@ function handleHelpSeekerRequestSearch($conn)
 
     exit;
 }
+/*
+|--------------------------------------------------------------------------
+| UPDATE HELP SEEKER PROFILE
+|--------------------------------------------------------------------------
+*/
+
+function handleUpdateHelpSeekerProfile(
+    $conn,
+    $help_seeker_id
+) {
+    $help_seeker_id =
+        (int)$help_seeker_id;
+
+
+    $name =
+        trim(
+            $_POST['name']
+            ?? ''
+        );
+
+
+    $email =
+        trim(
+            $_POST['email']
+            ?? ''
+        );
+
+
+    $phone =
+        trim(
+            $_POST['phone']
+            ?? ''
+        );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | ACCOUNT VALIDATION
+    |--------------------------------------------------------------------------
+    */
+
+    if ($help_seeker_id <= 0) {
+
+        return
+            "Invalid help seeker account.";
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | NAME VALIDATION
+    |--------------------------------------------------------------------------
+    */
+
+    if ($name === '') {
+
+        return
+            "Name is required.";
+    }
+
+
+    if (
+        strlen($name) < 2 ||
+        strlen($name) > 100
+    ) {
+
+        return
+            "Name must be between 2 and 100 characters.";
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | EMAIL VALIDATION
+    |--------------------------------------------------------------------------
+    */
+
+    if ($email === '') {
+
+        return
+            "Email address is required.";
+    }
+
+
+    if (
+        !filter_var(
+            $email,
+            FILTER_VALIDATE_EMAIL
+        )
+    ) {
+
+        return
+            "Please enter a valid email address.";
+    }
+
+
+    if (
+        helpSeekerEmailExistsForAnotherUser(
+            $conn,
+            $email,
+            $help_seeker_id
+        )
+    ) {
+
+        return
+            "Email address is already being used by another account.";
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | PHONE VALIDATION
+    |--------------------------------------------------------------------------
+    */
+
+    if (
+        $phone !== '' &&
+        !preg_match(
+            '/^[0-9+\-\s]{7,20}$/',
+            $phone
+        )
+    ) {
+
+        return
+            "Please enter a valid phone number.";
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | UPDATE PROFILE
+    |--------------------------------------------------------------------------
+    */
+
+    $updated =
+        updateHelpSeekerProfile(
+            $conn,
+            $help_seeker_id,
+            $name,
+            $email,
+            $phone
+        );
+
+
+    if (!$updated) {
+
+        return
+            "Failed to update profile.";
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | UPDATE SESSION COPY
+    |--------------------------------------------------------------------------
+    */
+
+    $_SESSION['user']['name'] =
+        $name;
+
+    $_SESSION['user']['email'] =
+        $email;
+
+
+    return '';
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| LOAD NEARBY AVAILABLE VOLUNTEERS
+|--------------------------------------------------------------------------
+*/
+
+function loadNearbyVolunteersForHelpSeeker(
+    $conn,
+    $area
+) {
+    require_once
+        "models/VolunteerModel.php";
+
+
+    $area =
+        trim($area);
+
+
+    if (
+        strlen($area) > 100
+    ) {
+
+        return [
+            'error' =>
+                'Search location must not exceed 100 characters.',
+
+            'volunteers' =>
+                []
+        ];
+    }
+
+
+    $volunteers =
+        getNearbyAvailableVolunteers(
+            $conn,
+            $area
+        );
+
+
+    return [
+        'error' => '',
+        'volunteers' =>
+            $volunteers
+    ];
+}
