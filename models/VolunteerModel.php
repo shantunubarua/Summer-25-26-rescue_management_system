@@ -270,3 +270,142 @@ function updateVolunteerProfile(
 
     return $profileUpdated;
 }
+/*
+|--------------------------------------------------------------------------
+| HELP SEEKER - FIND AVAILABLE VOLUNTEERS BY AREA
+|--------------------------------------------------------------------------
+*/
+
+function getNearbyAvailableVolunteers(
+    $conn,
+    $area = ''
+) {
+    $area =
+        trim($area);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | NO AREA = SHOW ALL AVAILABLE VOLUNTEERS
+    |--------------------------------------------------------------------------
+    */
+
+    if ($area === '') {
+
+        $sql =
+            "SELECT
+                users.id,
+                users.name,
+                users.phone,
+                volunteer_profiles.address,
+                volunteer_profiles.blood_group,
+                volunteer_profiles.experience,
+                volunteer_profiles.skills,
+                volunteer_profiles.availability_status
+             FROM users
+             INNER JOIN volunteer_profiles
+                ON users.id =
+                   volunteer_profiles.user_id
+             WHERE users.role = 'volunteer'
+             AND volunteer_profiles.availability_status =
+                 'available'
+             ORDER BY users.name ASC";
+
+
+        $stmt =
+            mysqli_prepare(
+                $conn,
+                $sql
+            );
+
+    } else {
+
+        /*
+        |--------------------------------------------------------------------------
+        | AREA / ADDRESS MATCH
+        |--------------------------------------------------------------------------
+        */
+
+        $sql =
+            "SELECT
+                users.id,
+                users.name,
+                users.phone,
+                volunteer_profiles.address,
+                volunteer_profiles.blood_group,
+                volunteer_profiles.experience,
+                volunteer_profiles.skills,
+                volunteer_profiles.availability_status
+             FROM users
+             INNER JOIN volunteer_profiles
+                ON users.id =
+                   volunteer_profiles.user_id
+             WHERE users.role = 'volunteer'
+             AND volunteer_profiles.availability_status =
+                 'available'
+             AND volunteer_profiles.address LIKE ?
+             ORDER BY users.name ASC";
+
+
+        $stmt =
+            mysqli_prepare(
+                $conn,
+                $sql
+            );
+
+
+        if ($stmt) {
+
+            $search =
+                '%' .
+                $area .
+                '%';
+
+
+            mysqli_stmt_bind_param(
+                $stmt,
+                "s",
+                $search
+            );
+        }
+    }
+
+
+    if (!$stmt) {
+        return [];
+    }
+
+
+    mysqli_stmt_execute(
+        $stmt
+    );
+
+
+    $result =
+        mysqli_stmt_get_result(
+            $stmt
+        );
+
+
+    $volunteers = [];
+
+
+    while (
+        $row =
+        mysqli_fetch_assoc(
+            $result
+        )
+    ) {
+
+        $volunteers[] =
+            $row;
+    }
+
+
+    mysqli_stmt_close(
+        $stmt
+    );
+
+
+    return $volunteers;
+}
