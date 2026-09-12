@@ -156,7 +156,7 @@ $requests =
                         action="index.php?page=volunteer-accept-request"
                     >
 
-                        <?php csrfField(); ?>
+                        <?= csrfField(); ?>
 
                         <input
                             type="hidden"
