@@ -291,7 +291,7 @@ function handleEditResourceRequest(
 
 /*
 |--------------------------------------------------------------------------
-| DELETE / CANCEL RESOURCE REQUEST
+| DELETE RESOURCE REQUEST
 |--------------------------------------------------------------------------
 */
 
