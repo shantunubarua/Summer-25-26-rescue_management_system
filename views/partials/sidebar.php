@@ -4,282 +4,335 @@ $role =
     $_SESSION['user']['role']
     ?? '';
 
+$currentPage =
+    $_GET['page']
+    ?? '';
+
+$userName =
+    $_SESSION['user']['name']
+    ?? 'User';
+
+
+$isActive =
+    function ($pages) use ($currentPage) {
+
+        if (!is_array($pages)) {
+            $pages = [$pages];
+        }
+
+        return in_array(
+            $currentPage,
+            $pages,
+            true
+        )
+            ? 'active'
+            : '';
+    };
+
 ?>
 
-<div class="sidebar">
+<aside class="sidebar">
+
+    <div class="sidebar-brand">
+
+        <div class="sidebar-logo">
+            RMS
+        </div>
+
+        <div>
+
+            <strong>
+                Rescue Management
+            </strong>
+
+            <span>
+                System
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="sidebar-user">
+
+        <span class="sidebar-user-label">
+            Signed in as
+        </span>
+
+        <strong>
+            <?=
+                htmlspecialchars(
+                    $userName,
+                    ENT_QUOTES,
+                    'UTF-8'
+                );
+            ?>
+        </strong>
+
+    </div>
 
 
     <?php if ($role === 'admin'): ?>
 
-        <h2>Admin Panel</h2>
+        <div class="sidebar-section-title">
+            Admin Panel
+        </div>
 
-        <ul>
+        <nav class="sidebar-nav">
 
-            <li>
-                <a href="index.php?page=admin-dashboard">
-                    Dashboard
-                </a>
-            </li>
+            <a
+                class="<?= $isActive('admin-dashboard'); ?>"
+                href="index.php?page=admin-dashboard"
+            >
+                Dashboard
+            </a>
 
-            <li>
-                <a href="index.php?page=notifications">
-                    Notifications
-                </a>
-            </li>
+            <a
+                class="<?= $isActive(['notifications', 'notification-create', 'notification-edit']); ?>"
+                href="index.php?page=notifications"
+            >
+                Notifications
+            </a>
 
-            <li>
-                <a href="index.php?page=feedback">
-                    Feedback
-                </a>
-            </li>
+            <a
+                class="<?= $isActive('feedback'); ?>"
+                href="index.php?page=feedback"
+            >
+                Feedback
+            </a>
 
-            <li>
-                <a href="index.php?page=admin-witness-reports">
-                    Witness Reports
-                </a>
-            </li>
+            <a
+                class="<?= $isActive(['admin-witness-reports', 'admin-witness-report-view']); ?>"
+                href="index.php?page=admin-witness-reports"
+            >
+                Witness Reports
+            </a>
 
-            <li>
-                <a href="index.php?page=rescue-reports">
-                    Rescue Reports
-                </a>
-            </li>
+            <a
+                class="<?= $isActive(['rescue-reports', 'rescue-report-view', 'rescue-report-create', 'rescue-report-edit']); ?>"
+                href="index.php?page=rescue-reports"
+            >
+                Rescue Reports
+            </a>
 
-            <li>
-                <a href="index.php?page=admin-resource-requests">
-                    Resource Requests
-                </a>
-            </li>
+            <a
+                class="<?= $isActive(['admin-resource-requests', 'admin-resource-request-view']); ?>"
+                href="index.php?page=admin-resource-requests"
+            >
+                Resource Requests
+            </a>
 
-            <li>
-                <a href="index.php?page=admin-donations">
-                    Donations
-                </a>
-            </li>
+            <a
+                class="<?= $isActive(['admin-donations', 'admin-donation-view']); ?>"
+                href="index.php?page=admin-donations"
+            >
+                Donations
+            </a>
 
-            <li>
-                <a href="index.php?page=change-password">
-                    Change Password
-                </a>
-            </li>
+            <a
+                class="<?= $isActive('change-password'); ?>"
+                href="index.php?page=change-password"
+            >
+                Change Password
+            </a>
 
-            <li>
-
-                <form
-                    method="POST"
-                    action="index.php?page=logout"
-                >
-
-                    <?php echo csrfField(); ?>
-
-                    <button type="submit">
-                        Logout
-                    </button>
-
-                </form>
-
-            </li>
-
-        </ul>
+        </nav>
 
 
     <?php elseif ($role === 'witness'): ?>
 
-        <h2>Witness Panel</h2>
+        <div class="sidebar-section-title">
+            Witness Panel
+        </div>
 
-        <ul>
+        <nav class="sidebar-nav">
 
-            <li>
-                <a href="index.php?page=witness-dashboard">
-                    Dashboard
-                </a>
-            </li>
+            <a
+                class="<?= $isActive('witness-dashboard'); ?>"
+                href="index.php?page=witness-dashboard"
+            >
+                Dashboard
+            </a>
 
-            <li>
-                <a href="index.php?page=witness-report-create">
-                    Report Incident
-                </a>
-            </li>
+            <a
+                class="<?= $isActive('witness-report-create'); ?>"
+                href="index.php?page=witness-report-create"
+            >
+                Report Incident
+            </a>
 
-            <li>
-                <a href="index.php?page=witness-reports">
-                    My Reports
-                </a>
-            </li>
+            <a
+                class="<?= $isActive(['witness-reports', 'witness-report-view', 'witness-report-edit']); ?>"
+                href="index.php?page=witness-reports"
+            >
+                My Reports
+            </a>
 
-            <li>
-                <a href="index.php?page=donation-create">
-                    Make Donation
-                </a>
-            </li>
+            <a
+                class="<?= $isActive(['donation-create', 'donation-payment']); ?>"
+                href="index.php?page=donation-create"
+            >
+                Make Donation
+            </a>
 
-            <li>
-                <a href="index.php?page=donations">
-                    My Donations
-                </a>
-            </li>
+            <a
+                class="<?= $isActive('donations'); ?>"
+                href="index.php?page=donations"
+            >
+                My Donations
+            </a>
 
-            <li>
-                <a href="index.php?page=change-password">
-                    Change Password
-                </a>
-            </li>
+            <a
+                class="<?= $isActive('change-password'); ?>"
+                href="index.php?page=change-password"
+            >
+                Change Password
+            </a>
 
-            <li>
-
-                <form
-                    method="POST"
-                    action="index.php?page=logout"
-                >
-
-                    <?php echo csrfField(); ?>
-
-                    <button type="submit">
-                        Logout
-                    </button>
-
-                </form>
-
-            </li>
-
-        </ul>
+        </nav>
 
 
     <?php elseif ($role === 'volunteer'): ?>
 
-        <h2>Volunteer Panel</h2>
+        <div class="sidebar-section-title">
+            Volunteer Panel
+        </div>
 
-        <ul>
+        <nav class="sidebar-nav">
 
-            <li>
-                <a href="index.php?page=volunteer-dashboard">
-                    Dashboard
-                </a>
-            </li>
-
-            <li>
-                <a href="index.php?page=volunteer-emergency-requests">
-                    Emergency Requests
-                </a>
-            </li>
-
-            <li>
-                <a href="index.php?page=volunteer-activities">
-                    My Rescue Activities
-                </a>
-            </li>
-
-            <li>
-                <a href="index.php?page=volunteer-profile">
-                    My Profile
-                </a>
-            </li>
-
-            <li>
-                <a href="index.php?page=volunteer-availability">
-                    My Availability
-                </a>
-            </li>
-
-            <li>
-                <a href="index.php?page=volunteer-resource-request">
-                    Resource Request
-                </a>
-            </li>
-
-            <li>
-                <a href="index.php?page=volunteer-resource-requests">
-                    My Resource Requests
-                </a>
-            </li>
-
-            <li>
-                <a href="index.php?page=change-password">
-                    Change Password
-                </a>
-            </li>
-
-            <li>
-
-                <form
-                    method="POST"
-                    action="index.php?page=logout"
-                >
-
-                    <?php echo csrfField(); ?>
-
-                    <button type="submit">
-                        Logout
-                    </button>
-
-                </form>
-
-            </li>
-
-        </ul>
-
-
-<?php elseif ($role === 'help_seeker'): ?>
-
-    <h2>Help Seeker Panel</h2>
-
-    <ul>
-
-        <li>
-            <a href="index.php?page=helpseeker-dashboard">
+            <a
+                class="<?= $isActive('volunteer-dashboard'); ?>"
+                href="index.php?page=volunteer-dashboard"
+            >
                 Dashboard
             </a>
-        </li>
 
-        <li>
-            <a href="index.php?page=helpseeker-request-create">
-                Request Rescue
+            <a
+                class="<?= $isActive('volunteer-emergency-requests'); ?>"
+                href="index.php?page=volunteer-emergency-requests"
+            >
+                Emergency Requests
             </a>
-        </li>
 
-        <li>
-            <a href="index.php?page=helpseeker-requests">
-                My Requests
+            <a
+                class="<?= $isActive('volunteer-activities'); ?>"
+                href="index.php?page=volunteer-activities"
+            >
+                My Rescue Activities
             </a>
-        </li>
 
-        <li>
-            <a href="index.php?page=helpseeker-nearby-volunteers">
-                Nearby Volunteers
-            </a>
-        </li>
-
-        <li>
-            <a href="index.php?page=helpseeker-profile">
+            <a
+                class="<?= $isActive('volunteer-profile'); ?>"
+                href="index.php?page=volunteer-profile"
+            >
                 My Profile
             </a>
-        </li>
 
-        <li>
-            <a href="index.php?page=change-password">
+            <a
+                class="<?= $isActive('volunteer-availability'); ?>"
+                href="index.php?page=volunteer-availability"
+            >
+                My Availability
+            </a>
+
+            <a
+                class="<?= $isActive('volunteer-resource-request'); ?>"
+                href="index.php?page=volunteer-resource-request"
+            >
+                Resource Request
+            </a>
+
+            <a
+                class="<?= $isActive(['volunteer-resource-requests', 'volunteer-resource-request-edit']); ?>"
+                href="index.php?page=volunteer-resource-requests"
+            >
+                My Resource Requests
+            </a>
+
+            <a
+                class="<?= $isActive('change-password'); ?>"
+                href="index.php?page=change-password"
+            >
                 Change Password
             </a>
-        </li>
 
-        <li>
+        </nav>
 
-            <form
-                method="POST"
-                action="index.php?page=logout"
+
+    <?php elseif ($role === 'help_seeker'): ?>
+
+        <div class="sidebar-section-title">
+            Help Seeker Panel
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a
+                class="<?= $isActive('helpseeker-dashboard'); ?>"
+                href="index.php?page=helpseeker-dashboard"
             >
+                Dashboard
+            </a>
 
-                <?php echo csrfField(); ?>
+            <a
+                class="<?= $isActive('helpseeker-request-create'); ?>"
+                href="index.php?page=helpseeker-request-create"
+            >
+                Request Rescue
+            </a>
 
-                <button type="submit">
-                    Logout
-                </button>
+            <a
+                class="<?= $isActive(['helpseeker-requests', 'helpseeker-request-view', 'helpseeker-request-edit']); ?>"
+                href="index.php?page=helpseeker-requests"
+            >
+                My Requests
+            </a>
 
-            </form>
+            <a
+                class="<?= $isActive('helpseeker-nearby-volunteers'); ?>"
+                href="index.php?page=helpseeker-nearby-volunteers"
+            >
+                Nearby Volunteers
+            </a>
 
-        </li>
+            <a
+                class="<?= $isActive('helpseeker-profile'); ?>"
+                href="index.php?page=helpseeker-profile"
+            >
+                My Profile
+            </a>
 
-    </ul>
+            <a
+                class="<?= $isActive('change-password'); ?>"
+                href="index.php?page=change-password"
+            >
+                Change Password
+            </a>
+
+        </nav>
 
     <?php endif; ?>
 
-</div>
+
+    <div class="sidebar-footer">
+
+        <form
+            method="POST"
+            action="index.php?page=logout"
+        >
+
+            <?= csrfField(); ?>
+
+            <button
+                type="submit"
+                class="sidebar-logout"
+            >
+                Logout
+            </button>
+
+        </form>
+
+    </div>
+
+</aside>
