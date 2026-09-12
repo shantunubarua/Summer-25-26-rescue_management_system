@@ -22,7 +22,6 @@ require_once
     <?php if (!empty($error)): ?>
 
         <p class="error-message">
-
             <?=
                 htmlspecialchars(
                     $error,
@@ -30,7 +29,6 @@ require_once
                     'UTF-8'
                 );
             ?>
-
         </p>
 
     <?php endif; ?>
