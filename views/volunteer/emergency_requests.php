@@ -61,10 +61,7 @@ $requests =
 
 
                 <p>
-
-                    <strong>
-                        Location:
-                    </strong>
+                    <strong>Location:</strong>
 
                     <?=
                         htmlspecialchars(
@@ -74,15 +71,11 @@ $requests =
                             'UTF-8'
                         );
                     ?>
-
                 </p>
 
 
                 <p>
-
-                    <strong>
-                        Description:
-                    </strong>
+                    <strong>Description:</strong>
 
                     <?=
                         htmlspecialchars(
@@ -92,15 +85,11 @@ $requests =
                             'UTF-8'
                         );
                     ?>
-
                 </p>
 
 
                 <p>
-
-                    <strong>
-                        Priority:
-                    </strong>
+                    <strong>Priority:</strong>
 
                     <?=
                         htmlspecialchars(
@@ -110,29 +99,21 @@ $requests =
                             'UTF-8'
                         );
                     ?>
-
                 </p>
 
 
                 <p>
-
-                    <strong>
-                        Victim Count:
-                    </strong>
+                    <strong>Victim Count:</strong>
 
                     <?= (int)(
                         $request['victim_count']
                         ?? 0
                     ); ?>
-
                 </p>
 
 
                 <p>
-
-                    <strong>
-                        Contact:
-                    </strong>
+                    <strong>Contact:</strong>
 
                     <?=
                         htmlspecialchars(
@@ -142,15 +123,11 @@ $requests =
                             'UTF-8'
                         );
                     ?>
-
                 </p>
 
 
                 <p>
-
-                    <strong>
-                        Status:
-                    </strong>
+                    <strong>Status:</strong>
 
                     <?=
                         htmlspecialchars(
@@ -162,7 +139,6 @@ $requests =
                             'UTF-8'
                         );
                     ?>
-
                 </p>
 
 
