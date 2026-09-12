@@ -1203,30 +1203,61 @@ requireValidCsrfToken();
 
     requireVolunteer();
 
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+
+        http_response_code(405);
+
+        die(
+            "Invalid request method."
+        );
+    }
+
+    requireValidCsrfToken();
+
     require_once "models/VolunteerModel.php";
 
     $request_id =
-        (int)($_POST['request_id'] ?? 0);
+        (int)(
+            $_POST['request_id']
+            ?? 0
+        );
 
     $status =
-        $_POST['status'] ?? '';
+        trim(
+            $_POST['status']
+            ?? ''
+        );
 
     $volunteer_id =
-        (int)($_SESSION['user']['id'] ?? 0);
+        (int)(
+            $_SESSION['user']['id']
+            ?? 0
+        );
 
     if (
         $request_id <= 0 ||
         $volunteer_id <= 0
     ) {
-        die("Invalid request.");
+
+        die(
+            "Invalid rescue activity."
+        );
     }
 
-    updateRescueActivityStatus(
-        $conn,
-        $request_id,
-        $volunteer_id,
-        $status
-    );
+    $updated =
+        updateRescueActivityStatus(
+            $conn,
+            $request_id,
+            $volunteer_id,
+            $status
+        );
+
+    if (!$updated) {
+
+        die(
+            "Invalid rescue status transition or this rescue is not assigned to you."
+        );
+    }
 
     header(
         "Location: index.php?page=volunteer-activities"
@@ -1262,12 +1293,21 @@ requireValidCsrfToken();
 
     $error = '';
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (
+        $_SERVER['REQUEST_METHOD']
+        === 'POST'
+    ) {
 
-        $error = handleCreateResourceRequest($conn);
+        requireValidCsrfToken();
+
+        $error =
+            handleCreateResourceRequest(
+                $conn
+            );
     }
 
-    require_once "views/volunteer/resource_request.php";
+    require_once
+        "views/volunteer/resource_request.php";
 
 
 /*
@@ -1280,21 +1320,182 @@ requireValidCsrfToken();
 
     requireVolunteer();
 
-    require_once "models/ResourceRequestModel.php";
+    require_once
+        "controllers/ResourceRequestController.php";
 
     $volunteer_id =
-        (int)($_SESSION['user']['id'] ?? 0);
+        (int)(
+            $_SESSION['user']['id']
+            ?? 0
+        );
 
     if ($volunteer_id <= 0) {
-        die("Invalid volunteer account.");
+
+        die(
+            "Invalid volunteer account."
+        );
     }
 
-    $requests = getVolunteerResourceRequests(
+    $requests =
+        getVolunteerResourceRequests(
+            $conn,
+            $volunteer_id
+        );
+
+    require_once
+        "views/volunteer/resource_request.php";
+
+
+/*
+|--------------------------------------------------------------------------
+| VOLUNTEER EDIT RESOURCE REQUEST
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'volunteer-resource-request-edit') {
+
+    requireVolunteer();
+
+    require_once
+        "controllers/ResourceRequestController.php";
+
+    $request_id =
+        isset($_GET['id'])
+            ? (int)$_GET['id']
+            : 0;
+
+    $volunteer_id =
+        (int)(
+            $_SESSION['user']['id']
+            ?? 0
+        );
+
+    if (
+        $request_id <= 0 ||
+        $volunteer_id <= 0
+    ) {
+
+        die(
+            "Invalid resource request."
+        );
+    }
+
+    $request =
+        getVolunteerResourceRequestById(
+            $conn,
+            $request_id,
+            $volunteer_id
+        );
+
+    if (!$request) {
+
+        die(
+            "Resource request not found."
+        );
+    }
+
+    if (
+        (
+            $request['status']
+            ?? ''
+        ) !== 'pending'
+    ) {
+
+        die(
+            "Only pending resource requests can be edited."
+        );
+    }
+
+    $error = '';
+
+    if (
+        $_SERVER['REQUEST_METHOD']
+        === 'POST'
+    ) {
+
+        requireValidCsrfToken();
+
+        $error =
+            handleEditResourceRequest(
+                $conn,
+                $request_id
+            );
+
+        if ($error !== '') {
+
+            $request['resource_type'] =
+                $_POST['resource_type']
+                ?? $request['resource_type'];
+
+            $request['quantity'] =
+                $_POST['quantity']
+                ?? $request['quantity'];
+
+            $request['description'] =
+                $_POST['description']
+                ?? $request['description'];
+        }
+    }
+
+    require_once
+        "views/volunteer/resource_request_edit.php";
+
+
+/*
+|--------------------------------------------------------------------------
+| VOLUNTEER DELETE RESOURCE REQUEST
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'volunteer-resource-request-delete') {
+
+    requireVolunteer();
+
+    if (
+        $_SERVER['REQUEST_METHOD']
+        !== 'POST'
+    ) {
+
+        http_response_code(405);
+
+        die(
+            "Invalid request method."
+        );
+    }
+
+    requireValidCsrfToken();
+
+    require_once
+        "controllers/ResourceRequestController.php";
+
+    $request_id =
+        (int)(
+            $_POST['request_id']
+            ?? 0
+        );
+
+    handleCancelResourceRequest(
         $conn,
-        $volunteer_id
+        $request_id
     );
 
-    require_once "views/volunteer/resource_request.php";
+
+/*
+|--------------------------------------------------------------------------
+| VOLUNTEER AJAX RESOURCE REQUEST SEARCH
+|--------------------------------------------------------------------------
+*/
+
+} elseif ($page === 'volunteer-resource-request-search') {
+
+    requireVolunteer();
+
+    require_once
+        "controllers/ResourceRequestController.php";
+
+    handleVolunteerResourceRequestSearch(
+        $conn
+    );
 
 
 /*
@@ -1307,35 +1508,55 @@ requireValidCsrfToken();
 
     requireVolunteer();
 
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        die("Invalid request method.");
+    if (
+        $_SERVER['REQUEST_METHOD']
+        !== 'POST'
+    ) {
+
+        http_response_code(405);
+
+        die(
+            "Invalid request method."
+        );
     }
+
+    requireValidCsrfToken();
 
     require_once "models/VolunteerModel.php";
 
     $request_id =
-        (int)($_POST['request_id'] ?? 0);
+        (int)(
+            $_POST['request_id']
+            ?? 0
+        );
 
     $volunteer_id =
-        (int)($_SESSION['user']['id'] ?? 0);
+        (int)(
+            $_SESSION['user']['id']
+            ?? 0
+        );
 
     if (
         $request_id <= 0 ||
         $volunteer_id <= 0
     ) {
-        die("Invalid request.");
+
+        die(
+            "Invalid emergency request."
+        );
     }
 
-    $accepted = acceptEmergencyRequest(
-        $conn,
-        $request_id,
-        $volunteer_id
-    );
+    $accepted =
+        acceptEmergencyRequest(
+            $conn,
+            $request_id,
+            $volunteer_id
+        );
 
     if (!$accepted) {
 
         die(
-            "This emergency request is no longer available."
+            "Unable to accept this emergency request. Another volunteer may already have accepted it."
         );
     }
 
