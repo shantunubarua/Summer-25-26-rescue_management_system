@@ -196,8 +196,7 @@ $isMyRequests =
                             class="delete-resource-request-form"
                         >
 
-                            <?php csrfField(); ?>
-
+                           <?= csrfField(); ?>
                             <input
                                 type="hidden"
                                 name="request_id"
