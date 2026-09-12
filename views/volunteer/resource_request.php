@@ -183,11 +183,9 @@ $isMyRequests =
                     ?>
 
                         <p>
-
                             <a href="index.php?page=volunteer-resource-request-edit&id=<?= (int)$request['id']; ?>">
                                 Edit
                             </a>
-
                         </p>
 
 
@@ -236,7 +234,6 @@ $isMyRequests =
     <?php if (!empty($error)): ?>
 
         <p class="error-message">
-
             <?=
                 htmlspecialchars(
                     $error,
@@ -244,7 +241,6 @@ $isMyRequests =
                     'UTF-8'
                 );
             ?>
-
         </p>
 
     <?php endif; ?>
