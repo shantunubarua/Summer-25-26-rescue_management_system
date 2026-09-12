@@ -131,35 +131,107 @@ function updateRescueActivityStatus(
     $volunteer_id,
     $status
 ) {
-    $allowed_statuses = ['ongoing', 'completed'];
+    $request_id =
+        (int)$request_id;
 
-    if (!in_array($status, $allowed_statuses)) {
+    $volunteer_id =
+        (int)$volunteer_id;
+
+    $status =
+        trim($status);
+
+
+    if (
+        $request_id <= 0 ||
+        $volunteer_id <= 0
+    ) {
         return false;
     }
 
-    $sql = "UPDATE emergency_requests
-            SET status = ?
-            WHERE id = ?
-            AND volunteer_id = ?
-            AND status IN ('assigned', 'ongoing')";
 
-    $stmt = mysqli_prepare($conn, $sql);
+    /*
+    |--------------------------------------------------------------------------
+    | STRICT STATUS TRANSITIONS
+    |--------------------------------------------------------------------------
+    |
+    | assigned -> ongoing
+    | ongoing  -> completed
+    |
+    */
+
+    if ($status === 'ongoing') {
+
+        $currentStatus =
+            'assigned';
+
+    } elseif (
+        $status === 'completed'
+    ) {
+
+        $currentStatus =
+            'ongoing';
+
+    } else {
+
+        return false;
+    }
+
+
+    $sql = "
+        UPDATE emergency_requests
+
+        SET status = ?
+
+        WHERE id = ?
+        AND volunteer_id = ?
+        AND status = ?
+    ";
+
+
+    $stmt =
+        mysqli_prepare(
+            $conn,
+            $sql
+        );
+
+
+    if (!$stmt) {
+        return false;
+    }
+
 
     mysqli_stmt_bind_param(
         $stmt,
-        "sii",
+        "siis",
         $status,
         $request_id,
-        $volunteer_id
+        $volunteer_id,
+        $currentStatus
     );
 
-    $success = mysqli_stmt_execute($stmt);
 
-    mysqli_stmt_close($stmt);
+    $success =
+        mysqli_stmt_execute(
+            $stmt
+        );
 
-    return $success;
-}
-function getVolunteerAvailability($conn, $volunteer_id)
+
+    $affectedRows =
+        mysqli_stmt_affected_rows(
+            $stmt
+        );
+
+
+    mysqli_stmt_close(
+        $stmt
+    );
+
+
+    return (
+        $success &&
+        $affectedRows === 1
+    );
+}function getVolunteerAvailability($conn, $volunteer_id)
 {
     $sql = "SELECT availability_status
             FROM volunteer_profiles
