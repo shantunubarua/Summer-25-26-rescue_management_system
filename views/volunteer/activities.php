@@ -195,7 +195,7 @@ $activities =
                         action="index.php?page=volunteer-update-status"
                     >
 
-                        <?php csrfField(); ?>
+                       <?= csrfField(); ?>
 
                         <input
                             type="hidden"
@@ -230,7 +230,7 @@ $activities =
                         action="index.php?page=volunteer-update-status"
                     >
 
-                        <?php csrfField(); ?>
+                       <?= csrfField(); ?>
 
                         <input
                             type="hidden"
