@@ -16,7 +16,7 @@
 
     <link
         rel="stylesheet"
-        href="assets/css/style.css?v=14"
+        href="assets/css/style.css?v=15"
     >
 
 </head>
