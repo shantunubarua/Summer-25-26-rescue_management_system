@@ -1,14 +1,17 @@
 <?php
 
-require_once "views/partials/header.php";
-require_once "views/partials/sidebar.php";
-require_once "models/ResourceRequestModel.php";
+require_once
+    "views/partials/header.php";
 
-$volunteer_id = (int)($_SESSION['user']['id'] ?? 0);
+require_once
+    "views/partials/sidebar.php";
+
 
 $isMyRequests =
-    isset($_GET['page']) &&
-    $_GET['page'] === 'volunteer-resource-requests';
+    (
+        $_GET['page']
+        ?? ''
+    ) === 'volunteer-resource-requests';
 
 ?>
 
@@ -16,14 +19,12 @@ $isMyRequests =
 
 <?php if ($isMyRequests): ?>
 
-    <!-- ============================= -->
-    <!-- MY RESOURCE REQUESTS -->
-    <!-- ============================= -->
-
-    <h1>My Resource Requests</h1>
+    <h1>
+        My Resource Requests
+    </h1>
 
     <p>
-        View all resource requests you have submitted.
+        Search and manage your submitted resource requests.
     </p>
 
     <p>
@@ -32,146 +33,260 @@ $isMyRequests =
         </a>
     </p>
 
-    <?php
 
-    $requests = getVolunteerResourceRequests(
-        $conn,
-        $volunteer_id
-    );
+    <div class="card">
 
-    ?>
+        <label for="volunteerResourceSearch">
+            Search Resource Requests
+        </label>
 
-    <?php if (empty($requests)): ?>
+        <input
+            type="text"
+            id="volunteerResourceSearch"
+            maxlength="100"
+            placeholder="Search by resource type, description or status"
+            autocomplete="off"
+        >
 
-        <div class="card">
+        <p
+            id="volunteerResourceSearchMessage"
+            aria-live="polite"
+        ></p>
 
-            <h3>No Resource Requests</h3>
+    </div>
 
-            <p>
-                You have not submitted any resource requests yet.
-            </p>
 
-        </div>
+    <div
+        id="volunteerResourceRequestResults"
+        data-csrf-token="<?=
+            htmlspecialchars(
+                getCsrfToken(),
+                ENT_QUOTES,
+                'UTF-8'
+            );
+        ?>"
+    >
 
-    <?php else: ?>
-
-        <?php foreach ($requests as $request): ?>
+        <?php if (empty($requests)): ?>
 
             <div class="card">
 
                 <h3>
-                    <?php
-                    echo htmlspecialchars(
-                        $request['resource_type'] ?? ''
-                    );
-                    ?>
+                    No Resource Requests
                 </h3>
 
                 <p>
-                    <strong>Request ID:</strong>
-                    <?php
-                    echo (int)($request['id'] ?? 0);
-                    ?>
-                </p>
-
-                <p>
-                    <strong>Volunteer ID:</strong>
-                    <?php
-                    echo (int)($request['volunteer_id'] ?? 0);
-                    ?>
-                </p>
-
-                <p>
-                    <strong>Resource Type:</strong>
-                    <?php
-                    echo htmlspecialchars(
-                        $request['resource_type'] ?? ''
-                    );
-                    ?>
-                </p>
-
-                <p>
-                    <strong>Quantity:</strong>
-                    <?php
-                    echo (int)($request['quantity'] ?? 0);
-                    ?>
-                </p>
-
-                <p>
-                    <strong>Description:</strong>
-                    <?php
-                    echo htmlspecialchars(
-                        $request['description'] ?? ''
-                    );
-                    ?>
-                </p>
-
-                <p>
-                    <strong>Status:</strong>
-                    <?php
-                    echo htmlspecialchars(
-                        ucfirst(
-                            $request['status'] ?? 'pending'
-                        )
-                    );
-                    ?>
-                </p>
-
-                <p>
-                    <strong>Requested At:</strong>
-                    <?php
-                    echo htmlspecialchars(
-                        $request['created_at'] ?? ''
-                    );
-                    ?>
+                    You have not submitted any resource requests yet.
                 </p>
 
             </div>
 
-        <?php endforeach; ?>
+        <?php else: ?>
 
-    <?php endif; ?>
+            <?php foreach ($requests as $request): ?>
+
+                <div class="card">
+
+                    <h3>
+                        <?=
+                            htmlspecialchars(
+                                $request['resource_type']
+                                ?? '',
+                                ENT_QUOTES,
+                                'UTF-8'
+                            );
+                        ?>
+                    </h3>
+
+
+                    <p>
+                        <strong>
+                            Request ID:
+                        </strong>
+
+                        <?= (int)(
+                            $request['id']
+                            ?? 0
+                        ); ?>
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            Quantity:
+                        </strong>
+
+                        <?= (int)(
+                            $request['quantity']
+                            ?? 0
+                        ); ?>
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            Description:
+                        </strong>
+
+                        <?=
+                            htmlspecialchars(
+                                $request['description']
+                                ?? '',
+                                ENT_QUOTES,
+                                'UTF-8'
+                            );
+                        ?>
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            Status:
+                        </strong>
+
+                        <?=
+                            htmlspecialchars(
+                                ucfirst(
+                                    $request['status']
+                                    ?? 'pending'
+                                ),
+                                ENT_QUOTES,
+                                'UTF-8'
+                            );
+                        ?>
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            Requested At:
+                        </strong>
+
+                        <?=
+                            htmlspecialchars(
+                                $request['created_at']
+                                ?? '',
+                                ENT_QUOTES,
+                                'UTF-8'
+                            );
+                        ?>
+                    </p>
+
+
+                    <?php
+                    if (
+                        (
+                            $request['status']
+                            ?? ''
+                        ) === 'pending'
+                    ):
+                    ?>
+
+                        <p>
+
+                            <a href="index.php?page=volunteer-resource-request-edit&id=<?= (int)$request['id']; ?>">
+                                Edit
+                            </a>
+
+                        </p>
+
+
+                        <form
+                            method="POST"
+                            action="index.php?page=volunteer-resource-request-delete"
+                            class="delete-resource-request-form"
+                        >
+
+                            <?php csrfField(); ?>
+
+                            <input
+                                type="hidden"
+                                name="request_id"
+                                value="<?= (int)$request['id']; ?>"
+                            >
+
+                            <button type="submit">
+                                Delete
+                            </button>
+
+                        </form>
+
+                    <?php endif; ?>
+
+                </div>
+
+            <?php endforeach; ?>
+
+        <?php endif; ?>
+
+    </div>
 
 
 <?php else: ?>
 
-    <!-- ============================= -->
-    <!-- NEW RESOURCE REQUEST FORM -->
-    <!-- ============================= -->
-
-    <h1>Request Resource</h1>
+    <h1>
+        Request Resource
+    </h1>
 
     <p>
-        Submit a request for resources needed during rescue
-        activities.
+        Submit a request for resources needed during rescue activities.
     </p>
+
 
     <?php if (!empty($error)): ?>
 
         <p class="error-message">
-            <?php
-            echo htmlspecialchars($error);
+
+            <?=
+                htmlspecialchars(
+                    $error,
+                    ENT_QUOTES,
+                    'UTF-8'
+                );
             ?>
+
         </p>
 
     <?php endif; ?>
+
 
     <div class="card">
 
         <form
             method="POST"
             action="index.php?page=volunteer-resource-request"
+            class="volunteer-resource-form"
+            novalidate
         >
+
+            <?php csrfField(); ?>
+
+
+            <p
+                class="js-form-error error-message"
+                aria-live="polite"
+            ></p>
+
 
             <div>
 
-                <label>
+                <label for="resource_type">
                     Resource Type *
                 </label>
 
                 <input
                     type="text"
+                    id="resource_type"
                     name="resource_type"
+                    maxlength="100"
+                    value="<?=
+                        htmlspecialchars(
+                            $_POST['resource_type']
+                            ?? '',
+                            ENT_QUOTES,
+                            'UTF-8'
+                        );
+                    ?>"
                     placeholder="Example: First Aid Kit"
                     required
                 >
@@ -181,14 +296,25 @@ $isMyRequests =
 
             <div>
 
-                <label>
+                <label for="quantity">
                     Quantity *
                 </label>
 
                 <input
                     type="number"
+                    id="quantity"
                     name="quantity"
                     min="1"
+                    max="100000"
+                    step="1"
+                    value="<?=
+                        htmlspecialchars(
+                            $_POST['quantity']
+                            ?? '',
+                            ENT_QUOTES,
+                            'UTF-8'
+                        );
+                    ?>"
                     required
                 >
 
@@ -197,14 +323,21 @@ $isMyRequests =
 
             <div>
 
-                <label>
+                <label for="description">
                     Description
                 </label>
 
                 <textarea
+                    id="description"
                     name="description"
+                    maxlength="1000"
                     placeholder="Describe the resource you need..."
-                ></textarea>
+                ><?= htmlspecialchars(
+                    $_POST['description']
+                    ?? '',
+                    ENT_QUOTES,
+                    'UTF-8'
+                ); ?></textarea>
 
             </div>
 
@@ -221,4 +354,12 @@ $isMyRequests =
 
 </div>
 
-<?php require_once "views/partials/footer.php"; ?>
+
+<script src="assets/js/volunteer.js"></script>
+
+<?php
+
+require_once
+    "views/partials/footer.php";
+
+?>
