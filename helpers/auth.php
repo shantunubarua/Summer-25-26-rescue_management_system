@@ -404,7 +404,3 @@ function requireValidCsrfToken()
         );
     }
 }
-function getCsrfToken()
-function csrfField()
-function validateCsrfToken()
-function requireValidCsrfToken()
