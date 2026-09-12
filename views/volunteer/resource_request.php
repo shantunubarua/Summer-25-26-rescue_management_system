@@ -256,7 +256,7 @@ $isMyRequests =
             novalidate
         >
 
-            <?php csrfField(); ?>
+           <?= csrfField(); ?>
 
 
             <p
