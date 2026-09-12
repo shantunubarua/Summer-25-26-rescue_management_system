@@ -1,31 +1,48 @@
 <?php
 
-require_once "views/partials/header.php";
-require_once "views/partials/sidebar.php";
-require_once "models/VolunteerModel.php";
+require_once
+    "views/partials/header.php";
 
-$volunteer_id = (int)$_SESSION['user']['id'];
+require_once
+    "views/partials/sidebar.php";
 
-$activities = getVolunteerActivities(
-    $conn,
-    $volunteer_id
-);
+require_once
+    "models/VolunteerModel.php";
+
+
+$volunteer_id =
+    (int)(
+        $_SESSION['user']['id']
+        ?? 0
+    );
+
+
+$activities =
+    getVolunteerActivities(
+        $conn,
+        $volunteer_id
+    );
 
 ?>
 
 <div class="content">
 
-    <h1>My Rescue Activities</h1>
+    <h1>
+        My Rescue Activities
+    </h1>
 
     <p>
         View and manage the emergency requests assigned to you.
     </p>
 
+
     <?php if (empty($activities)): ?>
 
         <div class="card">
 
-            <h3>No Rescue Activities</h3>
+            <h3>
+                No Rescue Activities
+            </h3>
 
             <p>
                 You have not accepted any emergency requests yet.
@@ -46,92 +63,144 @@ $activities = getVolunteerActivities(
             <div class="card">
 
                 <h3>
-                    <?php
-                    echo htmlspecialchars(
-                        $activity['emergency_type']
-                    );
+                    <?=
+                        htmlspecialchars(
+                            $activity['emergency_type']
+                            ?? '',
+                            ENT_QUOTES,
+                            'UTF-8'
+                        );
                     ?>
                 </h3>
 
+
                 <p>
                     <strong>Location:</strong>
-                    <?php
-                    echo htmlspecialchars(
-                        $activity['location']
-                    );
+
+                    <?=
+                        htmlspecialchars(
+                            $activity['location']
+                            ?? '',
+                            ENT_QUOTES,
+                            'UTF-8'
+                        );
                     ?>
                 </p>
+
 
                 <p>
                     <strong>Description:</strong>
-                    <?php
-                    echo htmlspecialchars(
-                        $activity['description']
-                    );
+
+                    <?=
+                        htmlspecialchars(
+                            $activity['description']
+                            ?? '',
+                            ENT_QUOTES,
+                            'UTF-8'
+                        );
                     ?>
                 </p>
+
 
                 <p>
                     <strong>Priority:</strong>
-                    <?php
-                    echo htmlspecialchars(
-                        $activity['priority']
-                    );
+
+                    <?=
+                        htmlspecialchars(
+                            $activity['priority']
+                            ?? '',
+                            ENT_QUOTES,
+                            'UTF-8'
+                        );
                     ?>
                 </p>
+
 
                 <p>
                     <strong>Victim Count:</strong>
-                    <?php
-                    echo (int)$activity['victim_count'];
-                    ?>
+
+                    <?= (int)(
+                        $activity['victim_count']
+                        ?? 0
+                    ); ?>
                 </p>
+
 
                 <p>
                     <strong>Contact:</strong>
-                    <?php
-                    echo htmlspecialchars(
-                        $activity['contact_information']
-                    );
+
+                    <?=
+                        htmlspecialchars(
+                            $activity['contact_information']
+                            ?? '',
+                            ENT_QUOTES,
+                            'UTF-8'
+                        );
                     ?>
                 </p>
+
 
                 <p>
                     <strong>Status:</strong>
-                    <?php
-                    echo htmlspecialchars(
-                        ucfirst($activity['status'])
-                    );
+
+                    <?=
+                        htmlspecialchars(
+                            ucfirst(
+                                $activity['status']
+                                ?? ''
+                            ),
+                            ENT_QUOTES,
+                            'UTF-8'
+                        );
                     ?>
                 </p>
 
-                <?php if (!empty($activity['accepted_at'])): ?>
+
+                <?php
+                if (
+                    !empty(
+                        $activity['accepted_at']
+                    )
+                ):
+                ?>
 
                     <p>
-                        <strong>Accepted At:</strong>
-                        <?php
-                        echo htmlspecialchars(
-                            $activity['accepted_at']
-                        );
+                        <strong>
+                            Accepted At:
+                        </strong>
+
+                        <?=
+                            htmlspecialchars(
+                                $activity['accepted_at'],
+                                ENT_QUOTES,
+                                'UTF-8'
+                            );
                         ?>
                     </p>
 
                 <?php endif; ?>
 
 
-                <?php if ($activity['status'] === 'assigned'): ?>
+                <?php
+                if (
+                    (
+                        $activity['status']
+                        ?? ''
+                    ) === 'assigned'
+                ):
+                ?>
 
                     <form
                         method="POST"
                         action="index.php?page=volunteer-update-status"
                     >
 
+                        <?php csrfField(); ?>
+
                         <input
                             type="hidden"
                             name="request_id"
-                            value="<?php
-                            echo (int)$activity['id'];
-                            ?>"
+                            value="<?= (int)$activity['id']; ?>"
                         >
 
                         <input
@@ -147,19 +216,26 @@ $activities = getVolunteerActivities(
                     </form>
 
 
-                <?php elseif ($activity['status'] === 'ongoing'): ?>
+                <?php
+                elseif (
+                    (
+                        $activity['status']
+                        ?? ''
+                    ) === 'ongoing'
+                ):
+                ?>
 
                     <form
                         method="POST"
                         action="index.php?page=volunteer-update-status"
                     >
 
+                        <?php csrfField(); ?>
+
                         <input
                             type="hidden"
                             name="request_id"
-                            value="<?php
-                            echo (int)$activity['id'];
-                            ?>"
+                            value="<?= (int)$activity['id']; ?>"
                         >
 
                         <input
@@ -175,7 +251,14 @@ $activities = getVolunteerActivities(
                     </form>
 
 
-                <?php elseif ($activity['status'] === 'completed'): ?>
+                <?php
+                elseif (
+                    (
+                        $activity['status']
+                        ?? ''
+                    ) === 'completed'
+                ):
+                ?>
 
                     <p>
                         <strong>
@@ -193,4 +276,9 @@ $activities = getVolunteerActivities(
 
 </div>
 
-<?php require_once "views/partials/footer.php"; ?>
+<?php
+
+require_once
+    "views/partials/footer.php";
+
+?>
