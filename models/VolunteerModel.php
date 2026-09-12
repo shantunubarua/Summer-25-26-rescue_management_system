@@ -41,12 +41,10 @@ function acceptEmergencyRequest(
 
     $sql = "
         UPDATE emergency_requests
-
         SET
             status = 'assigned',
             volunteer_id = ?,
             accepted_at = NOW()
-
         WHERE id = ?
         AND status = 'pending'
         AND volunteer_id IS NULL
@@ -164,9 +162,7 @@ function updateRescueActivityStatus(
         $currentStatus =
             'assigned';
 
-    } elseif (
-        $status === 'completed'
-    ) {
+    } elseif ($status === 'completed') {
 
         $currentStatus =
             'ongoing';
@@ -179,9 +175,7 @@ function updateRescueActivityStatus(
 
     $sql = "
         UPDATE emergency_requests
-
         SET status = ?
-
         WHERE id = ?
         AND volunteer_id = ?
         AND status = ?
@@ -231,7 +225,8 @@ function updateRescueActivityStatus(
         $success &&
         $affectedRows === 1
     );
-}function getVolunteerAvailability($conn, $volunteer_id)
+}
+function getVolunteerAvailability($conn, $volunteer_id)
 {
     $sql = "SELECT availability_status
             FROM volunteer_profiles
