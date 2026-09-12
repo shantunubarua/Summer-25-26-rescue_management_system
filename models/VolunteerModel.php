@@ -19,16 +19,51 @@ function getVolunteerEmergencyRequests($conn)
 }
 
 
-function acceptEmergencyRequest($conn, $request_id, $volunteer_id)
-{
-    $sql = "UPDATE emergency_requests
-            SET status = 'assigned',
-                volunteer_id = ?,
-                accepted_at = NOW()
-            WHERE id = ?
-            AND status = 'pending'";
+function acceptEmergencyRequest(
+    $conn,
+    $request_id,
+    $volunteer_id
+) {
+    $request_id =
+        (int)$request_id;
 
-    $stmt = mysqli_prepare($conn, $sql);
+    $volunteer_id =
+        (int)$volunteer_id;
+
+
+    if (
+        $request_id <= 0 ||
+        $volunteer_id <= 0
+    ) {
+        return false;
+    }
+
+
+    $sql = "
+        UPDATE emergency_requests
+
+        SET
+            status = 'assigned',
+            volunteer_id = ?,
+            accepted_at = NOW()
+
+        WHERE id = ?
+        AND status = 'pending'
+        AND volunteer_id IS NULL
+    ";
+
+
+    $stmt =
+        mysqli_prepare(
+            $conn,
+            $sql
+        );
+
+
+    if (!$stmt) {
+        return false;
+    }
+
 
     mysqli_stmt_bind_param(
         $stmt,
@@ -37,11 +72,28 @@ function acceptEmergencyRequest($conn, $request_id, $volunteer_id)
         $request_id
     );
 
-    $success = mysqli_stmt_execute($stmt);
 
-    mysqli_stmt_close($stmt);
+    $success =
+        mysqli_stmt_execute(
+            $stmt
+        );
 
-    return $success;
+
+    $affectedRows =
+        mysqli_stmt_affected_rows(
+            $stmt
+        );
+
+
+    mysqli_stmt_close(
+        $stmt
+    );
+
+
+    return (
+        $success &&
+        $affectedRows === 1
+    );
 }
 function getVolunteerActivities($conn, $volunteer_id)
 {
