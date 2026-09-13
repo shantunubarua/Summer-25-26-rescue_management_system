@@ -4,21 +4,85 @@ require_once "views/partials/header.php";
 require_once "views/partials/sidebar.php";
 require_once "models/VolunteerModel.php";
 
-$volunteer_id = (int)$_SESSION['user']['id'];
+
+$volunteer_id =
+    (int)(
+        $_SESSION['user']['id']
+        ?? 0
+    );
+
+
+if ($volunteer_id <= 0) {
+
+    die(
+        "Invalid volunteer account."
+    );
+}
+
 
 $message = '';
 $error = '';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $name = trim($_POST['name'] ?? '');
-    $phone = trim($_POST['phone'] ?? '');
-    $address = trim($_POST['address'] ?? '');
-    $blood_group = trim($_POST['blood_group'] ?? '');
-    $experience = trim($_POST['experience'] ?? '');
-    $skills = trim($_POST['skills'] ?? '');
+$bloodGroups = [
+    'A+',
+    'A-',
+    'B+',
+    'B-',
+    'AB+',
+    'AB-',
+    'O+',
+    'O-'
+];
+
+
+if (
+    $_SERVER['REQUEST_METHOD']
+    === 'POST'
+) {
+
+    $name =
+        trim(
+            $_POST['name']
+            ?? ''
+        );
+
+    $phone =
+        trim(
+            $_POST['phone']
+            ?? ''
+        );
+
+    $address =
+        trim(
+            $_POST['address']
+            ?? ''
+        );
+
+    $blood_group =
+        trim(
+            $_POST['blood_group']
+            ?? ''
+        );
+
+    $experience =
+        trim(
+            $_POST['experience']
+            ?? ''
+        );
+
+    $skills =
+        trim(
+            $_POST['skills']
+            ?? ''
+        );
+
     $emergency_contact =
-        trim($_POST['emergency_contact'] ?? '');
+        trim(
+            $_POST['emergency_contact']
+            ?? ''
+        );
+
 
     if (
         $name === '' ||
@@ -27,25 +91,90 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $blood_group === '' ||
         $emergency_contact === ''
     ) {
-        $error = "Please fill in all required fields.";
+
+        $error =
+            "Please fill in all required fields.";
+
+    } elseif (
+        strlen($name) < 2 ||
+        strlen($name) > 100
+    ) {
+
+        $error =
+            "Name must be between 2 and 100 characters.";
+
+    } elseif (
+        !preg_match(
+            '/^[0-9+\-\s()]{7,20}$/',
+            $phone
+        )
+    ) {
+
+        $error =
+            "Please enter a valid phone number.";
+
+    } elseif (
+        strlen($address) > 255
+    ) {
+
+        $error =
+            "Address must not exceed 255 characters.";
+
+    } elseif (
+        !in_array(
+            $blood_group,
+            $bloodGroups,
+            true
+        )
+    ) {
+
+        $error =
+            "Please select a valid blood group.";
+
+    } elseif (
+        strlen($experience) > 255
+    ) {
+
+        $error =
+            "Experience must not exceed 255 characters.";
+
+    } elseif (
+        strlen($skills) > 2000
+    ) {
+
+        $error =
+            "Skills must not exceed 2000 characters.";
+
+    } elseif (
+        strlen($emergency_contact) > 100
+    ) {
+
+        $error =
+            "Emergency contact must not exceed 100 characters.";
+
     } else {
 
-        $updated = updateVolunteerProfile(
-            $conn,
-            $volunteer_id,
-            $name,
-            $phone,
-            $address,
-            $blood_group,
-            $experience,
-            $skills,
-            $emergency_contact
-        );
+        $updated =
+            updateVolunteerProfile(
+                $conn,
+                $volunteer_id,
+                $name,
+                $phone,
+                $address,
+                $blood_group,
+                $experience,
+                $skills,
+                $emergency_contact
+            );
+
 
         if ($updated) {
 
-            $_SESSION['user']['name'] = $name;
-            $_SESSION['user']['phone'] = $phone;
+            $_SESSION['user']['name'] =
+                $name;
+
+            $_SESSION['user']['phone'] =
+                $phone;
 
             $message =
                 "Profile updated successfully.";
@@ -58,186 +187,308 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$profile = getVolunteerProfile(
-    $conn,
-    $volunteer_id
-);
+
+$profile =
+    getVolunteerProfile(
+        $conn,
+        $volunteer_id
+    );
+
+
+if (!$profile) {
+
+    die(
+        "Volunteer profile could not be loaded."
+    );
+}
 
 ?>
 
 <div class="content">
 
-    <h1>Volunteer Profile</h1>
+    <div class="page-header">
 
-    <p>
-        View and update your volunteer information.
-    </p>
+        <div>
+
+            <h1>
+                My Profile
+            </h1>
+
+            <p>
+                View and update your volunteer information.
+            </p>
+
+        </div>
+
+    </div>
+
 
     <?php if ($message !== ''): ?>
-        <p class="success-message">
-            <?php echo htmlspecialchars($message); ?>
-        </p>
+
+        <div class="alert alert-success">
+
+            <?= htmlspecialchars(
+                $message,
+                ENT_QUOTES,
+                'UTF-8'
+            ); ?>
+
+        </div>
+
     <?php endif; ?>
+
 
     <?php if ($error !== ''): ?>
-        <p class="error-message">
-            <?php echo htmlspecialchars($error); ?>
-        </p>
+
+        <div class="alert alert-error">
+
+            <?= htmlspecialchars(
+                $error,
+                ENT_QUOTES,
+                'UTF-8'
+            ); ?>
+
+        </div>
+
     <?php endif; ?>
 
-    <form method="POST">
 
-        <div>
-            <label>Name *</label>
+    <div class="card">
 
-            <input
-                type="text"
-                name="name"
-                value="<?php
-                    echo htmlspecialchars(
-                        $profile['name'] ?? ''
-                    );
-                ?>"
-                required
-            >
-        </div>
+        <form
+            method="POST"
+            action="index.php?page=volunteer-profile"
+        >
 
-        <div>
-            <label>Email</label>
+            <?= csrfField(); ?>
 
-            <input
-                type="email"
-                value="<?php
-                    echo htmlspecialchars(
-                        $profile['email'] ?? ''
-                    );
-                ?>"
-                readonly
-            >
-        </div>
 
-        <div>
-            <label>Phone *</label>
+            <div class="form-group">
 
-            <input
-                type="text"
-                name="phone"
-                value="<?php
-                    echo htmlspecialchars(
-                        $profile['phone'] ?? ''
-                    );
-                ?>"
-                required
-            >
-        </div>
+                <label for="name">
+                    Name *
+                </label>
 
-        <div>
-            <label>Address *</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    maxlength="100"
+                    value="<?= htmlspecialchars(
+                        $_POST['name']
+                        ?? $profile['name']
+                        ?? '',
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ); ?>"
+                    required
+                >
 
-            <input
-                type="text"
-                name="address"
-                value="<?php
-                    echo htmlspecialchars(
-                        $profile['address'] ?? ''
-                    );
-                ?>"
-                required
-            >
-        </div>
+            </div>
 
-        <div>
-            <label>Blood Group *</label>
 
-            <select name="blood_group" required>
+            <div class="form-group">
 
-                <option value="">
-                    Select Blood Group
-                </option>
+                <label for="email">
+                    Email
+                </label>
 
-                <?php
+                <input
+                    type="email"
+                    id="email"
+                    value="<?= htmlspecialchars(
+                        $profile['email']
+                        ?? '',
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ); ?>"
+                    readonly
+                >
 
-                $bloodGroups = [
-                    'A+',
-                    'A-',
-                    'B+',
-                    'B-',
-                    'AB+',
-                    'AB-',
-                    'O+',
-                    'O-'
-                ];
+            </div>
 
-                foreach ($bloodGroups as $group):
 
-                ?>
+            <div class="form-group">
 
-                    <option
-                        value="<?php echo $group; ?>"
-                        <?php
-                        echo (
-                            ($profile['blood_group'] ?? '')
-                            === $group
-                        ) ? 'selected' : '';
-                        ?>
-                    >
-                        <?php echo $group; ?>
+                <label for="phone">
+                    Phone *
+                </label>
+
+                <input
+                    type="text"
+                    id="phone"
+                    name="phone"
+                    maxlength="20"
+                    value="<?= htmlspecialchars(
+                        $_POST['phone']
+                        ?? $profile['phone']
+                        ?? '',
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ); ?>"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="address">
+                    Address *
+                </label>
+
+                <input
+                    type="text"
+                    id="address"
+                    name="address"
+                    maxlength="255"
+                    value="<?= htmlspecialchars(
+                        $_POST['address']
+                        ?? $profile['address']
+                        ?? '',
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ); ?>"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="blood_group">
+                    Blood Group *
+                </label>
+
+                <select
+                    id="blood_group"
+                    name="blood_group"
+                    required
+                >
+
+                    <option value="">
+                        Select Blood Group
                     </option>
 
-                <?php endforeach; ?>
+                    <?php
+                    $selectedBloodGroup =
+                        $_POST['blood_group']
+                        ?? $profile['blood_group']
+                        ?? '';
+                    ?>
 
-            </select>
-        </div>
+                    <?php foreach ($bloodGroups as $group): ?>
 
-        <div>
-            <label>Experience</label>
+                        <option
+                            value="<?= htmlspecialchars(
+                                $group,
+                                ENT_QUOTES,
+                                'UTF-8'
+                            ); ?>"
+                            <?= $selectedBloodGroup === $group
+                                ? 'selected'
+                                : ''; ?>
+                        >
+                            <?= htmlspecialchars(
+                                $group,
+                                ENT_QUOTES,
+                                'UTF-8'
+                            ); ?>
+                        </option>
 
-            <input
-                type="text"
-                name="experience"
-                placeholder="Example: 2 years rescue experience"
-                value="<?php
-                    echo htmlspecialchars(
-                        $profile['experience'] ?? ''
-                    );
-                ?>"
+                    <?php endforeach; ?>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="experience">
+                    Experience
+                </label>
+
+                <input
+                    type="text"
+                    id="experience"
+                    name="experience"
+                    maxlength="255"
+                    placeholder="Example: 2 years rescue experience"
+                    value="<?= htmlspecialchars(
+                        $_POST['experience']
+                        ?? $profile['experience']
+                        ?? '',
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ); ?>"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="skills">
+                    Skills
+                </label>
+
+                <textarea
+                    id="skills"
+                    name="skills"
+                    maxlength="2000"
+                    placeholder="Example: First Aid, Swimming, Fire Rescue"
+                ><?= htmlspecialchars(
+                    $_POST['skills']
+                    ?? $profile['skills']
+                    ?? '',
+                    ENT_QUOTES,
+                    'UTF-8'
+                ); ?></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="emergency_contact">
+                    Emergency Contact *
+                </label>
+
+                <input
+                    type="text"
+                    id="emergency_contact"
+                    name="emergency_contact"
+                    maxlength="100"
+                    value="<?= htmlspecialchars(
+                        $_POST['emergency_contact']
+                        ?? $profile['emergency_contact']
+                        ?? '',
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ); ?>"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="btn btn-primary"
             >
-        </div>
+                Update Profile
+            </button>
 
-        <div>
-            <label>Skills</label>
+        </form>
 
-            <textarea
-                name="skills"
-                placeholder="Example: First Aid, Swimming, Fire Rescue"
-            ><?php
-                echo htmlspecialchars(
-                    $profile['skills'] ?? ''
-                );
-            ?></textarea>
-        </div>
-
-        <div>
-            <label>Emergency Contact *</label>
-
-            <input
-                type="text"
-                name="emergency_contact"
-                value="<?php
-                    echo htmlspecialchars(
-                        $profile['emergency_contact'] ?? ''
-                    );
-                ?>"
-                required
-            >
-        </div>
-
-        <button type="submit">
-            Update Profile
-        </button>
-
-    </form>
+    </div>
 
 </div>
 
-<?php require_once "views/partials/footer.php"; ?>
+<?php
+require_once
+    "views/partials/footer.php";
+?>
