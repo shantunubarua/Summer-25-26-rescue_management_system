@@ -1,149 +1,483 @@
 <?php require_once "views/partials/header.php"; ?>
-
 <?php require_once "views/partials/sidebar.php"; ?>
+
+<?php
+
+$totalDonations = 0;
+$completedDonations = 0;
+$totalAmount = 0;
+
+if (!empty($donations) && is_array($donations)) {
+
+    $totalDonations =
+        count($donations);
+
+    foreach ($donations as $donation) {
+
+        $status =
+            strtolower(
+                $donation['status']
+                ?? 'pending'
+            );
+
+        if ($status === 'completed') {
+
+            $completedDonations++;
+
+            $totalAmount +=
+                (float)(
+                    $donation['amount']
+                    ?? 0
+                );
+        }
+    }
+}
+
+$paymentNames = [
+    'card' => 'Credit Card',
+    'bkash' => 'bKash',
+    'nagad' => 'Nagad',
+    'bank' => 'Bank Transfer',
+    'cash' => 'Cash'
+];
+
+?>
 
 <div class="content">
 
-    <h1>My Donations</h1>
-
-    <p>
-        View your submitted donations and their status.
-    </p>
-
-    <p>
-        <a href="index.php?page=donation-create">
-            Make a New Donation
-        </a>
-    </p>
+    <div class="witness-donations-page">
 
 
-    <?php if (empty($donations)): ?>
+        <!-- ================================
+             PAGE HEADER
+        ================================= -->
 
-        <p>
-            You have not made any donations yet.
-        </p>
+        <div class="witness-page-header">
 
-    <?php else: ?>
+            <div>
 
-        <table border="1" cellpadding="10">
+                <p class="eyebrow">
+                    CONTRIBUTION HISTORY
+                </p>
 
-            <thead>
+                <h1>
+                    My Donations
+                </h1>
 
-                <tr>
+                <p class="page-subtitle">
+                    Review your submitted donations,
+                    payment information and transaction history.
+                </p>
 
-                    <th>ID</th>
-
-                    <th>Amount</th>
-
-                    <th>Donation Type</th>
-
-                    <th>Payment Method</th>
-
-                    <th>Transaction ID</th>
-
-                    <th>Message</th>
-
-                    <th>Status</th>
-
-                    <th>Created At</th>
-
-                </tr>
-
-            </thead>
+            </div>
 
 
-            <tbody>
+            <div class="witness-page-header-actions">
 
-                <?php foreach ($donations as $donation): ?>
+                <a
+                    href="index.php?page=witness-dashboard"
+                    class="secondary-action"
+                >
+                    Dashboard
+                </a>
 
-                    <tr>
+                <a
+                    href="index.php?page=donation-create"
+                    class="primary-action"
+                >
+                    + Make Donation
+                </a>
 
-                        <td>
-                            <?php
-                            echo (int)$donation['id'];
-                            ?>
-                        </td>
+            </div>
 
-
-                        <td>
-                            <?php
-                            echo htmlspecialchars(
-                                $donation['amount']
-                            );
-                            ?>
-                        </td>
-
-
-                        <td>
-                            <?php
-                            echo htmlspecialchars(
-                                ucfirst(
-                                    $donation['donation_type']
-                                )
-                            );
-                            ?>
-                        </td>
+        </div>
 
 
-                        <td>
-                            <?php
-                            echo htmlspecialchars(
-                                ucfirst(
-                                    $donation['payment_method']
-                                )
-                            );
-                            ?>
-                        </td>
+        <!-- ================================
+             SUMMARY CARDS
+        ================================= -->
 
-<td>
-    <?php
-    echo htmlspecialchars(
-        $donation['transaction_id']
-        ?? '',
-        ENT_QUOTES,
-        'UTF-8'
-    );
-    ?>
-</td>
-
-                        <td>
-                            <?php
-                            echo htmlspecialchars(
-                                $donation['message'] ?? ''
-                            );
-                            ?>
-                        </td>
+        <div class="witness-donation-summary-grid">
 
 
-                        <td>
-                            <?php
-                            echo htmlspecialchars(
-                                ucfirst(
-                                    $donation['status']
-                                    ?? 'pending'
-                                )
-                            );
-                            ?>
-                        </td>
+            <div class="witness-donation-summary-card">
+
+                <span>
+                    Total Donations
+                </span>
+
+                <strong>
+                    <?= (int)$totalDonations; ?>
+                </strong>
+
+                <small>
+                    All submitted donations
+                </small>
+
+            </div>
 
 
-                        <td>
-                            <?php
-                            echo htmlspecialchars(
-                                $donation['created_at']
-                            );
-                            ?>
-                        </td>
+            <div class="witness-donation-summary-card">
 
-                    </tr>
+                <span>
+                    Completed
+                </span>
 
-                <?php endforeach; ?>
+                <strong>
+                    <?= (int)$completedDonations; ?>
+                </strong>
 
-            </tbody>
+                <small>
+                    Successfully completed
+                </small>
 
-        </table>
+            </div>
 
-    <?php endif; ?>
+
+            <div class="witness-donation-summary-card">
+
+                <span>
+                    Total Donated
+                </span>
+
+                <strong class="witness-donation-summary-money">
+                    ৳<?= number_format(
+                        $totalAmount,
+                        2
+                    ); ?>
+                </strong>
+
+                <small>
+                    Completed contribution amount
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================
+             DONATION HISTORY
+        ================================= -->
+
+        <div class="witness-donation-table-card">
+
+            <div class="witness-table-card-header">
+
+                <div>
+
+                    <span>
+                        DONATION HISTORY
+                    </span>
+
+                    <h2>
+                        Submitted Donations
+                    </h2>
+
+                </div>
+
+                <small>
+                    <?= (int)$totalDonations; ?>
+                    record(s)
+                </small>
+
+            </div>
+
+
+            <?php if (empty($donations)): ?>
+
+                <div class="witness-donation-empty">
+
+                    <div class="witness-donation-empty-icon">
+                        D
+                    </div>
+
+                    <h3>
+                        No Donations Yet
+                    </h3>
+
+                    <p>
+                        You have not submitted any donations yet.
+                        Your donation history will appear here.
+                    </p>
+
+                    <a
+                        href="index.php?page=donation-create"
+                        class="primary-action"
+                    >
+                        Make Your First Donation
+                    </a>
+
+                </div>
+
+            <?php else: ?>
+
+
+                <div class="witness-donation-table-responsive">
+
+                    <table class="witness-donation-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>ID</th>
+                                <th>Amount</th>
+                                <th>Donation Type</th>
+                                <th>Payment Method</th>
+                                <th>Transaction ID</th>
+                                <th>Message</th>
+                                <th>Status</th>
+                                <th>Created At</th>
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            <?php foreach (
+                                $donations
+                                as $donation
+                            ): ?>
+
+                                <?php
+
+                                $status =
+                                    strtolower(
+                                        $donation['status']
+                                        ?? 'pending'
+                                    );
+
+                                $paymentMethod =
+                                    strtolower(
+                                        $donation[
+                                            'payment_method'
+                                        ]
+                                        ?? ''
+                                    );
+
+                                $paymentLabel =
+                                    $paymentNames[
+                                        $paymentMethod
+                                    ]
+                                    ?? ucfirst(
+                                        $paymentMethod
+                                    );
+
+                                ?>
+
+                                <tr>
+
+
+                                    <!-- ID -->
+
+                                    <td class="witness-donation-id">
+
+                                        #<?= (int)$donation['id']; ?>
+
+                                    </td>
+
+
+                                    <!-- AMOUNT -->
+
+                                    <td>
+
+                                        <strong class="witness-donation-table-amount">
+
+                                            ৳<?= number_format(
+                                                (float)(
+                                                    $donation[
+                                                        'amount'
+                                                    ]
+                                                    ?? 0
+                                                ),
+                                                2
+                                            ); ?>
+
+                                        </strong>
+
+                                    </td>
+
+
+                                    <!-- TYPE -->
+
+                                    <td>
+
+                                        <?= htmlspecialchars(
+                                            ucfirst(
+                                                $donation[
+                                                    'donation_type'
+                                                ]
+                                                ?? ''
+                                            ),
+                                            ENT_QUOTES,
+                                            'UTF-8'
+                                        ); ?>
+
+                                    </td>
+
+
+                                    <!-- PAYMENT -->
+
+                                    <td>
+
+                                        <span class="witness-payment-badge">
+
+                                            <?= htmlspecialchars(
+                                                $paymentLabel,
+                                                ENT_QUOTES,
+                                                'UTF-8'
+                                            ); ?>
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- TRANSACTION -->
+
+                                    <td>
+
+                                        <span class="witness-transaction-code">
+
+                                            <?= htmlspecialchars(
+                                                $donation[
+                                                    'transaction_id'
+                                                ]
+                                                ?? '',
+                                                ENT_QUOTES,
+                                                'UTF-8'
+                                            ); ?>
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- MESSAGE -->
+
+                                    <td class="witness-donation-message">
+
+                                        <?php if (
+                                            !empty(
+                                                $donation[
+                                                    'message'
+                                                ]
+                                            )
+                                        ): ?>
+
+                                            <?= htmlspecialchars(
+                                                $donation[
+                                                    'message'
+                                                ],
+                                                ENT_QUOTES,
+                                                'UTF-8'
+                                            ); ?>
+
+                                        <?php else: ?>
+
+                                            <span class="witness-muted-text">
+                                                No message
+                                            </span>
+
+                                        <?php endif; ?>
+
+                                    </td>
+
+
+                                    <!-- STATUS -->
+
+                                    <td>
+
+                                        <span
+                                            class="
+                                                witness-donation-status
+                                                witness-donation-<?= htmlspecialchars(
+                                                    $status,
+                                                    ENT_QUOTES,
+                                                    'UTF-8'
+                                                ); ?>
+                                            "
+                                        >
+
+                                            <?= htmlspecialchars(
+                                                ucfirst(
+                                                    $status
+                                                ),
+                                                ENT_QUOTES,
+                                                'UTF-8'
+                                            ); ?>
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- CREATED -->
+
+                                    <td class="witness-donation-date">
+
+                                        <?php if (
+                                            !empty(
+                                                $donation[
+                                                    'created_at'
+                                                ]
+                                            )
+                                        ): ?>
+
+                                            <?= htmlspecialchars(
+                                                date(
+                                                    'd M Y',
+                                                    strtotime(
+                                                        $donation[
+                                                            'created_at'
+                                                        ]
+                                                    )
+                                                ),
+                                                ENT_QUOTES,
+                                                'UTF-8'
+                                            ); ?>
+
+                                            <small>
+
+                                                <?= htmlspecialchars(
+                                                    date(
+                                                        'h:i A',
+                                                        strtotime(
+                                                            $donation[
+                                                                'created_at'
+                                                            ]
+                                                        )
+                                                    ),
+                                                    ENT_QUOTES,
+                                                    'UTF-8'
+                                                ); ?>
+
+                                            </small>
+
+                                        <?php else: ?>
+
+                                            —
+
+                                        <?php endif; ?>
+
+                                    </td>
+
+                                </tr>
+
+                            <?php endforeach; ?>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            <?php endif; ?>
+
+        </div>
+
+    </div>
 
 </div>
 
