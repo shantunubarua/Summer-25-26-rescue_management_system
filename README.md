@@ -30,7 +30,7 @@ database/rescue_management_system (4).sql
 
 Open the application in the browser:
 
-http://localhost/Summer-25-26-rescue_management_system/
+http://localhost/summer-25-26-rescue_management_system/
 
 The default database configuration is in config/database.php:
 
