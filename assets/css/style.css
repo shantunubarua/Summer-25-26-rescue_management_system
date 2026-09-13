@@ -1,3 +1,6 @@
+
+
+
 /* =========================================================
    VOLUNTEER - DASHBOARD
    ========================================================= */
@@ -660,6 +663,673 @@
 
         .volunteer-notification-item {
             flex-direction: column;
+        }
+
+    }
+
+}
+/* =========================================================
+   VOLUNTEER - EMERGENCY REQUESTS
+   ========================================================= */
+
+@media screen {
+
+
+    /* =====================================================
+       PAGE
+       ===================================================== */
+
+    .volunteer-emergency-page {
+        width: 100%;
+        max-width: 1180px;
+    }
+
+
+    /* =====================================================
+       HEADER
+       ===================================================== */
+
+    .volunteer-emergency-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+
+        gap: 28px;
+
+        margin-bottom: 27px;
+    }
+
+
+    .volunteer-emergency-header h1 {
+        margin-bottom: 8px;
+    }
+
+
+    /* =====================================================
+       SUMMARY
+       ===================================================== */
+
+    .volunteer-emergency-stats {
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+
+        gap: 14px;
+
+        margin-bottom: 32px;
+    }
+
+
+    .volunteer-emergency-stat {
+        padding: 19px;
+
+        border: 1px solid #dbe3ec;
+        border-radius: 11px;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 4px 15px
+            rgba(15, 23, 42, 0.035);
+
+        transition:
+            transform 0.2s ease,
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+
+    .volunteer-emergency-stat:hover {
+        transform: translateY(-2px);
+
+        border-color: #bfdbfe;
+
+        box-shadow:
+            0 8px 21px
+            rgba(15, 23, 42, 0.06);
+    }
+
+
+    .volunteer-emergency-stat > span {
+        display: block;
+
+        margin-bottom: 11px;
+
+        color: #64748b;
+
+        font-size: 9px;
+        font-weight: 800;
+
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+    }
+
+
+    .volunteer-emergency-stat > strong {
+        display: block;
+
+        margin-bottom: 7px;
+
+        color: #172033;
+
+        font-size: 28px;
+        font-weight: 800;
+
+        line-height: 1;
+    }
+
+
+    .volunteer-emergency-stat p {
+        margin: 0;
+
+        color: #94a3b8;
+
+        font-size: 9px;
+        line-height: 1.5;
+    }
+
+
+    /* =====================================================
+       LIST HEADING
+       ===================================================== */
+
+    .volunteer-emergency-list-heading {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+
+        gap: 20px;
+
+        margin-bottom: 14px;
+    }
+
+
+    .volunteer-emergency-list-heading p {
+        margin: 0 0 4px;
+
+        color: var(--primary);
+
+        font-size: 9px;
+        font-weight: 800;
+
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+
+
+    .volunteer-emergency-list-heading h2 {
+        margin: 0;
+
+        color: #172033;
+
+        font-size: 21px;
+    }
+
+
+    .volunteer-emergency-list-heading > span {
+        color: #94a3b8;
+
+        font-size: 10px;
+        font-weight: 600;
+    }
+
+
+    /* =====================================================
+       REQUEST GRID
+       ===================================================== */
+
+    .volunteer-emergency-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 17px;
+    }
+
+
+    /* =====================================================
+       REQUEST CARD
+       ===================================================== */
+
+    .volunteer-emergency-card {
+        display: flex;
+        flex-direction: column;
+
+        overflow: hidden;
+
+        border: 1px solid #dbe3ec;
+        border-radius: 12px;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 5px 18px
+            rgba(15, 23, 42, 0.04);
+
+        transition:
+            transform 0.2s ease,
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+
+    .volunteer-emergency-card:hover {
+        transform: translateY(-2px);
+
+        border-color: #bfdbfe;
+
+        box-shadow:
+            0 10px 25px
+            rgba(15, 23, 42, 0.07);
+    }
+
+
+    /* =====================================================
+       CARD HEADER
+       ===================================================== */
+
+    .volunteer-emergency-card-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+
+        gap: 16px;
+
+        padding: 20px 21px 17px;
+
+        border-bottom: 1px solid #edf2f7;
+
+        background: #fbfdff;
+    }
+
+
+    .volunteer-emergency-request-id {
+        display: block;
+
+        margin-bottom: 5px;
+
+        color: #94a3b8;
+
+        font-size: 9px;
+        font-weight: 700;
+
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
+
+    .volunteer-emergency-card-header h3 {
+        margin: 0;
+
+        color: #172033;
+
+        font-size: 17px;
+        line-height: 1.35;
+
+        overflow-wrap: anywhere;
+    }
+
+
+    /* =====================================================
+       PRIORITY
+       ===================================================== */
+
+    .volunteer-emergency-priority {
+        display: inline-flex;
+        align-items: center;
+
+        flex-shrink: 0;
+
+        padding: 5px 8px;
+
+        border-radius: 999px;
+
+        background: #f1f5f9;
+        color: #64748b;
+
+        font-size: 9px;
+        font-weight: 800;
+
+        white-space: nowrap;
+    }
+
+
+    .volunteer-emergency-priority-low {
+        background: #f0fdf4;
+        color: #15803d;
+    }
+
+
+    .volunteer-emergency-priority-medium {
+        background: #fff7ed;
+        color: #c2410c;
+    }
+
+
+    .volunteer-emergency-priority-high,
+    .volunteer-emergency-priority-urgent,
+    .volunteer-emergency-priority-critical {
+        background: #fef2f2;
+        color: #dc2626;
+    }
+
+
+    /* =====================================================
+       LOCATION
+       ===================================================== */
+
+    .volunteer-emergency-location {
+        padding: 17px 21px 0;
+    }
+
+
+    .volunteer-emergency-location > span,
+    .volunteer-emergency-description > span,
+    .volunteer-emergency-contact > span {
+        display: block;
+
+        margin-bottom: 6px;
+
+        color: #94a3b8;
+
+        font-size: 8px;
+        font-weight: 800;
+
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+
+    .volunteer-emergency-location > strong {
+        display: block;
+
+        color: #334155;
+
+        font-size: 12px;
+        font-weight: 700;
+
+        line-height: 1.5;
+
+        overflow-wrap: anywhere;
+    }
+
+
+    /* =====================================================
+       DESCRIPTION
+       ===================================================== */
+
+    .volunteer-emergency-description {
+        padding: 17px 21px 0;
+    }
+
+
+    .volunteer-emergency-description p {
+        margin: 0;
+
+        color: #64748b;
+
+        font-size: 11px;
+        line-height: 1.65;
+
+        overflow-wrap: anywhere;
+    }
+
+
+    /* =====================================================
+       DETAILS
+       ===================================================== */
+
+    .volunteer-emergency-details {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 10px;
+
+        margin: 18px 21px 0;
+    }
+
+
+    .volunteer-emergency-detail {
+        padding: 12px;
+
+        border: 1px solid #edf2f7;
+        border-radius: 8px;
+
+        background: #f8fafc;
+    }
+
+
+    .volunteer-emergency-detail > span {
+        display: block;
+
+        margin-bottom: 5px;
+
+        color: #94a3b8;
+
+        font-size: 8px;
+        font-weight: 800;
+
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+    }
+
+
+    .volunteer-emergency-detail > strong {
+        display: block;
+
+        color: #334155;
+
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+
+    /* =====================================================
+       STATUS
+       ===================================================== */
+
+    .volunteer-emergency-status {
+        width: fit-content;
+
+        padding: 4px 7px;
+
+        border-radius: 999px;
+
+        font-size: 9px !important;
+    }
+
+
+    .volunteer-emergency-status-pending {
+        background: #fff7ed;
+        color: #c2410c !important;
+    }
+
+
+    .volunteer-emergency-status-accepted,
+    .volunteer-emergency-status-assigned {
+        background: #eff6ff;
+        color: #1d4ed8 !important;
+    }
+
+
+    .volunteer-emergency-status-completed {
+        background: #f0fdf4;
+        color: #15803d !important;
+    }
+
+
+    /* =====================================================
+       CONTACT
+       ===================================================== */
+
+    .volunteer-emergency-contact {
+        margin: 18px 21px 0;
+        padding: 13px 14px;
+
+        border: 1px solid #dbeafe;
+        border-radius: 8px;
+
+        background: #f8fbff;
+    }
+
+
+    .volunteer-emergency-contact > strong {
+        display: block;
+
+        color: #334155;
+
+        font-size: 11px;
+        font-weight: 700;
+
+        line-height: 1.5;
+
+        overflow-wrap: anywhere;
+    }
+
+
+    /* =====================================================
+       ACTION
+       ===================================================== */
+
+    .volunteer-emergency-action {
+        margin-top: auto;
+        padding: 19px 21px 21px;
+    }
+
+
+    .volunteer-emergency-accept-form {
+        width: 100% !important;
+        max-width: none !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        border: none !important;
+
+        background: transparent !important;
+    }
+
+
+    .volunteer-emergency-accept-button {
+        width: 100%;
+        min-height: 41px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin: 0 !important;
+        padding: 10px 15px;
+
+        border: 1px solid var(--primary);
+        border-radius: 8px;
+
+        background: var(--primary);
+        color: #ffffff;
+
+        font-family: inherit;
+        font-size: 11px;
+        font-weight: 800;
+
+        cursor: pointer;
+
+        transition:
+            background 0.2s ease,
+            border-color 0.2s ease,
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+
+    .volunteer-emergency-accept-button:hover {
+        transform: translateY(-1px);
+
+        border-color: var(--primary-dark);
+
+        background: var(--primary-dark);
+
+        box-shadow:
+            0 6px 15px
+            rgba(29, 78, 216, 0.16);
+    }
+
+
+    /* =====================================================
+       EMPTY STATE
+       ===================================================== */
+
+    .volunteer-emergency-empty {
+        padding: 50px 24px;
+
+        border: 1px solid #dbe3ec;
+        border-radius: 12px;
+
+        background: #ffffff;
+
+        text-align: center;
+
+        box-shadow:
+            0 5px 18px
+            rgba(15, 23, 42, 0.04);
+    }
+
+
+    .volunteer-emergency-empty-mark {
+        width: 46px;
+        height: 46px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin: 0 auto 14px;
+
+        border-radius: 50%;
+
+        background: #f0fdf4;
+        color: #15803d;
+
+        font-size: 18px;
+        font-weight: 800;
+    }
+
+
+    .volunteer-emergency-empty h3 {
+        margin: 0 0 7px;
+
+        color: #172033;
+
+        font-size: 16px;
+    }
+
+
+    .volunteer-emergency-empty p {
+        max-width: 480px;
+
+        margin: 0 auto;
+
+        color: #94a3b8;
+
+        font-size: 11px;
+        line-height: 1.55;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @media (max-width: 950px) {
+
+        .volunteer-emergency-stats {
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+        }
+
+
+        .volunteer-emergency-grid {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+
+    @media (max-width: 650px) {
+
+        .volunteer-emergency-header {
+            flex-direction: column;
+        }
+
+
+        .volunteer-emergency-header > a {
+            width: 100%;
+        }
+
+
+        .volunteer-emergency-card-header {
+            flex-direction: column;
+        }
+
+    }
+
+
+    @media (max-width: 500px) {
+
+        .volunteer-emergency-stats,
+        .volunteer-emergency-details {
+            grid-template-columns: 1fr;
+        }
+
+
+        .volunteer-emergency-list-heading {
+            align-items: flex-start;
+            flex-direction: column;
+
+            gap: 7px;
         }
 
     }
