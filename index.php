@@ -1276,7 +1276,101 @@ requireValidCsrfToken();
 
     requireVolunteer();
 
-    require_once "views/volunteer/availability.php";
+    require_once "models/VolunteerModel.php";
+
+
+    $volunteer_id =
+        (int)(
+            $_SESSION['user']['id']
+            ?? 0
+        );
+
+
+    if ($volunteer_id <= 0) {
+
+        die(
+            "Invalid volunteer account."
+        );
+    }
+
+
+    $error = '';
+
+
+    if (
+        $_SERVER['REQUEST_METHOD']
+        === 'POST'
+    ) {
+
+        requireValidCsrfToken();
+
+
+        $availability_status =
+            trim(
+                $_POST['availability_status']
+                ?? ''
+            );
+
+
+        $allowedStatuses = [
+            'available',
+            'unavailable',
+            'currently_rescuing'
+        ];
+
+
+        if (
+            !in_array(
+                $availability_status,
+                $allowedStatuses,
+                true
+            )
+        ) {
+
+            $error =
+                "Please select a valid availability status.";
+
+        } else {
+
+            $updated =
+                updateVolunteerAvailability(
+                    $conn,
+                    $volunteer_id,
+                    $availability_status
+                );
+
+
+            if (!$updated) {
+
+                $error =
+                    "Unable to update availability.";
+
+            } else {
+
+                header(
+                    "Location: index.php?page=volunteer-availability&updated=1"
+                );
+
+                exit;
+            }
+        }
+    }
+
+
+    $availability =
+        getVolunteerAvailability(
+            $conn,
+            $volunteer_id
+        );
+
+
+    $currentAvailability =
+        $availability['availability_status']
+        ?? 'available';
+
+
+    require_once
+        "views/volunteer/availability.php";
 
 
 /*
