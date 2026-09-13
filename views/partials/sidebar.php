@@ -222,6 +222,13 @@ $isActive =
                 My Rescue Activities
             </a>
 
+         
+            <a
+                class="<?= $isActive('volunteer-availability'); ?>"
+                href="index.php?page=volunteer-availability"
+            >
+                My Availability
+            </a>
             <a
                 class="<?= $isActive('volunteer-profile'); ?>"
                 href="index.php?page=volunteer-profile"
@@ -229,12 +236,6 @@ $isActive =
                 My Profile
             </a>
 
-            <a
-                class="<?= $isActive('volunteer-availability'); ?>"
-                href="index.php?page=volunteer-availability"
-            >
-                My Availability
-            </a>
 
             <a
                 class="<?= $isActive('volunteer-resource-request'); ?>"
