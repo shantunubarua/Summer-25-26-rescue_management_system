@@ -4168,3 +4168,324 @@ table form button {
         }
     }
 }
+/* =========================================================
+   WITNESS - REPORT DETAILS
+   ========================================================= */
+
+@media screen {
+
+    .witness-report-view-page {
+        width: 100%;
+        max-width: 1000px;
+    }
+
+    .witness-report-detail-card {
+        overflow: hidden;
+
+        border: 1px solid var(--border);
+        border-radius: 14px;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 6px 22px rgba(15, 23, 42, 0.045);
+    }
+
+
+    /* HEADER */
+
+    .witness-report-detail-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        gap: 24px;
+
+        padding: 25px 27px;
+
+        border-bottom: 1px solid #edf2f7;
+
+        background: #fbfdff;
+    }
+
+    .witness-detail-label {
+        display: block;
+
+        margin-bottom: 6px;
+
+        color: var(--primary);
+
+        font-size: 10px;
+        font-weight: 800;
+
+        letter-spacing: 0.1em;
+    }
+
+    .witness-report-detail-header h2 {
+        margin: 0;
+
+        font-size: 22px;
+        line-height: 1.35;
+    }
+
+    .witness-report-badges {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+
+        gap: 8px;
+    }
+
+
+    /* STATUS */
+
+    .witness-status-badge {
+        display: inline-flex;
+        align-items: center;
+
+        padding: 5px 9px;
+
+        border-radius: 999px;
+
+        font-size: 10px;
+        font-weight: 800;
+
+        text-transform: capitalize;
+    }
+
+    .witness-status-pending {
+        background: #fffbeb;
+        color: #b45309;
+    }
+
+    .witness-status-reviewed,
+    .witness-status-approved,
+    .witness-status-completed {
+        background: #f0fdf4;
+        color: #15803d;
+    }
+
+    .witness-status-rejected {
+        background: #fef2f2;
+        color: #dc2626;
+    }
+
+
+    /* SECTIONS */
+
+    .witness-detail-section {
+        padding: 25px 27px;
+
+        border-bottom: 1px solid #edf2f7;
+    }
+
+    .witness-detail-section:last-child {
+        border-bottom: none;
+    }
+
+    .witness-detail-section-title {
+        margin-bottom: 18px;
+    }
+
+    .witness-detail-section-title > span {
+        display: block;
+
+        margin-bottom: 4px;
+
+        color: #94a3b8;
+
+        font-size: 10px;
+        font-weight: 800;
+
+        letter-spacing: 0.08em;
+    }
+
+    .witness-detail-section-title h3 {
+        margin: 0;
+
+        font-size: 17px;
+    }
+
+
+    /* GRID */
+
+    .witness-detail-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 13px;
+    }
+
+    .witness-detail-item {
+        padding: 15px 16px;
+
+        border: 1px solid #edf2f7;
+        border-radius: 10px;
+
+        background: #f8fafc;
+    }
+
+    .witness-detail-item > span {
+        display: block;
+
+        margin-bottom: 5px;
+
+        color: #94a3b8;
+
+        font-size: 10px;
+        font-weight: 800;
+
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    .witness-detail-item strong {
+        color: #334155;
+
+        font-size: 13px;
+        line-height: 1.5;
+
+        word-break: break-word;
+    }
+
+
+    /* DESCRIPTION */
+
+    .witness-description-box {
+        padding: 18px;
+
+        border: 1px solid #edf2f7;
+        border-radius: 10px;
+
+        background: #f8fafc;
+
+        color: #475569;
+
+        font-size: 13px;
+        line-height: 1.75;
+    }
+
+
+    /* EVIDENCE */
+
+    .witness-evidence-box {
+        display: flex;
+        align-items: center;
+
+        gap: 15px;
+
+        padding: 16px;
+
+        border: 1px solid #dbeafe;
+        border-radius: 10px;
+
+        background: #f8fbff;
+    }
+
+    .witness-evidence-icon {
+        width: 43px;
+        height: 43px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        flex-shrink: 0;
+
+        border-radius: 10px;
+
+        background: #eff6ff;
+
+        color: var(--primary);
+
+        font-size: 9px;
+        font-weight: 900;
+    }
+
+    .witness-evidence-info {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+
+        gap: 3px;
+    }
+
+    .witness-evidence-info strong {
+        color: #334155;
+
+        font-size: 13px;
+    }
+
+    .witness-evidence-info span {
+        color: #94a3b8;
+
+        font-size: 11px;
+    }
+
+    .witness-no-evidence {
+        padding: 17px;
+
+        border: 1px dashed #cbd5e1;
+        border-radius: 10px;
+
+        background: #f8fafc;
+
+        color: #64748b;
+
+        font-size: 12px;
+    }
+
+
+    /* NOT FOUND */
+
+    .witness-report-empty {
+        max-width: 700px;
+
+        padding: 45px 30px;
+
+        border: 1px solid var(--border);
+        border-radius: 14px;
+
+        background: #ffffff;
+
+        text-align: center;
+
+        box-shadow:
+            0 6px 22px rgba(15, 23, 42, 0.04);
+    }
+
+    .witness-report-empty h2 {
+        margin: 0 0 8px;
+
+        font-size: 20px;
+    }
+
+    .witness-report-empty p {
+        margin: 0 0 20px;
+
+        color: #64748b;
+
+        font-size: 13px;
+    }
+
+
+    /* RESPONSIVE */
+
+    @media (max-width: 700px) {
+
+        .witness-report-detail-header {
+            flex-direction: column;
+        }
+
+        .witness-detail-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .witness-evidence-box {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+    }
+}
