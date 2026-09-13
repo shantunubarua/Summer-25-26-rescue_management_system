@@ -855,11 +855,9 @@ table form button {
         padding: 24px 18px;
 
         background:
-            linear-gradient(
-                180deg,
+            linear-gradient(180deg,
                 #102b4e 0%,
-                #0d203a 100%
-            );
+                #0d203a 100%);
 
         color: #ffffff;
 
@@ -1077,7 +1075,7 @@ table form button {
     }
 
 
-    .content > * {
+    .content>* {
         max-width: 1180px;
     }
 
@@ -1105,7 +1103,7 @@ table form button {
     }
 
 
-    .content > p {
+    .content>p {
         color: var(--muted);
 
         font-size: 16px;
@@ -1196,10 +1194,8 @@ table form button {
         display: grid;
 
         grid-template-columns:
-            repeat(
-                auto-fit,
-                minmax(190px, 1fr)
-            );
+            repeat(auto-fit,
+                minmax(190px, 1fr));
 
         gap: 16px;
 
@@ -1268,7 +1264,7 @@ table form button {
     }
 
 
-    .stat-card > a {
+    .stat-card>a {
         margin-top: auto;
 
         color: var(--primary);
@@ -1305,10 +1301,8 @@ table form button {
         display: grid;
 
         grid-template-columns:
-            repeat(
-                auto-fit,
-                minmax(260px, 1fr)
-            );
+            repeat(auto-fit,
+                minmax(260px, 1fr));
 
         gap: 16px;
     }
@@ -1447,7 +1441,7 @@ table form button {
        FORMS
        ===================================================== */
 
-    .content > form,
+    .content>form,
     .card form {
         max-width: 760px;
     }
@@ -1719,8 +1713,7 @@ table form button {
         display: grid;
 
         grid-template-columns:
-            minmax(320px, 0.9fr)
-            minmax(420px, 1.1fr);
+            minmax(320px, 0.9fr) minmax(420px, 1.1fr);
     }
 
 
@@ -1736,11 +1729,9 @@ table form button {
         overflow: hidden;
 
         background:
-            linear-gradient(
-                150deg,
+            linear-gradient(150deg,
                 #0f2747 0%,
-                #174c8b 100%
-            );
+                #174c8b 100%);
 
         color: #ffffff;
     }
@@ -1803,11 +1794,9 @@ table form button {
         color: #ffffff;
 
         font-size:
-            clamp(
-                34px,
+            clamp(34px,
                 4vw,
-                52px
-            );
+                52px);
 
         line-height: 1.08;
 
@@ -1885,7 +1874,7 @@ table form button {
     }
 
 
-    .auth-card-header > p:not(.eyebrow) {
+    .auth-card-header>p:not(.eyebrow) {
         margin: 0;
 
         color: var(--muted);
@@ -2396,7 +2385,7 @@ table form button {
         white-space: nowrap;
     }
 
-    #witnessReportTable td:last-child > a {
+    #witnessReportTable td:last-child>a {
         display: inline-flex;
 
         margin-right: 8px;
@@ -2409,7 +2398,7 @@ table form button {
         text-decoration: none;
     }
 
-    #witnessReportTable td:last-child > a:hover {
+    #witnessReportTable td:last-child>a:hover {
         text-decoration: underline;
     }
 
@@ -2762,8 +2751,7 @@ table form button {
         transform: translateY(-1px);
 
         box-shadow:
-            0 6px 16px
-            rgba(29, 78, 216, 0.18);
+            0 6px 16px rgba(29, 78, 216, 0.18);
     }
 
     .secondary-action {
@@ -2810,8 +2798,7 @@ table form button {
         background: #ffffff;
 
         box-shadow:
-            0 5px 18px
-            rgba(15, 23, 42, 0.045);
+            0 5px 18px rgba(15, 23, 42, 0.045);
 
         transition:
             transform 0.2s ease,
@@ -2825,8 +2812,7 @@ table form button {
         border-color: #bfdbfe;
 
         box-shadow:
-            0 12px 26px
-            rgba(15, 39, 71, 0.08);
+            0 12px 26px rgba(15, 39, 71, 0.08);
     }
 
     .witness-stat-top {
@@ -2956,8 +2942,7 @@ table form button {
         background: #ffffff;
 
         box-shadow:
-            0 5px 18px
-            rgba(15, 23, 42, 0.04);
+            0 5px 18px rgba(15, 23, 42, 0.04);
     }
 
     .witness-dashboard-columns {
@@ -3001,7 +2986,7 @@ table form button {
         font-size: 17px;
     }
 
-    .witness-panel-header > a {
+    .witness-panel-header>a {
         color: var(--primary) !important;
 
         font-size: 12px;
@@ -3010,7 +2995,7 @@ table form button {
         text-decoration: none !important;
     }
 
-    .witness-panel-header > a:hover {
+    .witness-panel-header>a:hover {
         text-decoration: underline !important;
     }
 
@@ -4045,7 +4030,7 @@ table form button {
        This keeps their styling consistent too.
     */
 
-    #witnessReportTable td:last-child > a {
+    #witnessReportTable td:last-child>a {
         display: inline-flex;
 
         margin-right: 5px;
@@ -4063,7 +4048,7 @@ table form button {
         text-decoration: none !important;
     }
 
-    #witnessReportTable td:last-child > a:nth-of-type(2) {
+    #witnessReportTable td:last-child>a:nth-of-type(2) {
         background: #f1f5f9;
 
         color: #475569 !important;
@@ -4168,6 +4153,7 @@ table form button {
         }
     }
 }
+
 /* =========================================================
    WITNESS - REPORT DETAILS
    ========================================================= */
@@ -4287,7 +4273,7 @@ table form button {
         margin-bottom: 18px;
     }
 
-    .witness-detail-section-title > span {
+    .witness-detail-section-title>span {
         display: block;
 
         margin-bottom: 4px;
@@ -4327,7 +4313,7 @@ table form button {
         background: #f8fafc;
     }
 
-    .witness-detail-item > span {
+    .witness-detail-item>span {
         display: block;
 
         margin-bottom: 5px;
@@ -4489,6 +4475,7 @@ table form button {
         }
     }
 }
+
 /* =========================================================
    WITNESS - MAKE DONATION
    ========================================================= */
@@ -4558,7 +4545,7 @@ table form button {
         position: relative;
     }
 
-    .witness-money-input > span {
+    .witness-money-input>span {
         position: absolute;
         top: 50%;
         left: 14px;
@@ -4577,6 +4564,7 @@ table form button {
         padding-left: 36px;
     }
 }
+
 /* =========================================================
    WITNESS - MY DONATIONS
    ========================================================= */
@@ -4616,11 +4604,10 @@ table form button {
         background: #ffffff;
 
         box-shadow:
-            0 5px 18px
-            rgba(15, 23, 42, 0.04);
+            0 5px 18px rgba(15, 23, 42, 0.04);
     }
 
-    .witness-donation-summary-card > span {
+    .witness-donation-summary-card>span {
         color: #64748b;
 
         font-size: 11px;
@@ -4630,7 +4617,7 @@ table form button {
         text-transform: uppercase;
     }
 
-    .witness-donation-summary-card > strong {
+    .witness-donation-summary-card>strong {
         margin: 14px 0 9px;
 
         color: #172033;
@@ -4641,8 +4628,7 @@ table form button {
         letter-spacing: -0.035em;
     }
 
-    .witness-donation-summary-card
-    .witness-donation-summary-money {
+    .witness-donation-summary-card .witness-donation-summary-money {
         font-size: 25px;
     }
 
@@ -4666,8 +4652,7 @@ table form button {
         background: #ffffff;
 
         box-shadow:
-            0 5px 20px
-            rgba(15, 23, 42, 0.04);
+            0 5px 20px rgba(15, 23, 42, 0.04);
     }
 
     .witness-donation-table-responsive {
@@ -4897,6 +4882,7 @@ table form button {
         }
     }
 }
+
 /* =========================================================
    HELP SEEKER DASHBOARD
    ========================================================= */
@@ -4935,15 +4921,12 @@ table form button {
         border-radius: 14px;
 
         background:
-            linear-gradient(
-                135deg,
+            linear-gradient(135deg,
                 #ffffff 0%,
-                #fff7f7 100%
-            );
+                #fff7f7 100%);
 
         box-shadow:
-            0 6px 22px
-            rgba(127, 29, 29, 0.05);
+            0 6px 22px rgba(127, 29, 29, 0.05);
     }
 
     .helpseeker-emergency-icon {
@@ -4972,7 +4955,7 @@ table form button {
         flex: 1;
     }
 
-    .helpseeker-emergency-content > span {
+    .helpseeker-emergency-content>span {
         display: block;
 
         margin-bottom: 5px;
@@ -5038,8 +5021,7 @@ table form button {
         transform: translateY(-1px);
 
         box-shadow:
-            0 7px 18px
-            rgba(220, 38, 38, 0.18);
+            0 7px 18px rgba(220, 38, 38, 0.18);
     }
 
 
@@ -5151,6 +5133,7 @@ table form button {
         }
     }
 }
+
 /* =========================================================
    HELP SEEKER - CREATE RESCUE REQUEST
    ========================================================= */
@@ -5237,8 +5220,7 @@ table form button {
         background: #ffffff;
 
         box-shadow:
-            0 5px 18px
-            rgba(15, 23, 42, 0.04);
+            0 5px 18px rgba(15, 23, 42, 0.04);
     }
 
 
@@ -5277,7 +5259,7 @@ table form button {
     }
 
 
-    .helpseeker-request-card-header > div > p:last-child {
+    .helpseeker-request-card-header>div>p:last-child {
         margin: 7px 0 0;
 
         color: #64748b;
@@ -5328,7 +5310,7 @@ table form button {
     }
 
 
-    .helpseeker-request-section-heading > div {
+    .helpseeker-request-section-heading>div {
         margin: 0 !important;
     }
 
@@ -5464,8 +5446,7 @@ table form button {
         border-color: #60a5fa;
 
         box-shadow:
-            0 0 0 3px
-            rgba(59, 130, 246, 0.1);
+            0 0 0 3px rgba(59, 130, 246, 0.1);
     }
 
 
@@ -5539,8 +5520,7 @@ table form button {
         transform: translateY(-1px);
 
         box-shadow:
-            0 6px 16px
-            rgba(29, 78, 216, 0.18);
+            0 6px 16px rgba(29, 78, 216, 0.18);
     }
 
 
@@ -5604,6 +5584,7 @@ table form button {
     }
 
 }
+
 /* =========================================================
    HELP SEEKER - MY EMERGENCY REQUESTS
    ========================================================= */
@@ -5672,8 +5653,7 @@ table form button {
         background: #ffffff;
 
         box-shadow:
-            0 5px 18px
-            rgba(15, 23, 42, 0.04);
+            0 5px 18px rgba(15, 23, 42, 0.04);
     }
 
 
@@ -5722,8 +5702,7 @@ table form button {
         border-color: #60a5fa;
 
         box-shadow:
-            0 0 0 3px
-            rgba(59, 130, 246, 0.1);
+            0 0 0 3px rgba(59, 130, 246, 0.1);
     }
 
 
@@ -5835,7 +5814,7 @@ table form button {
        So styling is applied through the parent ID.
        ===================================================== */
 
-    #helpSeekerRequestList > .card {
+    #helpSeekerRequestList>.card {
         max-width: none;
 
         display: grid;
@@ -5854,8 +5833,7 @@ table form button {
         background: #ffffff;
 
         box-shadow:
-            0 5px 18px
-            rgba(15, 23, 42, 0.04);
+            0 5px 18px rgba(15, 23, 42, 0.04);
 
         transition:
             transform 0.2s ease,
@@ -5864,14 +5842,13 @@ table form button {
     }
 
 
-    #helpSeekerRequestList > .card:hover {
+    #helpSeekerRequestList>.card:hover {
         transform: translateY(-2px);
 
         border-color: #bfdbfe;
 
         box-shadow:
-            0 10px 24px
-            rgba(15, 23, 42, 0.07);
+            0 10px 24px rgba(15, 23, 42, 0.07);
     }
 
 
@@ -5879,7 +5856,7 @@ table form button {
        CARD TITLE
        ===================================================== */
 
-    #helpSeekerRequestList > .card h3 {
+    #helpSeekerRequestList>.card h3 {
         grid-column: 1 / -1;
 
         margin: 0 0 17px;
@@ -5901,7 +5878,7 @@ table form button {
        INFORMATION ROWS
        ===================================================== */
 
-    #helpSeekerRequestList > .card > p {
+    #helpSeekerRequestList>.card>p {
         min-width: 0;
 
         margin: 0;
@@ -5916,7 +5893,7 @@ table form button {
     }
 
 
-    #helpSeekerRequestList > .card > p strong {
+    #helpSeekerRequestList>.card>p strong {
         display: block;
 
         margin-bottom: 3px;
@@ -5937,8 +5914,8 @@ table form button {
        get full width for easier reading.
     */
 
-    #helpSeekerRequestList > .card > p:nth-of-type(3),
-    #helpSeekerRequestList > .card > p:nth-of-type(6) {
+    #helpSeekerRequestList>.card>p:nth-of-type(3),
+    #helpSeekerRequestList>.card>p:nth-of-type(6) {
         grid-column: 1 / -1;
     }
 
@@ -6006,7 +5983,7 @@ table form button {
        so these selectors work for both versions.
        ===================================================== */
 
-    #helpSeekerRequestList > .card > p:has(a) {
+    #helpSeekerRequestList>.card>p:has(a) {
         display: inline-flex;
         align-items: flex-end;
 
@@ -6017,7 +5994,7 @@ table form button {
     }
 
 
-    #helpSeekerRequestList > .card > p:has(a) a {
+    #helpSeekerRequestList>.card>p:has(a) a {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -6044,7 +6021,7 @@ table form button {
     }
 
 
-    #helpSeekerRequestList > .card > p:has(a) a:hover {
+    #helpSeekerRequestList>.card>p:has(a) a:hover {
         border-color: #93c5fd;
 
         background: #eff6ff;
@@ -6054,7 +6031,7 @@ table form button {
 
     /* Second action = feedback */
 
-    #helpSeekerRequestList > .card > p:has(a[href*="helpseeker-feedback"]) a {
+    #helpSeekerRequestList>.card>p:has(a[href*="helpseeker-feedback"]) a {
         border-color: #bbf7d0;
 
         background: #f0fdf4;
@@ -6062,7 +6039,7 @@ table form button {
     }
 
 
-    #helpSeekerRequestList > .card > p:has(a[href*="helpseeker-feedback"]) a:hover {
+    #helpSeekerRequestList>.card>p:has(a[href*="helpseeker-feedback"]) a:hover {
         border-color: #86efac;
 
         background: #dcfce7;
@@ -6074,12 +6051,12 @@ table form button {
        EMPTY STATE
        ===================================================== */
 
-    #helpSeekerRequestList > .card:only-child h3 {
+    #helpSeekerRequestList>.card:only-child h3 {
         grid-column: 1 / -1;
     }
 
 
-    #helpSeekerRequestList > .card:only-child > p {
+    #helpSeekerRequestList>.card:only-child>p {
         grid-column: 1 / -1;
     }
 
@@ -6133,18 +6110,19 @@ table form button {
         }
 
 
-        #helpSeekerRequestList > .card {
+        #helpSeekerRequestList>.card {
             grid-template-columns: 1fr;
         }
 
 
-        #helpSeekerRequestList > .card > p {
+        #helpSeekerRequestList>.card>p {
             grid-column: 1 / -1;
         }
 
     }
 
 }
+
 /* =========================================================
    HELP SEEKER - NEARBY VOLUNTEERS
    ========================================================= */
@@ -6227,8 +6205,7 @@ table form button {
         background: #ffffff;
 
         box-shadow:
-            0 5px 18px
-            rgba(15, 23, 42, 0.04);
+            0 5px 18px rgba(15, 23, 42, 0.04);
     }
 
 
@@ -6286,7 +6263,7 @@ table form button {
     }
 
 
-    .helpseeker-volunteer-search-form > div {
+    .helpseeker-volunteer-search-form>div {
         margin: 0 !important;
     }
 
@@ -6342,8 +6319,7 @@ table form button {
         border-color: #60a5fa;
 
         box-shadow:
-            0 0 0 3px
-            rgba(59, 130, 246, 0.1);
+            0 0 0 3px rgba(59, 130, 246, 0.1);
     }
 
 
@@ -6385,8 +6361,7 @@ table form button {
         transform: translateY(-1px);
 
         box-shadow:
-            0 6px 16px
-            rgba(29, 78, 216, 0.16);
+            0 6px 16px rgba(29, 78, 216, 0.16);
     }
 
 
@@ -6528,8 +6503,7 @@ table form button {
         background: #ffffff;
 
         box-shadow:
-            0 5px 18px
-            rgba(15, 23, 42, 0.04);
+            0 5px 18px rgba(15, 23, 42, 0.04);
 
         transition:
             transform 0.2s ease,
@@ -6544,8 +6518,7 @@ table form button {
         border-color: #bfdbfe;
 
         box-shadow:
-            0 10px 25px
-            rgba(15, 23, 42, 0.07);
+            0 10px 25px rgba(15, 23, 42, 0.07);
     }
 
 
@@ -6720,8 +6693,7 @@ table form button {
         text-align: center;
 
         box-shadow:
-            0 5px 18px
-            rgba(15, 23, 42, 0.04);
+            0 5px 18px rgba(15, 23, 42, 0.04);
     }
 
 
@@ -6813,6 +6785,7 @@ table form button {
     }
 
 }
+
 /* =========================================================
    HELP SEEKER - MY PROFILE
    ========================================================= */
@@ -6923,8 +6896,7 @@ table form button {
         background: #ffffff;
 
         box-shadow:
-            0 5px 18px
-            rgba(15, 23, 42, 0.04);
+            0 5px 18px rgba(15, 23, 42, 0.04);
     }
 
 
@@ -7040,8 +7012,7 @@ table form button {
         background: #ffffff;
 
         box-shadow:
-            0 5px 18px
-            rgba(15, 23, 42, 0.04);
+            0 5px 18px rgba(15, 23, 42, 0.04);
     }
 
 
@@ -7186,8 +7157,7 @@ table form button {
         border-color: #60a5fa;
 
         box-shadow:
-            0 0 0 3px
-            rgba(59, 130, 246, 0.1);
+            0 0 0 3px rgba(59, 130, 246, 0.1);
     }
 
 
@@ -7268,8 +7238,7 @@ table form button {
         transform: translateY(-1px);
 
         box-shadow:
-            0 6px 16px
-            rgba(29, 78, 216, 0.18);
+            0 6px 16px rgba(29, 78, 216, 0.18);
     }
 
 
@@ -7293,8 +7262,7 @@ table form button {
         background: #ffffff;
 
         box-shadow:
-            0 5px 18px
-            rgba(15, 23, 42, 0.04);
+            0 5px 18px rgba(15, 23, 42, 0.04);
     }
 
 
@@ -7438,13 +7406,14 @@ table form button {
         }
 
 
-        .helpseeker-security-card > a {
+        .helpseeker-security-card>a {
             width: 100%;
         }
 
     }
 
 }
+
 /* =========================================================
    CHANGE PASSWORD
    ========================================================= */
@@ -7539,8 +7508,7 @@ table form button {
         background: #ffffff;
 
         box-shadow:
-            0 5px 18px
-            rgba(15, 23, 42, 0.04);
+            0 5px 18px rgba(15, 23, 42, 0.04);
     }
 
 
@@ -7625,7 +7593,7 @@ table form button {
     }
 
 
-    .change-password-security-item > span {
+    .change-password-security-item>span {
         width: 29px;
         height: 29px;
 
@@ -7680,8 +7648,7 @@ table form button {
         background: #ffffff;
 
         box-shadow:
-            0 5px 18px
-            rgba(15, 23, 42, 0.04);
+            0 5px 18px rgba(15, 23, 42, 0.04);
     }
 
 
@@ -7698,7 +7665,7 @@ table form button {
     }
 
 
-    .change-password-form-header > span {
+    .change-password-form-header>span {
         display: block;
 
         margin-bottom: 5px;
@@ -7805,8 +7772,7 @@ table form button {
         border-color: #60a5fa;
 
         box-shadow:
-            0 0 0 3px
-            rgba(59, 130, 246, 0.1);
+            0 0 0 3px rgba(59, 130, 246, 0.1);
     }
 
 
@@ -7892,8 +7858,7 @@ table form button {
         transform: translateY(-1px);
 
         box-shadow:
-            0 6px 16px
-            rgba(29, 78, 216, 0.18);
+            0 6px 16px rgba(29, 78, 216, 0.18);
     }
 
 
@@ -8035,8 +8000,7 @@ table form button {
         background: #ffffff;
 
         box-shadow:
-            0 5px 18px
-            rgba(15, 23, 42, 0.04);
+            0 5px 18px rgba(15, 23, 42, 0.04);
     }
 
 
@@ -8184,8 +8148,7 @@ table form button {
         background: #ffffff;
 
         box-shadow:
-            0 5px 18px
-            rgba(15, 23, 42, 0.04);
+            0 5px 18px rgba(15, 23, 42, 0.04);
     }
 
 
@@ -8202,7 +8165,7 @@ table form button {
     }
 
 
-    .witness-profile-card-header > span {
+    .witness-profile-card-header>span {
         display: block;
 
         margin-bottom: 5px;
@@ -8330,8 +8293,7 @@ table form button {
         border-color: #60a5fa;
 
         box-shadow:
-            0 0 0 3px
-            rgba(59, 130, 246, 0.1);
+            0 0 0 3px rgba(59, 130, 246, 0.1);
     }
 
 
@@ -8402,8 +8364,7 @@ table form button {
         background: #ffffff;
 
         box-shadow:
-            0 5px 18px
-            rgba(15, 23, 42, 0.04);
+            0 5px 18px rgba(15, 23, 42, 0.04);
     }
 
 
@@ -8511,7 +8472,7 @@ table form button {
 
 
         .witness-profile-account-eyebrow,
-        .witness-profile-account-card > h2,
+        .witness-profile-account-card>h2,
         .witness-profile-account-description,
         .witness-profile-account-divider {
             grid-column: 1 / -1;
@@ -8569,7 +8530,7 @@ table form button {
 
 
         .witness-profile-account-eyebrow,
-        .witness-profile-account-card > h2,
+        .witness-profile-account-card>h2,
         .witness-profile-account-description,
         .witness-profile-account-divider {
             grid-column: auto;
@@ -8598,6 +8559,357 @@ table form button {
 
         .witness-profile-form-actions button {
             width: 100%;
+        }
+
+    }
+
+}
+
+/* =========================================================
+   CREATE ACCOUNT + FORGOT PASSWORD
+   ========================================================= */
+
+@media screen {
+
+
+    /* =====================================================
+       SHARED AUTH IMPROVEMENTS
+       ===================================================== */
+
+    .auth-required {
+        color: #dc2626;
+    }
+
+
+    .auth-form .form-group label {
+        color: #334155;
+
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+
+    .auth-form .form-group input,
+    .auth-form .form-group select {
+        width: 100%;
+
+        margin: 0;
+        padding: 11px 13px;
+
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+
+        background: #ffffff;
+        color: #172033;
+
+        font-family: inherit;
+        font-size: 13px;
+
+        outline: none;
+
+        transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+
+    .auth-form .form-group input:hover,
+    .auth-form .form-group select:hover {
+        border-color: #94a3b8;
+    }
+
+
+    .auth-form .form-group input:focus,
+    .auth-form .form-group select:focus {
+        border-color: #60a5fa;
+
+        box-shadow:
+            0 0 0 3px rgba(59, 130, 246, 0.10);
+    }
+
+
+    .auth-form .form-group input::placeholder {
+        color: #94a3b8;
+    }
+
+
+    .auth-form .form-group small {
+        display: block;
+
+        margin-top: 6px;
+
+        color: #94a3b8;
+
+        font-size: 10px;
+        line-height: 1.45;
+    }
+
+
+    /* =====================================================
+       CREATE ACCOUNT
+       ===================================================== */
+
+    .register-auth-shell {
+        grid-template-columns:
+            minmax(320px, 0.82fr) minmax(600px, 1.18fr);
+    }
+
+
+    .register-form-panel {
+        align-items: center;
+
+        padding:
+            42px 50px;
+    }
+
+
+    .register-auth-card {
+        max-width: 680px;
+
+        padding: 34px 38px;
+    }
+
+
+    .register-auth-card .auth-card-header {
+        margin-bottom: 24px;
+    }
+
+
+    .register-auth-card .auth-card-header h2 {
+        font-size: 27px;
+    }
+
+
+    /* =====================================================
+       REGISTER GRID
+       ===================================================== */
+
+    .register-form-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap:
+            0 18px;
+    }
+
+
+    .register-form-grid .form-group {
+        min-width: 0;
+
+        margin-bottom: 17px;
+    }
+
+
+    .register-field-full {
+        grid-column: 1 / -1;
+    }
+
+
+    /* =====================================================
+       REGISTER BUTTON
+       ===================================================== */
+
+    .register-submit {
+        margin-top: 4px;
+    }
+
+
+    /* =====================================================
+       FORGOT PASSWORD
+       ===================================================== */
+
+    .forgot-auth-card {
+        max-width: 460px;
+    }
+
+
+    .forgot-password-form .form-group {
+        margin-bottom: 20px;
+    }
+
+
+    /* =====================================================
+       VERIFIED SUCCESS STATE
+       ===================================================== */
+
+    .forgot-success-icon {
+        width: 52px;
+        height: 52px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin-bottom: 20px;
+
+        border-radius: 50%;
+
+        background: #ecfdf5;
+        color: #047857;
+
+        font-size: 21px;
+        font-weight: 800;
+    }
+
+
+    .forgot-success-header {
+        margin-bottom: 20px;
+    }
+
+
+    /* =====================================================
+       TOKEN NOTICE
+       ===================================================== */
+
+    .forgot-token-notice {
+        margin-bottom: 20px;
+        padding: 14px 15px;
+
+        border: 1px solid #dbeafe;
+        border-radius: 9px;
+
+        background: #f8fbff;
+    }
+
+
+    .forgot-token-notice span {
+        display: block;
+
+        margin-bottom: 4px;
+
+        color: var(--primary);
+
+        font-size: 9px;
+        font-weight: 800;
+
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+
+    .forgot-token-notice p {
+        margin: 0;
+
+        color: #64748b;
+
+        font-size: 11px;
+        line-height: 1.55;
+    }
+
+
+    /* =====================================================
+       CONTINUE BUTTON
+       ===================================================== */
+
+    .forgot-continue-button {
+        width: 100%;
+        min-height: 42px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 11px 17px;
+
+        border: 1px solid var(--primary);
+        border-radius: 8px;
+
+        background: var(--primary);
+        color: #ffffff !important;
+
+        font-size: 13px;
+        font-weight: 700;
+
+        text-decoration: none !important;
+
+        transition:
+            background 0.2s ease,
+            border-color 0.2s ease,
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+
+    .forgot-continue-button:hover {
+        border-color: var(--primary-dark);
+
+        background: var(--primary-dark);
+        color: #ffffff !important;
+
+        transform: translateY(-1px);
+
+        box-shadow:
+            0 6px 16px rgba(29, 78, 216, 0.18);
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @media (max-width: 1050px) {
+
+        .register-auth-shell {
+            grid-template-columns:
+                minmax(300px, 0.7fr) minmax(520px, 1.3fr);
+        }
+
+
+        .register-form-panel {
+            padding:
+                34px 28px;
+        }
+
+    }
+
+
+    @media (max-width: 900px) {
+
+        .register-auth-shell,
+        .forgot-auth-shell {
+            grid-template-columns: 1fr;
+        }
+
+
+        .register-auth-shell .auth-brand-panel,
+        .forgot-auth-shell .auth-brand-panel {
+            display: none;
+        }
+
+
+        .register-form-panel {
+            min-height: 100vh;
+
+            padding:
+                28px 20px;
+        }
+
+
+        .register-auth-card {
+            max-width: 680px;
+        }
+
+    }
+
+
+    @media (max-width: 600px) {
+
+        .register-form-grid {
+            grid-template-columns: 1fr;
+        }
+
+
+        .register-field-full {
+            grid-column: auto;
+        }
+
+
+        .register-auth-card,
+        .forgot-auth-card {
+            padding:
+                28px 22px;
         }
 
     }
