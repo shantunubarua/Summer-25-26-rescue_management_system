@@ -257,32 +257,76 @@ function updateVolunteerAvailability(
     $volunteer_id,
     $availability_status
 ) {
+    $volunteer_id =
+        (int)$volunteer_id;
+
+    $availability_status =
+        trim($availability_status);
+
+
     $allowed_statuses = [
         'available',
         'unavailable',
         'currently_rescuing'
     ];
 
-    if (!in_array($availability_status, $allowed_statuses)) {
+
+    if (
+        $volunteer_id <= 0 ||
+        !in_array(
+            $availability_status,
+            $allowed_statuses,
+            true
+        )
+    ) {
         return false;
     }
 
-    $sql = "UPDATE volunteer_profiles
-            SET availability_status = ?
-            WHERE user_id = ?";
 
-    $stmt = mysqli_prepare($conn, $sql);
+    $sql = "
+        INSERT INTO volunteer_profiles
+        (
+            user_id,
+            availability_status
+        )
+        VALUES (?, ?)
+
+        ON DUPLICATE KEY UPDATE
+            availability_status =
+                VALUES(availability_status)
+    ";
+
+
+    $stmt =
+        mysqli_prepare(
+            $conn,
+            $sql
+        );
+
+
+    if (!$stmt) {
+        return false;
+    }
+
 
     mysqli_stmt_bind_param(
         $stmt,
-        "si",
-        $availability_status,
-        $volunteer_id
+        "is",
+        $volunteer_id,
+        $availability_status
     );
 
-    $success = mysqli_stmt_execute($stmt);
 
-    mysqli_stmt_close($stmt);
+    $success =
+        mysqli_stmt_execute(
+            $stmt
+        );
+
+
+    mysqli_stmt_close(
+        $stmt
+    );
+
 
     return $success;
 }
@@ -335,12 +379,44 @@ function updateVolunteerProfile(
     $skills,
     $emergency_contact
 ) {
-    $sqlUser = "UPDATE users
-                SET name = ?, phone = ?
-                WHERE id = ?
-                AND role = 'volunteer'";
+    $volunteer_id =
+        (int)$volunteer_id;
 
-    $stmtUser = mysqli_prepare($conn, $sqlUser);
+
+    if ($volunteer_id <= 0) {
+        return false;
+    }
+
+
+    mysqli_begin_transaction(
+        $conn
+    );
+
+
+    $sqlUser = "
+        UPDATE users
+        SET
+            name = ?,
+            phone = ?
+        WHERE id = ?
+        AND role = 'volunteer'
+    ";
+
+
+    $stmtUser =
+        mysqli_prepare(
+            $conn,
+            $sqlUser
+        );
+
+
+    if (!$stmtUser) {
+
+        mysqli_rollback($conn);
+
+        return false;
+    }
+
 
     mysqli_stmt_bind_param(
         $stmtUser,
@@ -350,44 +426,100 @@ function updateVolunteerProfile(
         $volunteer_id
     );
 
-    $userUpdated = mysqli_stmt_execute($stmtUser);
 
-    mysqli_stmt_close($stmtUser);
+    $userUpdated =
+        mysqli_stmt_execute(
+            $stmtUser
+        );
+
+
+    mysqli_stmt_close(
+        $stmtUser
+    );
+
 
     if (!$userUpdated) {
+
+        mysqli_rollback($conn);
+
         return false;
     }
 
-    $sqlProfile = "UPDATE volunteer_profiles
-                   SET address = ?,
-                       blood_group = ?,
-                       experience = ?,
-                       skills = ?,
-                       emergency_contact = ?
-                   WHERE user_id = ?";
 
-    $stmtProfile = mysqli_prepare(
-        $conn,
-        $sqlProfile
-    );
+    $sqlProfile = "
+        INSERT INTO volunteer_profiles
+        (
+            user_id,
+            address,
+            blood_group,
+            experience,
+            skills,
+            emergency_contact
+        )
+        VALUES (?, ?, ?, ?, ?, ?)
+
+        ON DUPLICATE KEY UPDATE
+            address = VALUES(address),
+            blood_group = VALUES(blood_group),
+            experience = VALUES(experience),
+            skills = VALUES(skills),
+            emergency_contact =
+                VALUES(emergency_contact)
+    ";
+
+
+    $stmtProfile =
+        mysqli_prepare(
+            $conn,
+            $sqlProfile
+        );
+
+
+    if (!$stmtProfile) {
+
+        mysqli_rollback($conn);
+
+        return false;
+    }
+
 
     mysqli_stmt_bind_param(
         $stmtProfile,
-        "sssssi",
+        "isssss",
+        $volunteer_id,
         $address,
         $blood_group,
         $experience,
         $skills,
-        $emergency_contact,
-        $volunteer_id
+        $emergency_contact
     );
 
+
     $profileUpdated =
-        mysqli_stmt_execute($stmtProfile);
+        mysqli_stmt_execute(
+            $stmtProfile
+        );
 
-    mysqli_stmt_close($stmtProfile);
 
-    return $profileUpdated;
+    mysqli_stmt_close(
+        $stmtProfile
+    );
+
+
+    if (!$profileUpdated) {
+
+        mysqli_rollback($conn);
+
+        return false;
+    }
+
+
+    mysqli_commit(
+        $conn
+    );
+
+
+    return true;
 }
 /*
 |--------------------------------------------------------------------------
