@@ -3647,3 +3647,524 @@ table form button {
         }
     }
 }
+
+/* =========================================================
+   WITNESS - MY REPORTS
+   ========================================================= */
+
+@media screen {
+
+    .witness-reports-page {
+        width: 100%;
+        max-width: 1180px;
+    }
+
+
+    /* ===== SEARCH CARD ===== */
+
+    .witness-report-search-card {
+        display: flex;
+        align-items: flex-end;
+
+        gap: 22px;
+
+        margin-bottom: 22px;
+        padding: 20px 22px;
+
+        border: 1px solid var(--border);
+        border-radius: 13px;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 5px 18px rgba(15, 23, 42, 0.04);
+    }
+
+    .witness-report-search-main {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .witness-report-search-main label {
+        margin-bottom: 8px;
+    }
+
+    .witness-search-input-wrap {
+        position: relative;
+    }
+
+    .witness-search-input-wrap input {
+        margin: 0;
+        padding-left: 43px;
+    }
+
+    .witness-search-icon {
+        width: 29px;
+        height: 29px;
+
+        position: absolute;
+        top: 50%;
+        left: 8px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        transform: translateY(-50%);
+
+        border-radius: 7px;
+
+        background: #eff6ff;
+
+        color: #1d4ed8;
+
+        font-size: 11px;
+        font-weight: 900;
+
+        pointer-events: none;
+    }
+
+
+    /* ===== COUNT ===== */
+
+    .witness-search-count-box {
+        min-width: 145px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 5px;
+
+        padding: 11px 14px;
+
+        border: 1px solid #e2e8f0;
+        border-radius: 9px;
+
+        background: #f8fafc;
+
+        color: #64748b;
+
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+    .witness-search-count-box strong {
+        color: #172033;
+
+        font-size: 16px;
+    }
+
+
+    /* ===== TABLE CARD ===== */
+
+    .witness-table-card {
+        overflow: hidden;
+
+        border: 1px solid var(--border);
+        border-radius: 14px;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 5px 20px rgba(15, 23, 42, 0.04);
+    }
+
+    .witness-table-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        gap: 20px;
+
+        padding: 20px 22px;
+
+        border-bottom: 1px solid #edf2f7;
+
+        background: #fbfdff;
+    }
+
+    .witness-table-card-header span {
+        display: block;
+
+        margin-bottom: 4px;
+
+        color: var(--primary);
+
+        font-size: 10px;
+        font-weight: 800;
+
+        letter-spacing: 0.09em;
+    }
+
+    .witness-table-card-header h2 {
+        margin: 0;
+
+        font-size: 19px;
+    }
+
+    .witness-table-card-header small {
+        color: #94a3b8;
+
+        font-size: 11px;
+    }
+
+    .witness-table-responsive {
+        width: 100%;
+
+        overflow-x: auto;
+    }
+
+
+    /* ===== TABLE ===== */
+
+    #witnessReportTable {
+        min-width: 980px;
+
+        margin: 0;
+
+        border: none;
+        border-radius: 0;
+    }
+
+    #witnessReportTable thead th {
+        padding: 13px 14px;
+
+        background: #f8fafc;
+
+        color: #64748b;
+
+        font-size: 10px;
+        font-weight: 800;
+
+        letter-spacing: 0.055em;
+
+        white-space: nowrap;
+    }
+
+    #witnessReportTable tbody td {
+        padding: 15px 14px;
+
+        vertical-align: middle;
+
+        color: #475569;
+
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    #witnessReportTable tbody tr {
+        transition: background 0.2s ease;
+    }
+
+    #witnessReportTable tbody tr:hover {
+        background: #fbfdff;
+    }
+
+    .witness-report-id {
+        color: #94a3b8 !important;
+
+        font-weight: 700;
+    }
+
+    .witness-report-title-link {
+        color: #1e293b !important;
+
+        font-size: 13px;
+        font-weight: 800;
+
+        text-decoration: none !important;
+    }
+
+    .witness-report-title-link:hover {
+        color: var(--primary) !important;
+    }
+
+    .witness-location-cell {
+        max-width: 200px;
+    }
+
+    .witness-date-cell {
+        white-space: nowrap;
+    }
+
+
+    /* ===== BADGES ===== */
+
+    .witness-table-badge {
+        display: inline-flex;
+        align-items: center;
+
+        padding: 5px 9px;
+
+        border-radius: 999px;
+
+        font-size: 10px;
+        font-weight: 800;
+
+        white-space: nowrap;
+
+        text-transform: capitalize;
+    }
+
+    .witness-damage-low {
+        background: #f0fdf4;
+        color: #15803d;
+    }
+
+    .witness-damage-medium {
+        background: #fffbeb;
+        color: #b45309;
+    }
+
+    .witness-damage-high {
+        background: #fff7ed;
+        color: #c2410c;
+    }
+
+    .witness-damage-critical {
+        background: #fef2f2;
+        color: #dc2626;
+    }
+
+    .witness-report-status-pending {
+        background: #fffbeb;
+        color: #b45309;
+    }
+
+    .witness-report-status-reviewed,
+    .witness-report-status-approved {
+        background: #eff6ff;
+        color: #1d4ed8;
+    }
+
+    .witness-report-status-completed {
+        background: #f0fdf4;
+        color: #15803d;
+    }
+
+    .witness-report-status-rejected {
+        background: #fef2f2;
+        color: #dc2626;
+    }
+
+
+    /* ===== ACTIONS ===== */
+
+    .witness-table-actions {
+        display: flex;
+        align-items: center;
+
+        gap: 9px;
+
+        white-space: nowrap;
+    }
+
+    .witness-action-link {
+        display: inline-flex;
+
+        padding: 6px 9px;
+
+        border-radius: 6px;
+
+        font-size: 11px;
+        font-weight: 700;
+
+        text-decoration: none !important;
+    }
+
+    .witness-view-link {
+        background: #eff6ff;
+
+        color: #1d4ed8 !important;
+    }
+
+    .witness-view-link:hover {
+        background: #dbeafe;
+
+        color: #1e40af !important;
+    }
+
+    .witness-edit-link {
+        background: #f1f5f9;
+
+        color: #475569 !important;
+    }
+
+    .witness-edit-link:hover {
+        background: #e2e8f0;
+
+        color: #1e293b !important;
+    }
+
+    .witness-delete-form,
+    #witnessReportTable td:last-child form {
+        display: inline-block !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        border: none !important;
+
+        background: transparent !important;
+    }
+
+    .witness-delete-button,
+    #witnessReportTable td:last-child form button {
+        min-height: auto;
+
+        margin: 0;
+        padding: 6px 9px;
+
+        border: none;
+        border-radius: 6px;
+
+        background: #fef2f2;
+
+        color: #dc2626;
+
+        font-size: 11px;
+        font-weight: 700;
+
+        box-shadow: none;
+    }
+
+    .witness-delete-button:hover,
+    #witnessReportTable td:last-child form button:hover {
+        background: #fee2e2;
+
+        color: #b91c1c;
+
+        box-shadow: none;
+    }
+
+
+    /*
+       AJAX-generated View/Edit links do not have
+       the static PHP classes above.
+       This keeps their styling consistent too.
+    */
+
+    #witnessReportTable td:last-child > a {
+        display: inline-flex;
+
+        margin-right: 5px;
+        padding: 6px 9px;
+
+        border-radius: 6px;
+
+        background: #eff6ff;
+
+        color: #1d4ed8 !important;
+
+        font-size: 11px;
+        font-weight: 700;
+
+        text-decoration: none !important;
+    }
+
+    #witnessReportTable td:last-child > a:nth-of-type(2) {
+        background: #f1f5f9;
+
+        color: #475569 !important;
+    }
+
+
+    /* ===== AJAX MESSAGE ===== */
+
+    .witness-search-message {
+        min-height: 0;
+
+        margin: 12px 0 0;
+
+        color: #64748b;
+
+        font-size: 12px;
+    }
+
+    .witness-search-message:empty {
+        display: none;
+    }
+
+
+    /* ===== EMPTY TABLE ===== */
+
+    .witness-table-empty-cell {
+        padding: 0 !important;
+    }
+
+    .witness-table-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        padding: 48px 20px;
+
+        text-align: center;
+    }
+
+    .witness-table-empty-icon {
+        width: 44px;
+        height: 44px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin-bottom: 14px;
+
+        border-radius: 11px;
+
+        background: #eff6ff;
+
+        color: #1d4ed8;
+
+        font-size: 13px;
+        font-weight: 900;
+    }
+
+    .witness-table-empty strong {
+        margin-bottom: 6px;
+
+        color: #1e293b;
+
+        font-size: 15px;
+    }
+
+    .witness-table-empty span {
+        margin-bottom: 16px;
+
+        color: #64748b;
+
+        font-size: 12px;
+    }
+
+
+    /* ===== RESPONSIVE ===== */
+
+    @media (max-width: 800px) {
+
+        .witness-report-search-card {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .witness-search-count-box {
+            width: fit-content;
+        }
+
+        .witness-table-card-header {
+            align-items: flex-start;
+            flex-direction: column;
+
+            gap: 7px;
+        }
+    }
+
+    @media (max-width: 520px) {
+
+        .witness-search-count-box {
+            width: 100%;
+        }
+    }
+}
