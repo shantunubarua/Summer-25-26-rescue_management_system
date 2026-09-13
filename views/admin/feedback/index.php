@@ -1,173 +1,559 @@
-<?php require_once "views/partials/header.php"; ?>
-<?php require_once "views/partials/sidebar.php"; ?>
+<?php
+
+require_once "views/partials/header.php";
+require_once "views/partials/sidebar.php";
+
+
+$totalFeedback = is_array($feedback)
+    ? count($feedback)
+    : 0;
+
+$pendingFeedback = 0;
+$reviewedFeedback = 0;
+$resolvedFeedback = 0;
+
+
+if (!empty($feedback)) {
+
+    foreach ($feedback as $item) {
+
+        $itemStatus =
+            strtolower(
+                trim(
+                    (string)(
+                        $item['status']
+                        ?? ''
+                    )
+                )
+            );
+
+
+        if ($itemStatus === 'pending') {
+            $pendingFeedback++;
+        }
+
+        if ($itemStatus === 'reviewed') {
+            $reviewedFeedback++;
+        }
+
+        if ($itemStatus === 'resolved') {
+            $resolvedFeedback++;
+        }
+    }
+}
+
+?>
 
 <div class="content">
 
-    <h1>Feedback Management</h1>
+    <div class="admin-feedback-page">
 
-    <?php if (empty($feedback)): ?>
 
-        <p>No feedback has been submitted yet.</p>
+        <!-- =========================================
+             PAGE HEADER
+             ========================================= -->
 
-    <?php else: ?>
+        <div class="admin-feedback-header">
 
-        <table>
+            <div>
 
-            <thead>
+                <p class="eyebrow">
+                    USER RESPONSE MANAGEMENT
+                </p>
 
-                <tr>
-                    <th>ID</th>
-                    <th>Help Seeker</th>
-                    <th>Rescue Request ID</th>
-                    <th>Message</th>
-                    <th>Status</th>
-                    <th>Created At</th>
-                    <th>Action</th>
-                </tr>
+                <h1>
+                    Feedback Management
+                </h1>
 
-            </thead>
+                <p class="page-subtitle">
+                    Review feedback submitted by help seekers
+                    after rescue activities and update its status.
+                </p>
 
-            <tbody>
+            </div>
 
-                <?php foreach ($feedback as $item): ?>
+        </div>
 
-                    <tr>
 
-                        <td>
-                            <?php echo (int)$item['id']; ?>
-                        </td>
+        <!-- =========================================
+             ERROR
+             ========================================= -->
 
-                        <td>
-                            <?php
-                            echo htmlspecialchars(
-                                $item['help_seeker_name']
-                            );
-                            ?>
-                        </td>
+        <?php if (!empty($error)): ?>
 
-                        <td>
-                            <?php
-                            echo $item['rescue_request_id'] !== null
-                                ? (int)$item['rescue_request_id']
-                                : 'N/A';
-                            ?>
-                        </td>
+            <div class="admin-feedback-message admin-feedback-message-error">
 
-                        <td>
-                            <?php
-                            echo htmlspecialchars(
-                                $item['message']
-                            );
-                            ?>
-                        </td>
+                <?= htmlspecialchars(
+                    $error,
+                    ENT_QUOTES,
+                    'UTF-8'
+                ); ?>
 
-                        <td>
+            </div>
 
-                            <form
-                                method="POST"
-                                action="index.php?page=feedback"
-                                class="status-form"
-                            >
+        <?php endif; ?>
 
-                                <?php echo csrfField(); ?>
 
-                                <input
-                                    type="hidden"
-                                    name="id"
-                                    value="<?php echo (int)$item['id']; ?>"
-                                >
+        <!-- =========================================
+             FEEDBACK SUMMARY
+             ========================================= -->
 
-                                <select name="status">
+        <div class="admin-feedback-stats">
 
-                                    <option
-                                        value="pending"
-                                        <?php
-                                        echo $item['status'] === 'pending'
-                                            ? 'selected'
-                                            : '';
-                                        ?>
-                                    >
-                                        Pending
-                                    </option>
 
-                                    <option
-                                        value="reviewed"
-                                        <?php
-                                        echo $item['status'] === 'reviewed'
-                                            ? 'selected'
-                                            : '';
-                                        ?>
-                                    >
-                                        Reviewed
-                                    </option>
+            <!-- TOTAL -->
 
-                                    <option
-                                        value="resolved"
-                                        <?php
-                                        echo $item['status'] === 'resolved'
-                                            ? 'selected'
-                                            : '';
-                                        ?>
-                                    >
-                                        Resolved
-                                    </option>
+            <article class="admin-feedback-stat">
 
-                                </select>
+                <span class="admin-feedback-stat-label">
+                    Total Feedback
+                </span>
 
-                                <button type="submit">
-                                    Update
-                                </button>
+                <strong>
+                    <?= (int)$totalFeedback; ?>
+                </strong>
 
-                            </form>
+                <p>
+                    All feedback submitted by help seekers.
+                </p>
 
-                        </td>
+            </article>
 
-                        <td>
-                            <?php
-                            echo htmlspecialchars(
-                                $item['created_at']
-                            );
-                            ?>
-                        </td>
 
-                        <td>
+            <!-- PENDING -->
 
-                            <form
-                                method="POST"
-                                action="index.php?page=feedback-delete"
-                                class="delete-form"
-                                onsubmit="return confirm('Are you sure you want to delete this feedback?');"
-                            >
+            <article class="admin-feedback-stat">
 
-                                <?php echo csrfField(); ?>
+                <span class="admin-feedback-stat-label">
+                    Pending Review
+                </span>
 
-                                <input
-                                    type="hidden"
-                                    name="id"
-                                    value="<?php echo (int)$item['id']; ?>"
-                                >
+                <strong>
+                    <?= (int)$pendingFeedback; ?>
+                </strong>
 
-                                <button
-                                    type="submit"
-                                    class="delete-link"
-                                >
-                                    Delete
-                                </button>
+                <p>
+                    Feedback waiting for admin review.
+                </p>
 
-                            </form>
+            </article>
 
-                        </td>
 
-                    </tr>
+            <!-- REVIEWED -->
 
-                <?php endforeach; ?>
+            <article class="admin-feedback-stat">
 
-            </tbody>
+                <span class="admin-feedback-stat-label">
+                    Reviewed
+                </span>
 
-        </table>
+                <strong>
+                    <?= (int)$reviewedFeedback; ?>
+                </strong>
 
-    <?php endif; ?>
+                <p>
+                    Feedback already reviewed by admin.
+                </p>
+
+            </article>
+
+
+            <!-- RESOLVED -->
+
+            <article class="admin-feedback-stat">
+
+                <span class="admin-feedback-stat-label">
+                    Resolved
+                </span>
+
+                <strong>
+                    <?= (int)$resolvedFeedback; ?>
+                </strong>
+
+                <p>
+                    Feedback marked as fully resolved.
+                </p>
+
+            </article>
+
+        </div>
+
+
+        <!-- =========================================
+             LIST HEADING
+             ========================================= -->
+
+        <div class="admin-feedback-list-heading">
+
+            <div>
+
+                <p>
+                    FEEDBACK RECORDS
+                </p>
+
+                <h2>
+                    Submitted Feedback
+                </h2>
+
+            </div>
+
+
+            <span>
+                <?= (int)$totalFeedback; ?>
+                record<?= $totalFeedback === 1 ? '' : 's'; ?>
+            </span>
+
+        </div>
+
+
+        <!-- =========================================
+             EMPTY STATE
+             ========================================= -->
+
+        <?php if (empty($feedback)): ?>
+
+            <div class="admin-feedback-empty">
+
+                <div class="admin-feedback-empty-icon">
+                    FB
+                </div>
+
+                <h3>
+                    No Feedback Submitted
+                </h3>
+
+                <p>
+                    Help seeker feedback will appear here
+                    after it is submitted.
+                </p>
+
+            </div>
+
+
+        <?php else: ?>
+
+
+            <!-- =====================================
+                 TABLE
+                 ===================================== -->
+
+            <div class="admin-feedback-table-card">
+
+                <div class="admin-feedback-table-wrap">
+
+                    <table class="admin-feedback-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    ID
+                                </th>
+
+                                <th>
+                                    Help Seeker
+                                </th>
+
+                                <th>
+                                    Rescue Request
+                                </th>
+
+                                <th>
+                                    Feedback Message
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Submitted At
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+
+                            <?php foreach ($feedback as $item): ?>
+
+
+                                <?php
+
+                                $status =
+                                    strtolower(
+                                        trim(
+                                            (string)(
+                                                $item['status']
+                                                ?? 'pending'
+                                            )
+                                        )
+                                    );
+
+                                ?>
+
+
+                                <tr>
+
+
+                                    <!-- ID -->
+
+                                    <td>
+
+                                        <span class="admin-feedback-id">
+
+                                            #<?= (int)$item['id']; ?>
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- HELP SEEKER -->
+
+                                    <td>
+
+                                        <div class="admin-feedback-user">
+
+                                            <div class="admin-feedback-user-avatar">
+
+                                                <?= htmlspecialchars(
+                                                    strtoupper(
+                                                        substr(
+                                                            trim(
+                                                                $item[
+                                                                    'help_seeker_name'
+                                                                ]
+                                                                ?? 'H'
+                                                            ),
+                                                            0,
+                                                            1
+                                                        )
+                                                    ),
+                                                    ENT_QUOTES,
+                                                    'UTF-8'
+                                                ); ?>
+
+                                            </div>
+
+
+                                            <strong>
+
+                                                <?= htmlspecialchars(
+                                                    $item['help_seeker_name']
+                                                    ?? '',
+                                                    ENT_QUOTES,
+                                                    'UTF-8'
+                                                ); ?>
+
+                                            </strong>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- REQUEST ID -->
+
+                                    <td>
+
+                                        <?php if (
+                                            $item['rescue_request_id']
+                                            !== null
+                                        ): ?>
+
+                                            <span class="admin-feedback-request-id">
+
+                                                #<?= (int)$item[
+                                                    'rescue_request_id'
+                                                ]; ?>
+
+                                            </span>
+
+                                        <?php else: ?>
+
+                                            <span class="admin-feedback-na">
+                                                N/A
+                                            </span>
+
+                                        <?php endif; ?>
+
+                                    </td>
+
+
+                                    <!-- MESSAGE -->
+
+                                    <td>
+
+                                        <div class="admin-feedback-text">
+
+                                            <?= nl2br(
+                                                htmlspecialchars(
+                                                    $item['message']
+                                                    ?? '',
+                                                    ENT_QUOTES,
+                                                    'UTF-8'
+                                                )
+                                            ); ?>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- STATUS UPDATE -->
+
+                                    <td>
+
+                                        <form
+                                            method="POST"
+                                            action="index.php?page=feedback"
+                                            class="admin-feedback-status-form"
+                                        >
+
+                                            <?php echo csrfField(); ?>
+
+
+                                            <input
+                                                type="hidden"
+                                                name="id"
+                                                value="<?= (int)$item['id']; ?>"
+                                            >
+
+
+                                            <select
+                                                name="status"
+                                                class="admin-feedback-status-select admin-feedback-status-select-<?= htmlspecialchars(
+                                                    $status,
+                                                    ENT_QUOTES,
+                                                    'UTF-8'
+                                                ); ?>"
+                                            >
+
+                                                <option
+                                                    value="pending"
+                                                    <?= $status === 'pending'
+                                                        ? 'selected'
+                                                        : ''; ?>
+                                                >
+                                                    Pending
+                                                </option>
+
+
+                                                <option
+                                                    value="reviewed"
+                                                    <?= $status === 'reviewed'
+                                                        ? 'selected'
+                                                        : ''; ?>
+                                                >
+                                                    Reviewed
+                                                </option>
+
+
+                                                <option
+                                                    value="resolved"
+                                                    <?= $status === 'resolved'
+                                                        ? 'selected'
+                                                        : ''; ?>
+                                                >
+                                                    Resolved
+                                                </option>
+
+                                            </select>
+
+
+                                            <button
+                                                type="submit"
+                                                class="admin-feedback-update-button"
+                                            >
+                                                Update
+                                            </button>
+
+                                        </form>
+
+                                    </td>
+
+
+                                    <!-- CREATED -->
+
+                                    <td>
+
+                                        <span class="admin-feedback-date">
+
+                                            <?= htmlspecialchars(
+                                                $item['created_at']
+                                                ?? '',
+                                                ENT_QUOTES,
+                                                'UTF-8'
+                                            ); ?>
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- DELETE -->
+
+                                    <td>
+
+                                        <form
+                                            method="POST"
+                                            action="index.php?page=feedback-delete"
+                                            class="admin-feedback-delete-form"
+                                            onsubmit="return confirm('Are you sure you want to delete this feedback?');"
+                                        >
+
+                                            <?php echo csrfField(); ?>
+
+
+                                            <input
+                                                type="hidden"
+                                                name="id"
+                                                value="<?= (int)$item['id']; ?>"
+                                            >
+
+
+                                            <button
+                                                type="submit"
+                                                class="admin-feedback-delete-button"
+                                            >
+                                                Delete
+                                            </button>
+
+                                        </form>
+
+                                    </td>
+
+                                </tr>
+
+
+                            <?php endforeach; ?>
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+        <?php endif; ?>
+
+    </div>
 
 </div>
 
-<?php require_once "views/partials/footer.php"; ?>
+
+<?php
+require_once "views/partials/footer.php";
+?>
