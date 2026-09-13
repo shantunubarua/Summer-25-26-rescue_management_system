@@ -2689,3 +2689,696 @@ table form button {
         }
     }
 }
+
+/* =========================================================
+   WITNESS DASHBOARD
+   ========================================================= */
+
+@media screen {
+
+    .witness-dashboard-page {
+        width: 100%;
+        max-width: 1180px;
+    }
+
+
+    /* ===== HEADER ===== */
+
+    .witness-dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        gap: 28px;
+
+        margin-bottom: 30px;
+    }
+
+    .witness-dashboard-header h1 {
+        margin-bottom: 8px;
+    }
+
+    .witness-dashboard-actions {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+
+        gap: 10px;
+    }
+
+    .primary-action,
+    .secondary-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        min-height: 40px;
+
+        padding: 10px 16px;
+
+        border-radius: 8px;
+
+        font-size: 13px;
+        font-weight: 700;
+
+        text-decoration: none !important;
+    }
+
+    .primary-action {
+        border: 1px solid var(--primary);
+
+        background: var(--primary);
+
+        color: #ffffff !important;
+    }
+
+    .primary-action:hover {
+        border-color: var(--primary-dark);
+
+        background: var(--primary-dark);
+
+        color: #ffffff !important;
+
+        transform: translateY(-1px);
+
+        box-shadow:
+            0 6px 16px
+            rgba(29, 78, 216, 0.18);
+    }
+
+    .secondary-action {
+        border: 1px solid #cbd5e1;
+
+        background: #ffffff;
+
+        color: #334155 !important;
+    }
+
+    .secondary-action:hover {
+        border-color: #94a3b8;
+
+        background: #f8fafc;
+
+        color: #172033 !important;
+    }
+
+
+    /* ===== STATISTICS ===== */
+
+    .witness-stats-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+
+        gap: 16px;
+
+        margin-bottom: 32px;
+    }
+
+    .witness-stat-card {
+        min-height: 170px;
+
+        display: flex;
+        flex-direction: column;
+
+        padding: 21px;
+
+        border: 1px solid var(--border);
+        border-radius: 14px;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 5px 18px
+            rgba(15, 23, 42, 0.045);
+
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease,
+            border-color 0.2s ease;
+    }
+
+    .witness-stat-card:hover {
+        transform: translateY(-2px);
+
+        border-color: #bfdbfe;
+
+        box-shadow:
+            0 12px 26px
+            rgba(15, 39, 71, 0.08);
+    }
+
+    .witness-stat-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        gap: 12px;
+    }
+
+    .witness-stat-label {
+        color: #64748b;
+
+        font-size: 11px;
+        font-weight: 800;
+
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+    }
+
+    .witness-stat-icon {
+        width: 36px;
+        height: 36px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        flex-shrink: 0;
+
+        border-radius: 9px;
+
+        background: var(--primary-soft);
+
+        color: var(--primary-dark);
+
+        font-size: 11px;
+        font-weight: 900;
+    }
+
+    .witness-stat-danger {
+        background: #fef2f2;
+
+        color: #dc2626;
+    }
+
+    .witness-stat-value {
+        display: block;
+
+        margin: 20px 0 15px;
+
+        color: #172033;
+
+        font-size: 32px;
+        line-height: 1;
+
+        letter-spacing: -0.04em;
+    }
+
+    .witness-money {
+        font-size: 26px;
+    }
+
+    .witness-stat-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+
+        gap: 12px;
+
+        margin-top: auto;
+
+        color: #94a3b8;
+
+        font-size: 11px;
+        line-height: 1.4;
+    }
+
+    .witness-stat-footer a {
+        flex-shrink: 0;
+
+        color: var(--primary) !important;
+
+        font-weight: 700;
+
+        text-decoration: none !important;
+    }
+
+    .witness-stat-footer a:hover {
+        text-decoration: underline !important;
+    }
+
+
+    /* ===== SECTIONS ===== */
+
+    .witness-dashboard-section {
+        margin-top: 32px;
+    }
+
+    .witness-section-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+
+        margin-bottom: 14px;
+    }
+
+    .witness-section-heading .eyebrow {
+        margin-bottom: 4px !important;
+    }
+
+    .witness-section-heading h2 {
+        margin: 0;
+
+        font-size: 22px;
+    }
+
+
+    /* ===== PANELS ===== */
+
+    .witness-panel {
+        overflow: hidden;
+
+        border: 1px solid var(--border);
+        border-radius: 14px;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 5px 18px
+            rgba(15, 23, 42, 0.04);
+    }
+
+    .witness-dashboard-columns {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 18px;
+    }
+
+    .witness-panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        gap: 16px;
+
+        padding: 19px 21px;
+
+        border-bottom:
+            1px solid #edf2f7;
+    }
+
+    .witness-panel-header span {
+        display: block;
+
+        margin-bottom: 4px;
+
+        color: #94a3b8;
+
+        font-size: 10px;
+        font-weight: 800;
+
+        letter-spacing: 0.08em;
+    }
+
+    .witness-panel-header h3 {
+        margin: 0;
+
+        font-size: 17px;
+    }
+
+    .witness-panel-header > a {
+        color: var(--primary) !important;
+
+        font-size: 12px;
+        font-weight: 700;
+
+        text-decoration: none !important;
+    }
+
+    .witness-panel-header > a:hover {
+        text-decoration: underline !important;
+    }
+
+
+    /* ===== NOTIFICATIONS ===== */
+
+    .witness-notification-list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .witness-notification-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        gap: 18px;
+
+        padding: 18px 21px;
+
+        border-bottom:
+            1px solid #edf2f7;
+    }
+
+    .witness-notification-item:last-child {
+        border-bottom: none;
+    }
+
+    .witness-notification-content {
+        min-width: 0;
+    }
+
+    .witness-notification-title {
+        color: #1e293b;
+
+        font-size: 14px;
+        font-weight: 800;
+    }
+
+    .witness-notification-message {
+        margin-top: 6px;
+
+        color: #475569;
+
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .witness-notification-meta {
+        display: flex;
+        flex-wrap: wrap;
+
+        gap: 8px 14px;
+
+        margin-top: 9px;
+
+        color: #94a3b8;
+
+        font-size: 11px;
+    }
+
+    .witness-alert-badge {
+        display: inline-flex;
+        align-items: center;
+
+        flex-shrink: 0;
+
+        padding: 5px 9px;
+
+        border-radius: 999px;
+
+        font-size: 10px;
+        font-weight: 800;
+
+        text-transform: capitalize;
+    }
+
+    .witness-alert-normal {
+        background: #f1f5f9;
+
+        color: #475569;
+    }
+
+    .witness-alert-important {
+        background: #fffbeb;
+
+        color: #b45309;
+    }
+
+    .witness-alert-emergency {
+        background: #fef2f2;
+
+        color: #dc2626;
+    }
+
+
+    /* ===== ACTIVITY ===== */
+
+    .witness-activity-list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .witness-activity-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        gap: 18px;
+
+        padding: 17px 21px;
+
+        border-bottom:
+            1px solid #edf2f7;
+
+        transition:
+            background 0.2s ease;
+    }
+
+    .witness-activity-row:last-child {
+        border-bottom: none;
+    }
+
+    .witness-activity-row:hover {
+        background: #f8fafc;
+    }
+
+    .witness-activity-main {
+        min-width: 0;
+    }
+
+    .witness-activity-title {
+        color: #1e293b !important;
+
+        font-size: 14px;
+        font-weight: 800;
+
+        text-decoration: none !important;
+    }
+
+    .witness-activity-title:hover {
+        color: var(--primary) !important;
+    }
+
+    .witness-activity-meta {
+        display: flex;
+        flex-wrap: wrap;
+
+        gap: 5px;
+
+        margin-top: 5px;
+
+        color: #64748b;
+
+        font-size: 12px;
+    }
+
+    .witness-activity-side {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+
+        flex-shrink: 0;
+
+        gap: 7px;
+    }
+
+    .witness-activity-side small {
+        color: #94a3b8;
+
+        font-size: 11px;
+    }
+
+
+    /* ===== REPORT DAMAGE ===== */
+
+    .witness-damage-badge {
+        display: inline-flex;
+        align-items: center;
+
+        padding: 5px 9px;
+
+        border-radius: 999px;
+
+        font-size: 10px;
+        font-weight: 800;
+    }
+
+    .witness-damage-low {
+        background: #f0fdf4;
+
+        color: #15803d;
+    }
+
+    .witness-damage-medium {
+        background: #fffbeb;
+
+        color: #b45309;
+    }
+
+    .witness-damage-high {
+        background: #fff7ed;
+
+        color: #c2410c;
+    }
+
+    .witness-damage-critical {
+        background: #fef2f2;
+
+        color: #dc2626;
+    }
+
+
+    /* ===== DONATIONS ===== */
+
+    .witness-donation-amount {
+        color: #172033;
+
+        font-size: 16px;
+        font-weight: 800;
+    }
+
+    .witness-transaction-id {
+        margin-top: 6px;
+
+        color: #94a3b8;
+
+        font-family:
+            Consolas,
+            monospace;
+
+        font-size: 10px;
+    }
+
+    .witness-donation-status {
+        display: inline-flex;
+        align-items: center;
+
+        padding: 5px 9px;
+
+        border-radius: 999px;
+
+        font-size: 10px;
+        font-weight: 800;
+
+        text-transform: capitalize;
+    }
+
+    .witness-donation-pending {
+        background: #fffbeb;
+
+        color: #b45309;
+    }
+
+    .witness-donation-completed,
+    .witness-donation-success {
+        background: #f0fdf4;
+
+        color: #15803d;
+    }
+
+    .witness-donation-rejected,
+    .witness-donation-failed,
+    .witness-donation-cancelled {
+        background: #fef2f2;
+
+        color: #dc2626;
+    }
+
+
+    /* ===== EMPTY STATE ===== */
+
+    .witness-empty-state {
+        padding: 38px 22px;
+
+        text-align: center;
+    }
+
+    .witness-empty-icon {
+        width: 42px;
+        height: 42px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin: 0 auto 14px;
+
+        border-radius: 11px;
+
+        background: #f1f5f9;
+
+        color: #64748b;
+
+        font-size: 13px;
+        font-weight: 900;
+    }
+
+    .witness-empty-state h3 {
+        margin: 0 0 7px;
+
+        font-size: 16px;
+    }
+
+    .witness-empty-state p {
+        max-width: 420px;
+
+        margin: 0 auto 16px;
+
+        color: #64748b;
+
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+
+    /* ===== RESPONSIVE ===== */
+
+    @media (max-width: 1100px) {
+
+        .witness-stats-grid {
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+        }
+    }
+
+
+    @media (max-width: 850px) {
+
+        .witness-dashboard-header {
+            flex-direction: column;
+        }
+
+        .witness-dashboard-columns {
+            grid-template-columns: 1fr;
+        }
+    }
+
+
+    @media (max-width: 560px) {
+
+        .witness-stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .witness-dashboard-actions {
+            width: 100%;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .witness-dashboard-actions a {
+            width: 100%;
+        }
+
+        .witness-notification-item,
+        .witness-activity-row {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .witness-activity-side {
+            align-items: flex-start;
+        }
+
+        .witness-stat-footer {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+    }
+}
