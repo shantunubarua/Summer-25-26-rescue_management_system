@@ -6145,3 +6145,671 @@ table form button {
     }
 
 }
+/* =========================================================
+   HELP SEEKER - NEARBY VOLUNTEERS
+   ========================================================= */
+
+@media screen {
+
+
+    /* =====================================================
+       PAGE
+       ===================================================== */
+
+    .helpseeker-nearby-page {
+        width: 100%;
+        max-width: 1180px;
+    }
+
+
+    /* =====================================================
+       PAGE HEADER
+       ===================================================== */
+
+    .helpseeker-nearby-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        gap: 28px;
+
+        margin-bottom: 28px;
+    }
+
+
+    .helpseeker-nearby-header h1 {
+        margin-bottom: 8px;
+    }
+
+
+    .helpseeker-nearby-header-actions {
+        display: flex;
+        align-items: center;
+
+        gap: 10px;
+
+        flex-shrink: 0;
+    }
+
+
+    /* =====================================================
+       ERROR
+       ===================================================== */
+
+    .helpseeker-nearby-error {
+        margin-bottom: 18px;
+
+        padding: 12px 15px;
+
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+
+        background: #fef2f2;
+        color: #991b1b;
+
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.5;
+    }
+
+
+    /* =====================================================
+       SEARCH CARD
+       ===================================================== */
+
+    .helpseeker-volunteer-search-card {
+        margin-bottom: 32px;
+        padding: 24px 26px;
+
+        border: 1px solid #dbe3ec;
+        border-radius: 12px;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 5px 18px
+            rgba(15, 23, 42, 0.04);
+    }
+
+
+    .helpseeker-volunteer-search-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        margin-bottom: 20px;
+    }
+
+
+    .helpseeker-volunteer-search-heading span {
+        display: block;
+
+        margin-bottom: 5px;
+
+        color: var(--primary);
+
+        font-size: 10px;
+        font-weight: 800;
+
+        letter-spacing: 0.1em;
+    }
+
+
+    .helpseeker-volunteer-search-heading h2 {
+        margin: 0;
+
+        color: #172033;
+
+        font-size: 20px;
+    }
+
+
+    .helpseeker-volunteer-search-heading p {
+        margin: 6px 0 0;
+
+        color: #64748b;
+
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+
+    /* =====================================================
+       SEARCH FORM
+       ===================================================== */
+
+    .helpseeker-volunteer-search-form {
+        width: 100%;
+        max-width: none !important;
+
+        margin: 0;
+    }
+
+
+    .helpseeker-volunteer-search-form > div {
+        margin: 0 !important;
+    }
+
+
+    .helpseeker-volunteer-search-field label {
+        display: block;
+
+        margin-bottom: 8px;
+
+        color: #334155;
+
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+
+    .helpseeker-volunteer-search-row {
+        display: flex;
+        align-items: stretch;
+
+        gap: 10px;
+
+        margin: 0 !important;
+    }
+
+
+    .helpseeker-volunteer-search-row input {
+        flex: 1;
+
+        min-width: 0;
+
+        margin: 0;
+
+        padding: 11px 13px;
+
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+
+        background: #ffffff;
+        color: #172033;
+
+        font-size: 13px;
+
+        outline: none;
+
+        transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+
+    .helpseeker-volunteer-search-row input:focus {
+        border-color: #60a5fa;
+
+        box-shadow:
+            0 0 0 3px
+            rgba(59, 130, 246, 0.1);
+    }
+
+
+    .helpseeker-volunteer-search-row input::placeholder {
+        color: #94a3b8;
+    }
+
+
+    .helpseeker-volunteer-search-button {
+        min-width: 155px;
+
+        padding: 10px 17px;
+
+        border: 1px solid var(--primary);
+        border-radius: 8px;
+
+        background: var(--primary);
+        color: #ffffff;
+
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 700;
+
+        cursor: pointer;
+
+        transition:
+            background 0.2s ease,
+            border-color 0.2s ease,
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+
+    .helpseeker-volunteer-search-button:hover {
+        border-color: var(--primary-dark);
+
+        background: var(--primary-dark);
+
+        transform: translateY(-1px);
+
+        box-shadow:
+            0 6px 16px
+            rgba(29, 78, 216, 0.16);
+    }
+
+
+    /* =====================================================
+       ACTIVE SEARCH
+       ===================================================== */
+
+    .helpseeker-search-active {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+
+        gap: 6px;
+
+        margin-top: 15px;
+        padding-top: 15px;
+
+        border-top: 1px solid #edf2f7;
+
+        color: #64748b;
+
+        font-size: 11px;
+    }
+
+
+    .helpseeker-search-active strong {
+        color: #172033;
+    }
+
+
+    .helpseeker-search-active a {
+        margin-left: 5px;
+
+        color: var(--primary) !important;
+
+        font-size: 11px;
+        font-weight: 700;
+
+        text-decoration: none !important;
+    }
+
+
+    .helpseeker-search-active a:hover {
+        text-decoration: underline !important;
+    }
+
+
+    /* =====================================================
+       RESULT HEADER
+       ===================================================== */
+
+    .helpseeker-volunteer-results-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+
+        gap: 20px;
+
+        margin-bottom: 15px;
+    }
+
+
+    .helpseeker-results-eyebrow {
+        margin: 0 0 4px;
+
+        color: var(--primary);
+
+        font-size: 10px;
+        font-weight: 800;
+
+        letter-spacing: 0.1em;
+    }
+
+
+    .helpseeker-volunteer-results-header h2 {
+        margin: 0;
+
+        color: #172033;
+
+        font-size: 22px;
+    }
+
+
+    .helpseeker-volunteer-result-count {
+        display: flex;
+        align-items: center;
+
+        gap: 5px;
+
+        padding: 7px 11px;
+
+        border: 1px solid #dbeafe;
+        border-radius: 999px;
+
+        background: #eff6ff;
+    }
+
+
+    .helpseeker-volunteer-result-count strong {
+        color: var(--primary);
+
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+
+    .helpseeker-volunteer-result-count span {
+        color: #64748b;
+
+        font-size: 10px;
+        font-weight: 600;
+    }
+
+
+    /* =====================================================
+       VOLUNTEER GRID
+       ===================================================== */
+
+    .helpseeker-volunteer-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 18px;
+    }
+
+
+    /* =====================================================
+       VOLUNTEER CARD
+       ===================================================== */
+
+    .helpseeker-volunteer-card {
+        overflow: hidden;
+
+        border: 1px solid #dbe3ec;
+        border-radius: 12px;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 5px 18px
+            rgba(15, 23, 42, 0.04);
+
+        transition:
+            transform 0.2s ease,
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+
+    .helpseeker-volunteer-card:hover {
+        transform: translateY(-2px);
+
+        border-color: #bfdbfe;
+
+        box-shadow:
+            0 10px 25px
+            rgba(15, 23, 42, 0.07);
+    }
+
+
+    /* =====================================================
+       VOLUNTEER CARD HEADER
+       ===================================================== */
+
+    .helpseeker-volunteer-card-header {
+        display: flex;
+        align-items: center;
+
+        gap: 13px;
+
+        padding: 19px 20px;
+
+        border-bottom: 1px solid #edf2f7;
+
+        background: #fbfdff;
+    }
+
+
+    .helpseeker-volunteer-avatar {
+        width: 44px;
+        height: 44px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        flex-shrink: 0;
+
+        border-radius: 10px;
+
+        background: #eaf2ff;
+        color: var(--primary);
+
+        font-size: 16px;
+        font-weight: 800;
+    }
+
+
+    .helpseeker-volunteer-identity {
+        min-width: 0;
+    }
+
+
+    .helpseeker-volunteer-identity h3 {
+        margin: 0 0 5px;
+
+        color: #172033;
+
+        font-size: 16px;
+    }
+
+
+    .helpseeker-volunteer-status {
+        display: inline-flex;
+        align-items: center;
+
+        padding: 4px 8px;
+
+        border-radius: 999px;
+
+        background: #ecfdf5;
+        color: #047857;
+
+        font-size: 9px;
+        font-weight: 800;
+
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+
+    /* =====================================================
+       LOCATION
+       ===================================================== */
+
+    .helpseeker-volunteer-location {
+        padding: 16px 20px;
+
+        border-bottom: 1px solid #edf2f7;
+    }
+
+
+    .helpseeker-volunteer-location span {
+        display: block;
+
+        margin-bottom: 5px;
+
+        color: #94a3b8;
+
+        font-size: 9px;
+        font-weight: 800;
+
+        letter-spacing: 0.08em;
+    }
+
+
+    .helpseeker-volunteer-location strong {
+        display: block;
+
+        color: #334155;
+
+        font-size: 12px;
+        font-weight: 700;
+
+        line-height: 1.5;
+    }
+
+
+    /* =====================================================
+       DETAILS
+       ===================================================== */
+
+    .helpseeker-volunteer-details {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        padding: 5px 20px 16px;
+    }
+
+
+    .helpseeker-volunteer-detail {
+        min-width: 0;
+
+        padding: 13px 14px 9px 0;
+    }
+
+
+    .helpseeker-volunteer-detail span {
+        display: block;
+
+        margin-bottom: 5px;
+
+        color: #94a3b8;
+
+        font-size: 9px;
+        font-weight: 800;
+
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+    }
+
+
+    .helpseeker-volunteer-detail p {
+        margin: 0;
+
+        color: #475569;
+
+        font-size: 12px;
+        line-height: 1.55;
+
+        overflow-wrap: anywhere;
+    }
+
+
+    /* =====================================================
+       EMPTY STATE
+       ===================================================== */
+
+    .helpseeker-volunteer-empty {
+        padding: 45px 24px;
+
+        border: 1px solid #dbe3ec;
+        border-radius: 12px;
+
+        background: #ffffff;
+
+        text-align: center;
+
+        box-shadow:
+            0 5px 18px
+            rgba(15, 23, 42, 0.04);
+    }
+
+
+    .helpseeker-volunteer-empty-icon {
+        width: 46px;
+        height: 46px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin: 0 auto 14px;
+
+        border-radius: 10px;
+
+        background: #eff6ff;
+        color: var(--primary);
+
+        font-size: 15px;
+        font-weight: 800;
+    }
+
+
+    .helpseeker-volunteer-empty h3 {
+        margin: 0 0 8px;
+
+        color: #172033;
+
+        font-size: 17px;
+    }
+
+
+    .helpseeker-volunteer-empty p {
+        max-width: 520px;
+
+        margin: 0 auto 18px;
+
+        color: #64748b;
+
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @media (max-width: 900px) {
+
+        .helpseeker-volunteer-grid {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+
+    @media (max-width: 700px) {
+
+        .helpseeker-nearby-header {
+            flex-direction: column;
+        }
+
+
+        .helpseeker-volunteer-search-row {
+            flex-direction: column;
+        }
+
+
+        .helpseeker-volunteer-search-button {
+            width: 100%;
+        }
+
+    }
+
+
+    @media (max-width: 520px) {
+
+        .helpseeker-volunteer-details {
+            grid-template-columns: 1fr;
+        }
+
+
+        .helpseeker-volunteer-results-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+    }
+
+}
