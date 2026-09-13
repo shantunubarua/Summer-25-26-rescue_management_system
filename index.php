@@ -1606,17 +1606,22 @@ requireValidCsrfToken();
         $_SERVER['REQUEST_METHOD']
         !== 'POST'
     ) {
-
         http_response_code(405);
-
-        die(
-            "Invalid request method."
-        );
+        die("Invalid request method.");
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | CSRF PROTECTION
+    |--------------------------------------------------------------------------
+    */
 
     requireValidCsrfToken();
 
-    require_once "models/VolunteerModel.php";
+
+    require_once
+        "models/VolunteerModel.php";
+
 
     $request_id =
         (int)(
@@ -1630,15 +1635,14 @@ requireValidCsrfToken();
             ?? 0
         );
 
+
     if (
         $request_id <= 0 ||
         $volunteer_id <= 0
     ) {
-
-        die(
-            "Invalid emergency request."
-        );
+        die("Invalid request.");
     }
+
 
     $accepted =
         acceptEmergencyRequest(
@@ -1647,19 +1651,20 @@ requireValidCsrfToken();
             $volunteer_id
         );
 
+
     if (!$accepted) {
 
         die(
-            "Unable to accept this emergency request. Another volunteer may already have accepted it."
+            "This emergency request is no longer available."
         );
     }
+
 
     header(
         "Location: index.php?page=volunteer-activities"
     );
 
     exit;
-
 
 /*
 |--------------------------------------------------------------------------
