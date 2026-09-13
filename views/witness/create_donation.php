@@ -1,15 +1,33 @@
 <?php require_once "views/partials/header.php"; ?>
 <?php require_once "views/partials/sidebar.php"; ?>
 
+<?php
+$currentAmount =
+    $_POST['amount']
+    ?? '';
+
+$currentType =
+    $_POST['donation_type']
+    ?? '';
+
+$currentMessage =
+    $_POST['message']
+    ?? '';
+?>
+
 <div class="content">
 
-    <div class="witness-page donation-form-shell">
+    <div class="witness-form-page">
+
+
+        <!-- PAGE HEADER -->
 
         <div class="witness-page-header">
 
             <div>
+
                 <p class="eyebrow">
-                    WITNESS CONTRIBUTION
+                    RESCUE CONTRIBUTION
                 </p>
 
                 <h1>
@@ -17,10 +35,12 @@
                 </h1>
 
                 <p class="page-subtitle">
-                    Support rescue and relief activities by
-                    contributing funds or essential items.
+                    Support rescue and relief activities
+                    by making a contribution.
                 </p>
+
             </div>
+
 
             <div class="witness-page-header-actions">
 
@@ -31,93 +51,144 @@
                     My Donations
                 </a>
 
+                <a
+                    href="index.php?page=witness-dashboard"
+                    class="secondary-action"
+                >
+                    Dashboard
+                </a>
+
             </div>
 
         </div>
 
 
+        <!-- PHP ERROR -->
+
         <?php if (!empty($error)): ?>
 
             <div class="alert alert-error">
+
                 <?= htmlspecialchars(
                     $error,
                     ENT_QUOTES,
                     'UTF-8'
                 ); ?>
+
             </div>
 
         <?php endif; ?>
 
 
-        <div class="donation-note">
+        <!-- FLOW INFORMATION -->
+
+        <div class="witness-donation-flow">
+
+            <div class="witness-donation-flow-number">
+                1
+            </div>
 
             <div>
+
                 <strong>
-                    How donation works
+                    Enter Donation Details
                 </strong>
 
-                Enter your donation information here.
-                On the next screen, you will review the
-                donation and choose a payment method.
+                <p>
+                    Enter the amount and donation type here.
+                    You will choose the payment method and
+                    confirm the donation on the next page.
+                </p>
+
             </div>
 
         </div>
 
 
-        <div class="form-card donation-form-card">
+        <!-- FORM CARD -->
+
+        <div class="witness-form-card">
+
+            <div class="witness-form-card-header">
+
+                <div>
+
+                    <span>
+                        DONATION INFORMATION
+                    </span>
+
+                    <h2>
+                        Contribution Details
+                    </h2>
+
+                    <p>
+                        Fields marked with * are required.
+                    </p>
+
+                </div>
+
+            </div>
+
 
             <form
                 method="POST"
                 action="index.php?page=donation-create"
-                class="modern-form"
+                class="witness-modern-form"
             >
 
                 <?= csrfField(); ?>
 
 
-                <div class="form-grid">
+                <div class="witness-form-grid">
 
-                    <div class="form-group">
+
+                    <!-- AMOUNT -->
+
+                    <div class="witness-form-group">
 
                         <label for="amount">
                             Donation Amount
                             <span class="required-mark">*</span>
                         </label>
 
-                        <input
-                            type="number"
-                            id="amount"
-                            name="amount"
-                            min="0.01"
-                            step="0.01"
-                            required
-                            placeholder="Example: 500"
-                            value="<?= htmlspecialchars(
-                                $_POST['amount'] ?? '',
-                                ENT_QUOTES,
-                                'UTF-8'
-                            ); ?>"
-                        >
+                        <div class="witness-money-input">
 
-                        <small class="form-help">
+                            <span>
+                                ৳
+                            </span>
+
+                            <input
+                                type="number"
+                                id="amount"
+                                name="amount"
+                                min="0.01"
+                                step="0.01"
+                                required
+                                placeholder="Example: 500"
+                                value="<?= htmlspecialchars(
+                                    $currentAmount,
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ); ?>"
+                            >
+
+                        </div>
+
+                        <small>
                             Enter an amount greater than 0.
                         </small>
 
                     </div>
 
 
-                    <div class="form-group">
+                    <!-- DONATION TYPE -->
+
+                    <div class="witness-form-group">
 
                         <label for="donation_type">
                             Donation Type
                             <span class="required-mark">*</span>
                         </label>
-
-                        <?php
-                        $selectedType =
-                            $_POST['donation_type']
-                            ?? '';
-                        ?>
 
                         <select
                             id="donation_type"
@@ -131,7 +202,7 @@
 
                             <option
                                 value="money"
-                                <?= $selectedType === 'money'
+                                <?= $currentType === 'money'
                                     ? 'selected'
                                     : ''; ?>
                             >
@@ -140,7 +211,7 @@
 
                             <option
                                 value="food"
-                                <?= $selectedType === 'food'
+                                <?= $currentType === 'food'
                                     ? 'selected'
                                     : ''; ?>
                             >
@@ -149,7 +220,7 @@
 
                             <option
                                 value="medicine"
-                                <?= $selectedType === 'medicine'
+                                <?= $currentType === 'medicine'
                                     ? 'selected'
                                     : ''; ?>
                             >
@@ -158,7 +229,7 @@
 
                             <option
                                 value="clothes"
-                                <?= $selectedType === 'clothes'
+                                <?= $currentType === 'clothes'
                                     ? 'selected'
                                     : ''; ?>
                             >
@@ -167,7 +238,7 @@
 
                             <option
                                 value="water"
-                                <?= $selectedType === 'water'
+                                <?= $currentType === 'water'
                                     ? 'selected'
                                     : ''; ?>
                             >
@@ -176,7 +247,7 @@
 
                             <option
                                 value="other"
-                                <?= $selectedType === 'other'
+                                <?= $currentType === 'other'
                                     ? 'selected'
                                     : ''; ?>
                             >
@@ -185,34 +256,35 @@
 
                         </select>
 
-                        <small class="form-help">
-                            Select the category that best describes
-                            your contribution.
+                        <small>
+                            Select the category that best
+                            represents your contribution.
                         </small>
 
                     </div>
 
 
-                    <div class="form-group form-group-full">
+                    <!-- MESSAGE -->
+
+                    <div class="witness-form-group witness-form-full">
 
                         <label for="message">
-                            Message
+                            Donation Message
                         </label>
 
                         <textarea
                             id="message"
                             name="message"
                             rows="5"
-                            maxlength="1000"
-                            placeholder="Optional note about your donation..."
+                            placeholder="Add an optional note about your donation..."
                         ><?= htmlspecialchars(
-                            $_POST['message'] ?? '',
+                            $currentMessage,
                             ENT_QUOTES,
                             'UTF-8'
                         ); ?></textarea>
 
-                        <small class="form-help">
-                            Optional donation note.
+                        <small>
+                            This message is optional.
                         </small>
 
                     </div>
@@ -220,7 +292,9 @@
                 </div>
 
 
-                <div class="form-actions">
+                <!-- ACTIONS -->
+
+                <div class="witness-form-actions">
 
                     <button
                         type="submit"
