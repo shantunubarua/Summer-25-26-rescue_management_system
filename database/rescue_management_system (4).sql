@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 13, 2026 at 09:30 AM
+-- Generation Time: Sep 13, 2026 at 02:49 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -45,7 +45,8 @@ CREATE TABLE `donations` (
 
 INSERT INTO `donations` (`id`, `witness_id`, `amount`, `donation_type`, `payment_method`, `transaction_id`, `message`, `status`, `created_at`) VALUES
 (10, 2, 10000.00, 'water', 'cash', 'TXNe313a30c55157', 'Water donation for affected families', 'completed', '2026-09-09 12:24:20'),
-(11, 2, 20000.00, 'money', 'card', 'TXN334d3e84f9574', 'Money for food', 'completed', '2026-09-09 15:08:08');
+(11, 2, 20000.00, 'money', 'card', 'TXN334d3e84f9574', 'Money for food', 'completed', '2026-09-09 15:08:08'),
+(12, 2, 500.00, 'money', 'bkash', 'TXN2699492bae18b', 'hjkl', 'completed', '2026-09-13 12:28:07');
 
 -- --------------------------------------------------------
 
@@ -268,7 +269,7 @@ INSERT INTO `witness_reports` (`id`, `witness_id`, `title`, `description`, `dama
 (4, 2, 'Flood', 'Flood at feni', 'low', 'flood', 'Feni', '2026-12-12 00:00:00', NULL, 'pending', '2026-08-29 10:47:35', '2026-08-29 10:47:35'),
 (5, 2, 'Medical Emergency', 'Suicide', 'low', 'medical', 'Jatrabari', '2026-12-11 00:00:00', 'uploads/witness/witness_2_1788000957_6a92babd16d2b.jpeg', 'pending', '2026-08-29 10:55:57', '2026-08-29 10:55:57'),
 (6, 2, 'Gas leakage', 'At residential area', 'medium', 'other', 'Puran Dhaka', '2026-09-01 00:00:00', NULL, 'pending', '2026-09-01 03:42:30', '2026-09-01 03:42:30'),
-(7, 2, 'Earthquake', '4.2 Magnitude', 'low', 'other', 'Narshingdi', '2025-04-23 00:00:00', NULL, 'approved', '2026-09-09 14:12:46', '2026-09-10 21:54:19');
+(7, 2, 'Earthquake', '3.2 Magnitude', 'low', 'other', 'Narshingdi', '2025-04-23 00:00:00', NULL, 'approved', '2026-09-09 14:12:46', '2026-09-13 12:20:00');
 
 --
 -- Indexes for dumped tables
@@ -346,7 +347,7 @@ ALTER TABLE `witness_reports`
 -- AUTO_INCREMENT for table `donations`
 --
 ALTER TABLE `donations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `emergency_requests`
