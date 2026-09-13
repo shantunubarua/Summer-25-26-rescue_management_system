@@ -1689,9 +1689,15 @@ requireValidCsrfToken();
 
     requireVolunteer();
 
-    require_once "views/volunteer/profile.php";
+    if (
+        $_SERVER['REQUEST_METHOD']
+        === 'POST'
+    ) {
+        requireValidCsrfToken();
+    }
 
-
+    require_once
+        "views/volunteer/profile.php";
 /*
 |--------------------------------------------------------------------------
 | HELP SEEKER DASHBOARD
