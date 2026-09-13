@@ -480,3 +480,6 @@ Server   : Apache (XAMPP)
 The **Rescue Management System** provides a single role-based platform where emergency requests, volunteer rescue activity, witness incident reports, donations, resource requests, feedback, rescue reports, and administrative notifications can be managed securely through separate dashboards.
 
 The project demonstrates core Web Technology concepts including **PHP**, **MySQL**, **MVC organization**, **CRUD**, **session authentication**, **role-based authorization**, **server-side validation**, **JavaScript**, **AJAX/JSON**, **file upload**, and common web-security practices.
+
+
+"Copyright (c) 2026 Shantunu Barua, Tanaka Rahman, Israt Jahan Suporna, Md Mahamudul Parvej. All rights reserved."
