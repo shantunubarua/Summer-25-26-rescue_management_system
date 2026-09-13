@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 12, 2026 at 12:18 AM
+-- Generation Time: Sep 13, 2026 at 09:30 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -77,7 +77,10 @@ CREATE TABLE `emergency_requests` (
 
 INSERT INTO `emergency_requests` (`id`, `help_seeker_id`, `emergency_type`, `location`, `description`, `priority`, `victim_type`, `victim_information`, `victim_count`, `contact_information`, `status`, `created_at`, `updated_at`, `volunteer_id`, `accepted_at`) VALUES
 (1, 3, 'medical', 'Mirpur', 'A person needs immediate medical assistance.', 'high', 'self', NULL, 1, '01300000000', 'completed', '2026-08-24 15:57:34', '2026-08-30 11:18:56', 4, '2026-08-28 21:25:54'),
-(2, 3, 'medical', 'Bashundhara R/A', 'headache', 'critical', 'self', NULL, 1, '1234567890', 'pending', '2026-09-11 17:35:10', '2026-09-11 17:35:10', NULL, NULL);
+(2, 3, 'medical', 'Bashundhara R/A', 'headache', 'critical', 'self', NULL, 1, '1234567890', 'completed', '2026-09-11 17:35:10', '2026-09-13 05:29:34', 4, '2026-09-13 11:24:12'),
+(4, 3, 'medical', 'uttara', 'need a emergency service', 'medium', 'self', NULL, 3, '01200000880', 'completed', '2026-09-13 05:51:29', '2026-09-13 05:52:06', 4, '2026-09-13 11:51:50'),
+(5, 3, 'accident', 'uttara', 'need a blood', 'medium', 'self', NULL, 7, '01200000880', 'assigned', '2026-09-13 06:32:42', '2026-09-13 06:33:15', 4, '2026-09-13 12:33:15'),
+(6, 3, 'accident', 'uttara', 'need a kit', 'medium', 'self', NULL, 1, '01200000880', 'assigned', '2026-09-13 06:41:24', '2026-09-13 06:42:08', 4, '2026-09-13 12:42:08');
 
 -- --------------------------------------------------------
 
@@ -178,8 +181,8 @@ CREATE TABLE `resource_requests` (
 INSERT INTO `resource_requests` (`id`, `volunteer_id`, `resource_type`, `quantity`, `description`, `status`, `created_at`, `updated_at`) VALUES
 (1, 4, 'First Aid Kit', 2, 'Needed for emergency rescue activity.', 'approved', '2026-08-30 12:07:59', '2026-09-07 17:25:24'),
 (2, 4, 'First Aid Kit', 2, 'fgg', 'pending', '2026-08-30 12:13:30', '2026-08-30 12:13:30'),
-(3, 4, 'First Aid Kit', 2, 'hh', 'pending', '2026-08-30 12:17:06', '2026-08-30 12:17:06'),
-(4, 4, 'First Aid Kit 2', 2, 'qqq', 'approved', '2026-08-30 12:22:43', '2026-09-10 21:54:40');
+(4, 4, 'First Aid Kit 2', 2, 'qqq', 'approved', '2026-08-30 12:22:43', '2026-09-10 21:54:40'),
+(5, 4, 'First Aid Kit 2', 7, 'Need kits for flood rescue operation', 'pending', '2026-09-12 22:03:52', '2026-09-12 22:06:51');
 
 -- --------------------------------------------------------
 
@@ -207,7 +210,7 @@ INSERT INTO `users` (`id`, `name`, `username`, `email`, `phone`, `password`, `ro
 (1, 'System Admin', 'admin', 'admin@rescue.com', '01700000000', '$2y$10$MxT9D1y.m3iMNPBxV57TqeX7Y9qJix3fnV75PiV3wtfOL0/bn90.W', 'admin', '2026-08-21 07:35:46', '2026-09-10 22:42:06'),
 (2, 'Tanaka Rahman', 'tanaka', 'tanaka@rescue.com', '01800000000', '$2y$10$lJMs7egNit.DoRe/xM7asO35.mHpp0cuKqiPA2alhtQ5s7/bZah.y', 'witness', '2026-08-21 08:18:48', '2026-09-10 16:39:07'),
 (3, 'Parvej', 'parvej', 'parvej@rescue.com', '01900000000', '$2y$10$UHacZYTqkzzRovwowls1fuc41RobBnObJZQkJ8UH5u/zUU9Y/T80W', 'help_seeker', '2026-08-23 05:36:16', '2026-09-10 16:39:07'),
-(4, 'Suporna', 'suporna', 'suporna@rescue.com', '01615000000', '$2y$10$9KF9gXFTFbPW1UwEGm5A2epXacKWrMWmjabHNztosJGFy0PAiZsJq', 'volunteer', '2026-08-27 14:12:38', '2026-09-10 16:39:07'),
+(4, 'Suporna', 'suporna', 'suporna@rescue.com', '01615493300', '$2y$10$FgcyUZZuVnFdoXisg/Sb5OGGMBoc6dha2MHOp3devTylWN3yUzF6C', 'volunteer', '2026-08-27 14:12:38', '2026-09-13 07:23:16'),
 (5, 'Nasiba', 'nasiba', 'nasiba@rescue.com', '01810000000', '$2y$10$BanhWqtFGN34lEgjtMI.ouv5v8ys6ai0sknnLDh/dFAlEVm5uJVyW', 'witness', '2026-09-09 15:35:44', '2026-09-10 16:39:07');
 
 -- --------------------------------------------------------
@@ -234,7 +237,7 @@ CREATE TABLE `volunteer_profiles` (
 --
 
 INSERT INTO `volunteer_profiles` (`id`, `user_id`, `address`, `blood_group`, `experience`, `skills`, `emergency_contact`, `availability_status`, `created_at`, `updated_at`) VALUES
-(1, 4, 'bashundhara', 'A+', '', 'First Aid,Swimming', '01300000000', 'available', '2026-08-28 15:03:11', '2026-09-01 12:37:02');
+(1, 4, 'bashundhara I block', 'A+', '3 years', 'First Aid,Swimming,', '01300000020', 'unavailable', '2026-08-28 15:03:11', '2026-09-13 07:11:28');
 
 -- --------------------------------------------------------
 
@@ -349,7 +352,7 @@ ALTER TABLE `donations`
 -- AUTO_INCREMENT for table `emergency_requests`
 --
 ALTER TABLE `emergency_requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `feedback`
@@ -373,7 +376,7 @@ ALTER TABLE `rescue_reports`
 -- AUTO_INCREMENT for table `resource_requests`
 --
 ALTER TABLE `resource_requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -385,7 +388,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `volunteer_profiles`
 --
 ALTER TABLE `volunteer_profiles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `witness_reports`
