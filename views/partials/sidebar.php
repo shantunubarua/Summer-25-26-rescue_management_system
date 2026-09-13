@@ -177,18 +177,25 @@ $isActive =
             </a>
 
             <a
-                class="<?= $isActive('donations'); ?>"
-                href="index.php?page=donations"
-            >
-                My Donations
-            </a>
+    class="<?= $isActive('donations'); ?>"
+    href="index.php?page=donations"
+>
+    My Donations
+</a>
 
-            <a
-                class="<?= $isActive('change-password'); ?>"
-                href="index.php?page=change-password"
-            >
-                Change Password
-            </a>
+<a
+    class="<?= $isActive('witness-profile'); ?>"
+    href="index.php?page=witness-profile"
+>
+    My Profile
+</a>
+
+<a
+    class="<?= $isActive('change-password'); ?>"
+    href="index.php?page=change-password"
+>
+    Change Password
+</a>
 
         </nav>
 
