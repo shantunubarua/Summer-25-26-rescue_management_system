@@ -1,300 +1,137 @@
 <?php
 
-require_once
-    "views/partials/header.php";
+require_once "views/partials/header.php";
+require_once "views/partials/sidebar.php";
 
-require_once
-    "views/partials/sidebar.php";
-
-require_once
-    "models/VolunteerModel.php";
-
-
-$volunteer_id =
-    (int)(
-        $_SESSION['user']['id']
-        ?? 0
-    );
-
-
-$activities =
-    getVolunteerActivities(
-        $conn,
-        $volunteer_id
-    );
+$currentAvailability =
+    $currentAvailability
+    ?? 'available';
 
 ?>
 
 <div class="content">
 
-    <h1>
-        My Rescue Activities
-    </h1>
-
-    <p>
-        View and manage the emergency requests assigned to you.
-    </p>
-
-
-    <?php if (empty($activities)): ?>
-
-        <div class="card">
-
-            <h3>
-                No Rescue Activities
-            </h3>
+    <div class="page-header">
+        <div>
+            <h1>My Availability</h1>
 
             <p>
-                You have not accepted any emergency requests yet.
+                Update your current availability for rescue operations.
             </p>
+        </div>
+    </div>
 
-            <p>
 
-                <a href="index.php?page=volunteer-emergency-requests">
-                    View Emergency Requests
-                </a>
+    <?php if (!empty($_GET['updated'])): ?>
 
-            </p>
-
+        <div class="alert alert-success">
+            Availability updated successfully.
         </div>
 
-    <?php else: ?>
-
-        <?php foreach ($activities as $activity): ?>
-
-            <div class="card">
-
-                <h3>
-                    <?=
-                        htmlspecialchars(
-                            $activity['emergency_type']
-                            ?? '',
-                            ENT_QUOTES,
-                            'UTF-8'
-                        );
-                    ?>
-                </h3>
+    <?php endif; ?>
 
 
-                <p>
-                    <strong>
-                        Location:
-                    </strong>
+    <?php if (!empty($error)): ?>
 
-                    <?=
-                        htmlspecialchars(
-                            $activity['location']
-                            ?? '',
-                            ENT_QUOTES,
-                            'UTF-8'
-                        );
-                    ?>
-                </p>
+        <div class="alert alert-error">
+            <?= htmlspecialchars(
+                $error,
+                ENT_QUOTES,
+                'UTF-8'
+            ); ?>
+        </div>
+
+    <?php endif; ?>
 
 
-                <p>
-                    <strong>
-                        Description:
-                    </strong>
+    <div class="card">
 
-                    <?=
-                        htmlspecialchars(
-                            $activity['description']
-                            ?? '',
-                            ENT_QUOTES,
-                            'UTF-8'
-                        );
-                    ?>
-                </p>
+        <h3>Current Availability</h3>
 
+        <p>
+            Your current status is:
 
-                <p>
-                    <strong>
-                        Priority:
-                    </strong>
-
-                    <?=
-                        htmlspecialchars(
-                            $activity['priority']
-                            ?? '',
-                            ENT_QUOTES,
-                            'UTF-8'
-                        );
-                    ?>
-                </p>
+            <strong>
+                <?= htmlspecialchars(
+                    ucwords(
+                        str_replace(
+                            '_',
+                            ' ',
+                            $currentAvailability
+                        )
+                    ),
+                    ENT_QUOTES,
+                    'UTF-8'
+                ); ?>
+            </strong>
+        </p>
 
 
-                <p>
-                    <strong>
-                        Victim Count:
-                    </strong>
+        <form
+            method="POST"
+            action="index.php?page=volunteer-availability"
+        >
 
-                    <?= (int)(
-                        $activity['victim_count']
-                        ?? 0
-                    ); ?>
-                </p>
+            <?= csrfField(); ?>
 
 
-                <p>
-                    <strong>
-                        Contact:
-                    </strong>
+            <div class="form-group">
 
-                    <?=
-                        htmlspecialchars(
-                            $activity['contact_information']
-                            ?? '',
-                            ENT_QUOTES,
-                            'UTF-8'
-                        );
-                    ?>
-                </p>
+                <label for="availability_status">
+                    Availability Status
+                </label>
 
+                <select
+                    id="availability_status"
+                    name="availability_status"
+                    required
+                >
 
-                <p>
-                    <strong>
-                        Status:
-                    </strong>
-
-                    <?=
-                        htmlspecialchars(
-                            ucfirst(
-                                $activity['status']
-                                ?? ''
-                            ),
-                            ENT_QUOTES,
-                            'UTF-8'
-                        );
-                    ?>
-                </p>
-
-
-                <?php
-                if (
-                    !empty(
-                        $activity['accepted_at']
-                    )
-                ):
-                ?>
-
-                    <p>
-
-                        <strong>
-                            Accepted At:
-                        </strong>
-
-                        <?=
-                            htmlspecialchars(
-                                $activity['accepted_at'],
-                                ENT_QUOTES,
-                                'UTF-8'
-                            );
-                        ?>
-
-                    </p>
-
-                <?php endif; ?>
-
-
-                <?php
-                if (
-                    (
-                        $activity['status']
-                        ?? ''
-                    ) === 'assigned'
-                ):
-                ?>
-
-                    <form
-                        method="POST"
-                        action="index.php?page=volunteer-update-status"
+                    <option
+                        value="available"
+                        <?= $currentAvailability === 'available'
+                            ? 'selected'
+                            : ''; ?>
                     >
+                        Available
+                    </option>
 
-                        <?php csrfField(); ?>
-
-                        <input
-                            type="hidden"
-                            name="request_id"
-                            value="<?= (int)$activity['id']; ?>"
-                        >
-
-                        <input
-                            type="hidden"
-                            name="status"
-                            value="ongoing"
-                        >
-
-                        <button type="submit">
-                            Start Rescue
-                        </button>
-
-                    </form>
-
-
-                <?php
-                elseif (
-                    (
-                        $activity['status']
-                        ?? ''
-                    ) === 'ongoing'
-                ):
-                ?>
-
-                    <form
-                        method="POST"
-                        action="index.php?page=volunteer-update-status"
+                    <option
+                        value="unavailable"
+                        <?= $currentAvailability === 'unavailable'
+                            ? 'selected'
+                            : ''; ?>
                     >
+                        Unavailable
+                    </option>
 
-                        <?php csrfField(); ?>
+                    <option
+                        value="currently_rescuing"
+                        <?= $currentAvailability === 'currently_rescuing'
+                            ? 'selected'
+                            : ''; ?>
+                    >
+                        Currently Rescuing
+                    </option>
 
-                        <input
-                            type="hidden"
-                            name="request_id"
-                            value="<?= (int)$activity['id']; ?>"
-                        >
-
-                        <input
-                            type="hidden"
-                            name="status"
-                            value="completed"
-                        >
-
-                        <button type="submit">
-                            Complete Rescue
-                        </button>
-
-                    </form>
-
-
-                <?php
-                elseif (
-                    (
-                        $activity['status']
-                        ?? ''
-                    ) === 'completed'
-                ):
-                ?>
-
-                    <p>
-                        <strong>
-                            Rescue Completed
-                        </strong>
-                    </p>
-
-                <?php endif; ?>
+                </select>
 
             </div>
 
-        <?php endforeach; ?>
 
-    <?php endif; ?>
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                Update Availability
+            </button>
+
+        </form>
+
+    </div>
 
 </div>
 
 <?php
-
-require_once
-    "views/partials/footer.php";
-
+require_once "views/partials/footer.php";
 ?>
