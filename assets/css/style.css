@@ -4489,3 +4489,91 @@ table form button {
         }
     }
 }
+/* =========================================================
+   WITNESS - MAKE DONATION
+   ========================================================= */
+
+@media screen {
+
+    .witness-donation-flow {
+        max-width: 1000px;
+
+        display: flex;
+        align-items: flex-start;
+
+        gap: 14px;
+
+        margin-bottom: 20px;
+        padding: 16px 18px;
+
+        border: 1px solid #bfdbfe;
+        border-radius: 11px;
+
+        background: #eff6ff;
+    }
+
+    .witness-donation-flow-number {
+        width: 34px;
+        height: 34px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        flex-shrink: 0;
+
+        border-radius: 9px;
+
+        background: #1d4ed8;
+
+        color: #ffffff;
+
+        font-size: 13px;
+        font-weight: 800;
+    }
+
+    .witness-donation-flow strong {
+        display: block;
+
+        margin-bottom: 4px;
+
+        color: #1e3a8a;
+
+        font-size: 13px;
+    }
+
+    .witness-donation-flow p {
+        margin: 0;
+
+        color: #475569;
+
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+
+    /* MONEY INPUT */
+
+    .witness-money-input {
+        position: relative;
+    }
+
+    .witness-money-input > span {
+        position: absolute;
+        top: 50%;
+        left: 14px;
+
+        transform: translateY(-50%);
+
+        color: #64748b;
+
+        font-size: 15px;
+        font-weight: 700;
+
+        pointer-events: none;
+    }
+
+    .witness-money-input input {
+        padding-left: 36px;
+    }
+}
