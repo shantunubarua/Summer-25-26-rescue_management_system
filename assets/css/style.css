@@ -3382,3 +3382,268 @@ table form button {
         }
     }
 }
+
+/* =========================================================
+   WITNESS - REPORT INCIDENT FORM
+   ========================================================= */
+
+@media screen {
+
+    .witness-form-page {
+        width: 100%;
+        max-width: 1000px;
+    }
+
+    .witness-page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 24px;
+        margin-bottom: 28px;
+    }
+
+    .witness-page-header-actions {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 9px;
+    }
+
+
+    /* FORM CARD */
+
+    .witness-form-card {
+        overflow: hidden;
+
+        border: 1px solid var(--border);
+        border-radius: 14px;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 6px 22px rgba(15, 23, 42, 0.045);
+    }
+
+    .witness-form-card-header {
+        padding: 22px 26px;
+
+        border-bottom: 1px solid #edf2f7;
+
+        background: #fbfdff;
+    }
+
+    .witness-form-card-header span {
+        display: block;
+
+        margin-bottom: 5px;
+
+        color: var(--primary);
+
+        font-size: 10px;
+        font-weight: 800;
+
+        letter-spacing: 0.1em;
+    }
+
+    .witness-form-card-header h2 {
+        margin: 0;
+
+        font-size: 20px;
+    }
+
+    .witness-form-card-header p {
+        margin: 6px 0 0;
+
+        color: #64748b;
+
+        font-size: 12px;
+    }
+
+
+    /* FORM */
+
+    .witness-modern-form {
+        max-width: none !important;
+
+        margin: 0 !important;
+        padding: 26px !important;
+
+        border: none !important;
+
+        background: #ffffff !important;
+    }
+
+    .witness-form-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 20px;
+    }
+
+    .witness-form-group {
+        min-width: 0;
+    }
+
+    .witness-form-full {
+        grid-column: 1 / -1;
+    }
+
+    .witness-form-group label {
+        margin-bottom: 8px;
+
+        color: #334155;
+
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .witness-form-group input,
+    .witness-form-group select,
+    .witness-form-group textarea {
+        margin: 0;
+    }
+
+    .witness-form-group textarea {
+        min-height: 150px;
+
+        line-height: 1.6;
+    }
+
+    .witness-form-group small {
+        display: block;
+
+        margin-top: 7px;
+
+        color: #94a3b8;
+
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    .required-mark {
+        color: #dc2626;
+    }
+
+
+    /* UPLOAD */
+
+    .witness-upload-box {
+        padding: 18px;
+
+        border: 1px dashed #cbd5e1;
+        border-radius: 10px;
+
+        background: #f8fafc;
+    }
+
+    .witness-upload-box input[type="file"] {
+        padding: 9px;
+
+        background: #ffffff;
+    }
+
+    .witness-upload-info {
+        display: flex;
+        flex-direction: column;
+
+        gap: 3px;
+
+        margin-top: 11px;
+    }
+
+    .witness-upload-info strong {
+        color: #334155;
+
+        font-size: 12px;
+    }
+
+    .witness-upload-info span {
+        color: #94a3b8;
+
+        font-size: 11px;
+    }
+
+
+    /* VALIDATION */
+
+    .witness-validation-message {
+        display: none;
+
+        margin-bottom: 18px;
+        padding: 12px 15px;
+
+        border: 1px solid #fecaca;
+        border-radius: 9px;
+
+        background: #fef2f2;
+
+        color: #991b1b;
+
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .witness-validation-message:not(:empty) {
+        display: block;
+    }
+
+
+    /* ACTIONS */
+
+    .witness-form-actions {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+
+        gap: 10px;
+
+        margin-top: 26px;
+        padding-top: 22px;
+
+        border-top: 1px solid #edf2f7;
+    }
+
+
+    /* RESPONSIVE */
+
+    @media (max-width: 750px) {
+
+        .witness-page-header {
+            flex-direction: column;
+        }
+
+        .witness-form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .witness-form-full {
+            grid-column: auto;
+        }
+    }
+
+    @media (max-width: 520px) {
+
+        .witness-modern-form {
+            padding: 20px !important;
+        }
+
+        .witness-form-card-header {
+            padding: 20px;
+        }
+
+        .witness-page-header-actions,
+        .witness-form-actions {
+            width: 100%;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .witness-page-header-actions a,
+        .witness-form-actions a,
+        .witness-form-actions button {
+            width: 100%;
+        }
+    }
+}
