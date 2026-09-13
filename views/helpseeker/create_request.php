@@ -40,353 +40,579 @@ $contactInformation =
 
 <div class="content">
 
-    <div class="page-header">
+    <div class="helpseeker-request-page">
 
-        <div>
 
-            <h1>
-                Create Emergency Request
-            </h1>
+        <!-- PAGE HEADER -->
 
-            <p>
-                Submit the information below to request rescue assistance.
-            </p>
+        <div class="helpseeker-request-page-header">
+
+            <div>
+
+                <p class="eyebrow">
+                    RESCUE REQUEST
+                </p>
+
+                <h1>
+                    Request Rescue
+                </h1>
+
+                <p class="page-subtitle">
+                    Provide the emergency, victim and contact details
+                    needed to create a rescue request.
+                </p>
+
+            </div>
+
+
+            <div class="helpseeker-request-header-actions">
+
+                <a
+                    href="index.php?page=helpseeker-requests"
+                    class="secondary-action"
+                >
+                    My Requests
+                </a>
+
+                <a
+                    href="index.php?page=helpseeker-dashboard"
+                    class="secondary-action"
+                >
+                    Dashboard
+                </a>
+
+            </div>
 
         </div>
 
-    </div>
+
+        <!-- SERVER ERROR -->
+
+        <?php if (!empty($error)): ?>
+
+            <div class="helpseeker-form-error">
+
+                <?= htmlspecialchars(
+                    $error,
+                    ENT_QUOTES,
+                    'UTF-8'
+                ); ?>
+
+            </div>
+
+        <?php endif; ?>
 
 
-    <?php if (!empty($error)): ?>
+        <!-- CLIENT VALIDATION ERROR -->
 
-        <div class="error">
-
-            <?php
-            echo htmlspecialchars(
-                $error
-            );
-            ?>
-
-        </div>
-
-    <?php endif; ?>
+        <div
+            id="helpSeekerClientError"
+            class="helpseeker-form-error"
+            hidden
+        ></div>
 
 
-    <div
-        id="helpSeekerClientError"
-        class="error"
-        hidden
-    ></div>
+        <!-- FORM CARD -->
+
+        <div class="helpseeker-request-card">
 
 
-    <div class="card">
+            <!-- CARD HEADER -->
 
-        <form
-            id="helpSeekerEmergencyForm"
-            method="POST"
-            action="index.php?page=helpseeker-request-create"
-            novalidate
-        >
+            <div class="helpseeker-request-card-header">
 
-            <?php echo csrfField(); ?>
+                <div>
 
+                    <p class="helpseeker-card-eyebrow">
+                        REQUEST FORM
+                    </p>
 
-            <div class="form-group">
+                    <h2>
+                        Rescue Request Information
+                    </h2>
 
-                <label for="emergency_type">
-                    Emergency Type
-                </label>
+                    <p>
+                        Fill in the information below.
+                        Required fields are marked with an asterisk (*).
+                    </p>
 
-                <select
-                    id="emergency_type"
-                    name="emergency_type"
-                    required
-                >
-
-                    <option value="">
-                        Select Emergency Type
-                    </option>
-
-                    <option
-                        value="accident"
-                        <?= $emergencyType === 'accident'
-                            ? 'selected'
-                            : ''; ?>
-                    >
-                        Accident
-                    </option>
-
-                    <option
-                        value="fire"
-                        <?= $emergencyType === 'fire'
-                            ? 'selected'
-                            : ''; ?>
-                    >
-                        Fire
-                    </option>
-
-                    <option
-                        value="flood"
-                        <?= $emergencyType === 'flood'
-                            ? 'selected'
-                            : ''; ?>
-                    >
-                        Flood
-                    </option>
-
-                    <option
-                        value="medical"
-                        <?= $emergencyType === 'medical'
-                            ? 'selected'
-                            : ''; ?>
-                    >
-                        Medical Emergency
-                    </option>
-
-                    <option
-                        value="other"
-                        <?= $emergencyType === 'other'
-                            ? 'selected'
-                            : ''; ?>
-                    >
-                        Other
-                    </option>
-
-                </select>
+                </div>
 
             </div>
 
 
-            <div class="form-group">
-
-                <label for="location">
-                    Location
-                </label>
-
-                <input
-                    type="text"
-                    id="location"
-                    name="location"
-                    maxlength="255"
-                    value="<?= htmlspecialchars(
-                        $location
-                    ); ?>"
-                    required
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="description">
-                    Description
-                </label>
-
-                <textarea
-                    id="description"
-                    name="description"
-                    rows="5"
-                    required
-                ><?= htmlspecialchars(
-                    $description
-                ); ?></textarea>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="priority">
-                    Priority
-                </label>
-
-                <select
-                    id="priority"
-                    name="priority"
-                    required
-                >
-
-                    <option
-                        value="low"
-                        <?= $priority === 'low'
-                            ? 'selected'
-                            : ''; ?>
-                    >
-                        Low
-                    </option>
-
-                    <option
-                        value="medium"
-                        <?= $priority === 'medium'
-                            ? 'selected'
-                            : ''; ?>
-                    >
-                        Medium
-                    </option>
-
-                    <option
-                        value="high"
-                        <?= $priority === 'high'
-                            ? 'selected'
-                            : ''; ?>
-                    >
-                        High
-                    </option>
-
-                    <option
-                        value="critical"
-                        <?= $priority === 'critical'
-                            ? 'selected'
-                            : ''; ?>
-                    >
-                        Critical
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="victim_type">
-                    Who Needs Help?
-                </label>
-
-                <select
-                    id="victim_type"
-                    name="victim_type"
-                    required
-                >
-
-                    <option
-                        value="self"
-                        <?= $victimType === 'self'
-                            ? 'selected'
-                            : ''; ?>
-                    >
-                        I am the victim
-                    </option>
-
-                    <option
-                        value="other"
-                        <?= $victimType === 'other'
-                            ? 'selected'
-                            : ''; ?>
-                    >
-                        Another person is the victim
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="victim_information">
-                    Victim Information
-                </label>
-
-                <textarea
-                    id="victim_information"
-                    name="victim_information"
-                    rows="3"
-                    placeholder="Required when requesting help for another person"
-                ><?= htmlspecialchars(
-                    $victimInformation
-                ); ?></textarea>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="victim_count">
-                    Number of Victims
-                </label>
-
-                <input
-                    type="number"
-                    id="victim_count"
-                    name="victim_count"
-                    min="1"
-                    value="<?= (int)$victimCount; ?>"
-                    required
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="contact_information">
-                    Contact Information
-                </label>
-
-                <input
-                    type="text"
-                    id="contact_information"
-                    name="contact_information"
-                    maxlength="150"
-                    value="<?= htmlspecialchars(
-                        $contactInformation
-                    ); ?>"
-                    required
-                >
-
-            </div>
-
-
-            <button
-                type="submit"
-                class="btn btn-primary"
+            <form
+                id="helpSeekerEmergencyForm"
+                method="POST"
+                action="index.php?page=helpseeker-request-create"
+                novalidate
+                class="helpseeker-request-form"
             >
-                Submit Emergency Request
-            </button>
 
-        </form>
+                <?php echo csrfField(); ?>
+
+
+                <!-- =================================================
+                     01 - EMERGENCY DETAILS
+                     ================================================= -->
+
+                <section class="helpseeker-request-section">
+
+
+                    <div class="helpseeker-request-section-heading">
+
+                        <span class="helpseeker-section-number">
+                            01
+                        </span>
+
+
+                        <div>
+
+                            <h3>
+                                Emergency Details
+                            </h3>
+
+                            <p>
+                                Describe the emergency and where
+                                assistance is required.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="helpseeker-request-grid">
+
+
+                        <!-- EMERGENCY TYPE -->
+
+                        <div class="helpseeker-request-field">
+
+                            <label for="emergency_type">
+
+                                Emergency Type
+
+                                <span>*</span>
+
+                            </label>
+
+
+                            <select
+                                id="emergency_type"
+                                name="emergency_type"
+                                required
+                            >
+
+                                <option value="">
+                                    Select Emergency Type
+                                </option>
+
+
+                                <option
+                                    value="accident"
+                                    <?= $emergencyType === 'accident'
+                                        ? 'selected'
+                                        : ''; ?>
+                                >
+                                    Accident
+                                </option>
+
+
+                                <option
+                                    value="fire"
+                                    <?= $emergencyType === 'fire'
+                                        ? 'selected'
+                                        : ''; ?>
+                                >
+                                    Fire
+                                </option>
+
+
+                                <option
+                                    value="flood"
+                                    <?= $emergencyType === 'flood'
+                                        ? 'selected'
+                                        : ''; ?>
+                                >
+                                    Flood
+                                </option>
+
+
+                                <option
+                                    value="medical"
+                                    <?= $emergencyType === 'medical'
+                                        ? 'selected'
+                                        : ''; ?>
+                                >
+                                    Medical Emergency
+                                </option>
+
+
+                                <option
+                                    value="other"
+                                    <?= $emergencyType === 'other'
+                                        ? 'selected'
+                                        : ''; ?>
+                                >
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- PRIORITY -->
+
+                        <div class="helpseeker-request-field">
+
+                            <label for="priority">
+
+                                Priority
+
+                                <span>*</span>
+
+                            </label>
+
+
+                            <select
+                                id="priority"
+                                name="priority"
+                                required
+                            >
+
+                                <option
+                                    value="low"
+                                    <?= $priority === 'low'
+                                        ? 'selected'
+                                        : ''; ?>
+                                >
+                                    Low
+                                </option>
+
+
+                                <option
+                                    value="medium"
+                                    <?= $priority === 'medium'
+                                        ? 'selected'
+                                        : ''; ?>
+                                >
+                                    Medium
+                                </option>
+
+
+                                <option
+                                    value="high"
+                                    <?= $priority === 'high'
+                                        ? 'selected'
+                                        : ''; ?>
+                                >
+                                    High
+                                </option>
+
+
+                                <option
+                                    value="critical"
+                                    <?= $priority === 'critical'
+                                        ? 'selected'
+                                        : ''; ?>
+                                >
+                                    Critical
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- LOCATION -->
+
+                        <div class="helpseeker-request-field helpseeker-request-field-full">
+
+                            <label for="location">
+
+                                Location
+
+                                <span>*</span>
+
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="location"
+                                name="location"
+                                maxlength="255"
+                                placeholder="Enter the rescue location"
+                                value="<?= htmlspecialchars(
+                                    $location,
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ); ?>"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- DESCRIPTION -->
+
+                        <div class="helpseeker-request-field helpseeker-request-field-full">
+
+                            <label for="description">
+
+                                Description
+
+                                <span>*</span>
+
+                            </label>
+
+
+                            <textarea
+                                id="description"
+                                name="description"
+                                rows="5"
+                                placeholder="Describe the situation and the assistance needed"
+                                required
+                            ><?= htmlspecialchars(
+                                $description,
+                                ENT_QUOTES,
+                                'UTF-8'
+                            ); ?></textarea>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     02 - VICTIM DETAILS
+                     ================================================= -->
+
+                <section class="helpseeker-request-section">
+
+
+                    <div class="helpseeker-request-section-heading">
+
+                        <span class="helpseeker-section-number">
+                            02
+                        </span>
+
+
+                        <div>
+
+                            <h3>
+                                Victim Details
+                            </h3>
+
+                            <p>
+                                Provide information about the person or
+                                people who need assistance.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="helpseeker-request-grid">
+
+
+                        <!-- VICTIM TYPE -->
+
+                        <div class="helpseeker-request-field">
+
+                            <label for="victim_type">
+
+                                Who Needs Help?
+
+                                <span>*</span>
+
+                            </label>
+
+
+                            <select
+                                id="victim_type"
+                                name="victim_type"
+                                required
+                            >
+
+                                <option
+                                    value="self"
+                                    <?= $victimType === 'self'
+                                        ? 'selected'
+                                        : ''; ?>
+                                >
+                                    I am the victim
+                                </option>
+
+
+                                <option
+                                    value="other"
+                                    <?= $victimType === 'other'
+                                        ? 'selected'
+                                        : ''; ?>
+                                >
+                                    Another person is the victim
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- VICTIM COUNT -->
+
+                        <div class="helpseeker-request-field">
+
+                            <label for="victim_count">
+
+                                Number of Victims
+
+                                <span>*</span>
+
+                            </label>
+
+
+                            <input
+                                type="number"
+                                id="victim_count"
+                                name="victim_count"
+                                min="1"
+                                value="<?= (int)$victimCount; ?>"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- VICTIM INFORMATION -->
+
+                        <div class="helpseeker-request-field helpseeker-request-field-full">
+
+                            <label for="victim_information">
+                                Victim Information
+                            </label>
+
+
+                            <textarea
+                                id="victim_information"
+                                name="victim_information"
+                                rows="3"
+                                placeholder="Required when requesting help for another person"
+                            ><?= htmlspecialchars(
+                                $victimInformation,
+                                ENT_QUOTES,
+                                'UTF-8'
+                            ); ?></textarea>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     03 - CONTACT DETAILS
+                     ================================================= -->
+
+                <section class="helpseeker-request-section helpseeker-request-section-last">
+
+
+                    <div class="helpseeker-request-section-heading">
+
+                        <span class="helpseeker-section-number">
+                            03
+                        </span>
+
+
+                        <div>
+
+                            <h3>
+                                Contact Details
+                            </h3>
+
+                            <p>
+                                Provide contact information that can be
+                                used for this rescue request.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="helpseeker-request-grid">
+
+
+                        <div class="helpseeker-request-field helpseeker-request-field-full">
+
+                            <label for="contact_information">
+
+                                Contact Information
+
+                                <span>*</span>
+
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="contact_information"
+                                name="contact_information"
+                                maxlength="150"
+                                placeholder="Enter contact information"
+                                value="<?= htmlspecialchars(
+                                    $contactInformation,
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ); ?>"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- FORM ACTIONS -->
+
+                <div class="helpseeker-request-form-actions">
+
+                    <a
+                        href="index.php?page=helpseeker-requests"
+                        class="secondary-action"
+                    >
+                        Cancel
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="helpseeker-submit-request"
+                    >
+                        Submit Rescue Request
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
 
     </div>
 
 </div>
 
 
-<style>
-
-.error {
-    color: #721c24;
-    background: #f8d7da;
-    border: 1px solid #f5c6cb;
-    padding: 10px;
-    margin: 15px 0;
-    border-radius: 5px;
-}
-
-.form-group {
-    margin-bottom: 18px;
-}
-
-.form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 6px;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-    width: 100%;
-    max-width: 700px;
-    padding: 10px;
-    box-sizing: border-box;
-}
-
-</style>
-
-
 <script src="assets/js/helpseeker.js"></script>
+
 
 <?php
 require_once "views/partials/footer.php";
