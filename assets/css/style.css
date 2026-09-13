@@ -7935,3 +7935,671 @@ table form button {
     }
 
 }
+
+/* =========================================================
+   WITNESS - MY PROFILE
+   ========================================================= */
+
+@media screen {
+
+
+    /* =====================================================
+       PAGE
+       ===================================================== */
+
+    .witness-profile-page {
+        width: 100%;
+        max-width: 1120px;
+    }
+
+
+    /* =====================================================
+       PAGE HEADER
+       ===================================================== */
+
+    .witness-profile-page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        gap: 28px;
+
+        margin-bottom: 26px;
+    }
+
+
+    .witness-profile-page-header h1 {
+        margin-bottom: 8px;
+    }
+
+
+    .witness-profile-header-actions {
+        display: flex;
+        align-items: center;
+
+        gap: 10px;
+
+        flex-shrink: 0;
+    }
+
+
+    /* =====================================================
+       MESSAGES
+       ===================================================== */
+
+    .witness-profile-message {
+        margin-bottom: 18px;
+        padding: 12px 15px;
+
+        border-radius: 8px;
+
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.5;
+    }
+
+
+    .witness-profile-message-error {
+        border: 1px solid #fecaca;
+
+        background: #fef2f2;
+        color: #991b1b;
+    }
+
+
+    .witness-profile-message-success {
+        border: 1px solid #bbf7d0;
+
+        background: #f0fdf4;
+        color: #166534;
+    }
+
+
+    /* =====================================================
+       IDENTITY CARD
+       ===================================================== */
+
+    .witness-profile-identity-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 24px;
+
+        margin-bottom: 20px;
+        padding: 22px 24px;
+
+        border: 1px solid #dbe3ec;
+        border-radius: 12px;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 5px 18px
+            rgba(15, 23, 42, 0.04);
+    }
+
+
+    .witness-profile-identity-main {
+        display: flex;
+        align-items: center;
+
+        gap: 16px;
+
+        min-width: 0;
+    }
+
+
+    .witness-profile-avatar {
+        width: 58px;
+        height: 58px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        flex-shrink: 0;
+
+        border-radius: 13px;
+
+        background: #eaf2ff;
+        color: var(--primary);
+
+        font-size: 21px;
+        font-weight: 800;
+    }
+
+
+    .witness-profile-identity-text {
+        min-width: 0;
+    }
+
+
+    .witness-profile-role-badge {
+        display: inline-flex;
+
+        margin-bottom: 7px;
+        padding: 4px 8px;
+
+        border-radius: 999px;
+
+        background: #eff6ff;
+        color: var(--primary);
+
+        font-size: 9px;
+        font-weight: 800;
+
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
+
+    .witness-profile-identity-text h2 {
+        margin: 0 0 4px;
+
+        color: #172033;
+
+        font-size: 20px;
+
+        overflow-wrap: anywhere;
+    }
+
+
+    .witness-profile-identity-text p {
+        margin: 0;
+
+        color: #64748b;
+
+        font-size: 12px;
+
+        overflow-wrap: anywhere;
+    }
+
+
+    /* =====================================================
+       CONTACT SUMMARY
+       ===================================================== */
+
+    .witness-profile-contact-summary {
+        min-width: 180px;
+
+        padding-left: 24px;
+
+        border-left: 1px solid #edf2f7;
+    }
+
+
+    .witness-profile-contact-summary span {
+        display: block;
+
+        margin-bottom: 5px;
+
+        color: #94a3b8;
+
+        font-size: 9px;
+        font-weight: 800;
+
+        letter-spacing: 0.08em;
+    }
+
+
+    .witness-profile-contact-summary strong {
+        display: block;
+
+        color: #334155;
+
+        font-size: 12px;
+        font-weight: 700;
+
+        overflow-wrap: anywhere;
+    }
+
+
+    /* =====================================================
+       MAIN LAYOUT
+       ===================================================== */
+
+    .witness-profile-layout {
+        display: grid;
+
+        grid-template-columns:
+            minmax(0, 1fr) 300px;
+
+        gap: 20px;
+
+        align-items: start;
+    }
+
+
+    /* =====================================================
+       FORM CARD
+       ===================================================== */
+
+    .witness-profile-form-card {
+        overflow: hidden;
+
+        border: 1px solid #dbe3ec;
+        border-radius: 12px;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 5px 18px
+            rgba(15, 23, 42, 0.04);
+    }
+
+
+    /* =====================================================
+       CARD HEADER
+       ===================================================== */
+
+    .witness-profile-card-header {
+        padding: 23px 26px;
+
+        border-bottom: 1px solid #e8edf3;
+
+        background: #fbfdff;
+    }
+
+
+    .witness-profile-card-header > span {
+        display: block;
+
+        margin-bottom: 5px;
+
+        color: var(--primary);
+
+        font-size: 10px;
+        font-weight: 800;
+
+        letter-spacing: 0.1em;
+    }
+
+
+    .witness-profile-card-header h2 {
+        margin: 0;
+
+        color: #172033;
+
+        font-size: 20px;
+    }
+
+
+    .witness-profile-card-header p {
+        margin: 6px 0 0;
+
+        color: #64748b;
+
+        font-size: 11px;
+        line-height: 1.6;
+    }
+
+
+    /* =====================================================
+       FORM
+       ===================================================== */
+
+    .witness-profile-form {
+        width: 100%;
+        max-width: none !important;
+
+        margin: 0 !important;
+        padding: 26px !important;
+    }
+
+
+    .witness-profile-form-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 20px;
+
+        margin: 0 !important;
+    }
+
+
+    .witness-profile-field {
+        margin: 0 !important;
+    }
+
+
+    .witness-profile-field-full {
+        grid-column: 1 / -1;
+    }
+
+
+    /* =====================================================
+       LABELS
+       ===================================================== */
+
+    .witness-profile-field label {
+        display: block;
+
+        margin-bottom: 7px;
+
+        color: #334155;
+
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+
+    .witness-profile-field label span {
+        color: #dc2626;
+    }
+
+
+    /* =====================================================
+       INPUTS
+       ===================================================== */
+
+    .witness-profile-field input {
+        width: 100%;
+
+        margin: 0;
+
+        padding: 11px 13px;
+
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+
+        background: #ffffff;
+        color: #172033;
+
+        font-family: inherit;
+        font-size: 13px;
+
+        box-sizing: border-box;
+
+        outline: none;
+
+        transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+
+    .witness-profile-field input:hover:not(:disabled) {
+        border-color: #94a3b8;
+    }
+
+
+    .witness-profile-field input:focus:not(:disabled) {
+        border-color: #60a5fa;
+
+        box-shadow:
+            0 0 0 3px
+            rgba(59, 130, 246, 0.1);
+    }
+
+
+    .witness-profile-field input::placeholder {
+        color: #94a3b8;
+    }
+
+
+    .witness-profile-field input:disabled {
+        background: #f8fafc;
+        color: #64748b;
+
+        cursor: not-allowed;
+    }
+
+
+    .witness-profile-field small {
+        display: block;
+
+        margin-top: 6px;
+
+        color: #94a3b8;
+
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+
+    /* =====================================================
+       CLIENT VALIDATION
+       ===================================================== */
+
+    .witness-profile-validation {
+        margin-top: 18px;
+    }
+
+
+    .witness-profile-validation:empty {
+        display: none;
+    }
+
+
+    /* =====================================================
+       FORM ACTIONS
+       ===================================================== */
+
+    .witness-profile-form-actions {
+        display: flex;
+        justify-content: flex-end;
+
+        margin: 24px 0 0 !important;
+        padding-top: 22px;
+
+        border-top: 1px solid #edf2f7;
+    }
+
+
+    /* =====================================================
+       ACCOUNT INFORMATION
+       ===================================================== */
+
+    .witness-profile-account-card {
+        padding: 22px;
+
+        border: 1px solid #dbe3ec;
+        border-radius: 12px;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 5px 18px
+            rgba(15, 23, 42, 0.04);
+    }
+
+
+    .witness-profile-account-eyebrow {
+        margin: 0 0 5px;
+
+        color: var(--primary);
+
+        font-size: 9px;
+        font-weight: 800;
+
+        letter-spacing: 0.1em;
+    }
+
+
+    .witness-profile-account-card h2 {
+        margin: 0;
+
+        color: #172033;
+
+        font-size: 17px;
+    }
+
+
+    .witness-profile-account-description {
+        margin: 7px 0 0;
+
+        color: #64748b;
+
+        font-size: 10px;
+        line-height: 1.6;
+    }
+
+
+    .witness-profile-account-divider {
+        height: 1px;
+
+        margin: 20px 0;
+
+        background: #edf2f7;
+    }
+
+
+    /* =====================================================
+       ACCOUNT ITEMS
+       ===================================================== */
+
+    .witness-profile-account-item {
+        margin-bottom: 19px;
+    }
+
+
+    .witness-profile-account-item:last-child {
+        margin-bottom: 0;
+    }
+
+
+    .witness-profile-account-item span {
+        display: block;
+
+        margin-bottom: 5px;
+
+        color: #94a3b8;
+
+        font-size: 9px;
+        font-weight: 800;
+
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+    }
+
+
+    .witness-profile-account-item strong {
+        display: block;
+
+        color: #475569;
+
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 1.55;
+
+        overflow-wrap: anywhere;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @media (max-width: 900px) {
+
+        .witness-profile-layout {
+            grid-template-columns: 1fr;
+        }
+
+
+        .witness-profile-account-card {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 15px;
+        }
+
+
+        .witness-profile-account-eyebrow,
+        .witness-profile-account-card > h2,
+        .witness-profile-account-description,
+        .witness-profile-account-divider {
+            grid-column: 1 / -1;
+        }
+
+
+        .witness-profile-account-divider {
+            margin: 5px 0;
+        }
+
+
+        .witness-profile-account-item {
+            margin: 0;
+        }
+
+    }
+
+
+    @media (max-width: 650px) {
+
+        .witness-profile-page-header {
+            flex-direction: column;
+        }
+
+
+        .witness-profile-identity-card {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+
+        .witness-profile-contact-summary {
+            width: 100%;
+
+            padding: 16px 0 0;
+
+            border-left: none;
+            border-top: 1px solid #edf2f7;
+        }
+
+
+        .witness-profile-form-grid {
+            grid-template-columns: 1fr;
+        }
+
+
+        .witness-profile-field-full {
+            grid-column: auto;
+        }
+
+
+        .witness-profile-account-card {
+            grid-template-columns: 1fr;
+        }
+
+
+        .witness-profile-account-eyebrow,
+        .witness-profile-account-card > h2,
+        .witness-profile-account-description,
+        .witness-profile-account-divider {
+            grid-column: auto;
+        }
+
+    }
+
+
+    @media (max-width: 500px) {
+
+        .witness-profile-card-header,
+        .witness-profile-form {
+            padding: 20px !important;
+        }
+
+
+        .witness-profile-identity-card {
+            padding: 19px;
+        }
+
+
+        .witness-profile-form-actions {
+            align-items: stretch;
+        }
+
+
+        .witness-profile-form-actions button {
+            width: 100%;
+        }
+
+    }
+
+}
