@@ -68,72 +68,108 @@ foreach ($activities as $activity) {
 
 
 $availabilityClass =
-    'status-muted';
+    'volunteer-availability-unavailable';
 
 
 if ($current_status === 'available') {
 
     $availabilityClass =
-        'status-success';
+        'volunteer-availability-available';
 
 } elseif (
     $current_status === 'currently_rescuing'
 ) {
 
     $availabilityClass =
-        'status-warning';
+        'volunteer-availability-rescuing';
 }
 
 ?>
 
 <div class="content">
 
-    <div class="page-header">
+    <div class="volunteer-dashboard-page">
 
-        <div>
 
-            <p class="eyebrow">
-                Volunteer Operations
-            </p>
+        <!-- =========================================
+             PAGE HEADER
+             ========================================= -->
 
-            <h1>
-                Volunteer Dashboard
-            </h1>
+        <div class="volunteer-dashboard-header">
 
-            <p class="page-subtitle">
-                Welcome back,
-                <strong>
-                    <?=
-                        htmlspecialchars(
+            <div>
+
+                <p class="eyebrow">
+                    VOLUNTEER OPERATIONS
+                </p>
+
+                <h1>
+                    Volunteer Dashboard
+                </h1>
+
+                <p class="page-subtitle">
+                    Welcome back,
+                    <strong>
+                        <?= htmlspecialchars(
                             $_SESSION['user']['name']
                             ?? 'Volunteer',
                             ENT_QUOTES,
                             'UTF-8'
-                        );
-                    ?>
-                </strong>.
-                Manage rescue activities, availability and resources.
-            </p>
+                        ); ?>
+                    </strong>.
+                    Manage rescue activities, availability
+                    and resource requests.
+                </p>
+
+            </div>
+
+
+            <a
+                href="index.php?page=volunteer-profile"
+                class="secondary-action"
+            >
+                My Profile
+            </a>
 
         </div>
 
-    </div>
+
+        <!-- =========================================
+             AVAILABILITY + ACTIVITY SUMMARY
+             ========================================= -->
+
+        <div class="volunteer-dashboard-overview">
 
 
-    <div class="dashboard-grid">
+            <!-- AVAILABILITY -->
 
-        <div class="stat-card">
+            <section class="volunteer-availability-overview">
 
-            <span class="stat-label">
-                Availability
-            </span>
+                <p class="volunteer-overview-label">
+                    CURRENT AVAILABILITY
+                </p>
 
-            <div class="stat-value stat-value-small">
+                <div class="volunteer-availability-row">
 
-                <span class="status-pill <?= $availabilityClass; ?>">
+                    <div>
 
-                    <?=
-                        htmlspecialchars(
+                        <h2>
+                            Rescue Availability
+                        </h2>
+
+                        <p>
+                            Your availability determines whether
+                            you can respond to new rescue requests.
+                        </p>
+
+                    </div>
+
+
+                    <span
+                        class="volunteer-availability-badge <?= $availabilityClass; ?>"
+                    >
+
+                        <?= htmlspecialchars(
                             ucwords(
                                 str_replace(
                                     '_',
@@ -143,245 +179,373 @@ if ($current_status === 'available') {
                             ),
                             ENT_QUOTES,
                             'UTF-8'
-                        );
-                    ?>
+                        ); ?>
 
+                    </span>
+
+                </div>
+
+
+                <a
+                    href="index.php?page=volunteer-availability"
+                    class="volunteer-availability-action"
+                >
+                    Update Availability
+                </a>
+
+            </section>
+
+
+            <!-- ACTIVITY TOTAL -->
+
+            <section class="volunteer-total-activity">
+
+                <span>
+                    TOTAL RESCUE ACTIVITIES
                 </span>
 
-            </div>
-
-            <a href="index.php?page=volunteer-availability">
-                Update Status
-            </a>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <span class="stat-label">
-                Total Activities
-            </span>
-
-            <strong class="stat-value">
-                <?= (int)$total_activities; ?>
-            </strong>
-
-            <span class="stat-help">
-                All assigned rescue operations
-            </span>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <span class="stat-label">
-                Assigned
-            </span>
-
-            <strong class="stat-value">
-                <?= (int)$assigned_count; ?>
-            </strong>
-
-            <span class="stat-help">
-                Waiting to be started
-            </span>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <span class="stat-label">
-                Ongoing
-            </span>
-
-            <strong class="stat-value">
-                <?= (int)$ongoing_count; ?>
-            </strong>
-
-            <span class="stat-help">
-                Rescue operations in progress
-            </span>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <span class="stat-label">
-                Completed
-            </span>
-
-            <strong class="stat-value">
-                <?= (int)$completed_count; ?>
-            </strong>
-
-            <span class="stat-help">
-                Successfully completed rescues
-            </span>
-
-        </div>
-
-    </div>
-
-
-    <div class="dashboard-section">
-
-        <div class="section-heading">
-
-            <div>
-
-                <p class="eyebrow">
-                    Quick Access
-                </p>
-
-                <h2>
-                    Volunteer Actions
-                </h2>
-
-            </div>
-
-        </div>
-
-
-        <div class="quick-action-grid">
-
-            <a
-                class="quick-action-card"
-                href="index.php?page=volunteer-emergency-requests"
-            >
-
-                <span class="quick-action-tag">
-                    Rescue
-                </span>
-
-                <h3>
-                    Emergency Requests
-                </h3>
+                <strong>
+                    <?= (int)$total_activities; ?>
+                </strong>
 
                 <p>
-                    View pending emergency requests requiring volunteer support.
+                    All emergency requests accepted
+                    by your volunteer account.
                 </p>
 
-                <span class="quick-action-link">
-                    View Requests →
-                </span>
-
-            </a>
-
-
-            <a
-                class="quick-action-card"
-                href="index.php?page=volunteer-activities"
-            >
-
-                <span class="quick-action-tag">
-                    Activity
-                </span>
-
-                <h3>
-                    My Rescue Activities
-                </h3>
-
-                <p>
-                    Track assigned, ongoing and completed rescue operations.
-                </p>
-
-                <span class="quick-action-link">
+                <a href="index.php?page=volunteer-activities">
                     View Activities →
-                </span>
+                </a>
 
-            </a>
-
-
-            <a
-                class="quick-action-card"
-                href="index.php?page=volunteer-resource-request"
-            >
-
-                <span class="quick-action-tag">
-                    Resources
-                </span>
-
-                <h3>
-                    Request Resource
-                </h3>
-
-                <p>
-                    Submit resource requirements for rescue activities.
-                </p>
-
-                <span class="quick-action-link">
-                    New Request →
-                </span>
-
-            </a>
-
-
-            <a
-                class="quick-action-card"
-                href="index.php?page=volunteer-resource-requests"
-            >
-
-                <span class="quick-action-tag">
-                    Tracking
-                </span>
-
-                <h3>
-                    My Resource Requests
-                </h3>
-
-                <p>
-                    Search and monitor previously submitted resource requests.
-                </p>
-
-                <span class="quick-action-link">
-                    View Requests →
-                </span>
-
-            </a>
-
-
-            <a
-                class="quick-action-card"
-                href="index.php?page=volunteer-profile"
-            >
-
-                <span class="quick-action-tag">
-                    Account
-                </span>
-
-                <h3>
-                    My Profile
-                </h3>
-
-                <p>
-                    Review and update volunteer profile information.
-                </p>
-
-                <span class="quick-action-link">
-                    View Profile →
-                </span>
-
-            </a>
+            </section>
 
         </div>
 
-    </div>
 
+        <!-- =========================================
+             RESCUE PROGRESS
+             ========================================= -->
 
-    <?php if (!empty($dashboardNotifications)): ?>
+        <section class="volunteer-dashboard-section">
 
-        <div class="dashboard-section">
-
-            <div class="section-heading">
+            <div class="volunteer-dashboard-section-heading">
 
                 <div>
 
-                    <p class="eyebrow">
-                        Updates
+                    <p>
+                        RESCUE PROGRESS
+                    </p>
+
+                    <h2>
+                        My Activity Overview
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="volunteer-progress-grid">
+
+
+                <!-- ASSIGNED -->
+
+                <article class="volunteer-progress-card">
+
+                    <div class="volunteer-progress-card-top">
+
+                        <span class="volunteer-progress-code">
+                            ASN
+                        </span>
+
+                        <span class="volunteer-progress-label">
+                            Assigned
+                        </span>
+
+                    </div>
+
+
+                    <strong>
+                        <?= (int)$assigned_count; ?>
+                    </strong>
+
+
+                    <p>
+                        Rescue requests assigned and
+                        waiting to be started.
+                    </p>
+
+                </article>
+
+
+                <!-- ONGOING -->
+
+                <article class="volunteer-progress-card">
+
+                    <div class="volunteer-progress-card-top">
+
+                        <span class="volunteer-progress-code">
+                            ONG
+                        </span>
+
+                        <span class="volunteer-progress-label">
+                            Ongoing
+                        </span>
+
+                    </div>
+
+
+                    <strong>
+                        <?= (int)$ongoing_count; ?>
+                    </strong>
+
+
+                    <p>
+                        Rescue operations currently
+                        in progress.
+                    </p>
+
+                </article>
+
+
+                <!-- COMPLETED -->
+
+                <article class="volunteer-progress-card">
+
+                    <div class="volunteer-progress-card-top">
+
+                        <span class="volunteer-progress-code">
+                            CMP
+                        </span>
+
+                        <span class="volunteer-progress-label">
+                            Completed
+                        </span>
+
+                    </div>
+
+
+                    <strong>
+                        <?= (int)$completed_count; ?>
+                    </strong>
+
+
+                    <p>
+                        Rescue operations successfully
+                        completed.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             QUICK ACCESS
+             ========================================= -->
+
+        <section class="volunteer-dashboard-section">
+
+            <div class="volunteer-dashboard-section-heading">
+
+                <div>
+
+                    <p>
+                        QUICK ACCESS
+                    </p>
+
+                    <h2>
+                        Volunteer Actions
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="volunteer-action-grid">
+
+
+                <!-- EMERGENCY REQUESTS -->
+
+                <a
+                    href="index.php?page=volunteer-emergency-requests"
+                    class="volunteer-action-card"
+                >
+
+                    <span class="volunteer-action-tag">
+                        Rescue
+                    </span>
+
+                    <h3>
+                        Emergency Requests
+                    </h3>
+
+                    <p>
+                        View pending emergencies currently
+                        requiring volunteer assistance.
+                    </p>
+
+                    <span class="volunteer-action-link">
+                        View Requests →
+                    </span>
+
+                </a>
+
+
+                <!-- ACTIVITIES -->
+
+                <a
+                    href="index.php?page=volunteer-activities"
+                    class="volunteer-action-card"
+                >
+
+                    <span class="volunteer-action-tag">
+                        Activity
+                    </span>
+
+                    <h3>
+                        My Rescue Activities
+                    </h3>
+
+                    <p>
+                        Track assigned, ongoing and
+                        completed rescue operations.
+                    </p>
+
+                    <span class="volunteer-action-link">
+                        View Activities →
+                    </span>
+
+                </a>
+
+
+                <!-- AVAILABILITY -->
+
+                <a
+                    href="index.php?page=volunteer-availability"
+                    class="volunteer-action-card"
+                >
+
+                    <span class="volunteer-action-tag">
+                        Availability
+                    </span>
+
+                    <h3>
+                        Availability Status
+                    </h3>
+
+                    <p>
+                        Control whether you are available
+                        to respond to rescue operations.
+                    </p>
+
+                    <span class="volunteer-action-link">
+                        Update Status →
+                    </span>
+
+                </a>
+
+
+                <!-- REQUEST RESOURCE -->
+
+                <a
+                    href="index.php?page=volunteer-resource-request"
+                    class="volunteer-action-card"
+                >
+
+                    <span class="volunteer-action-tag">
+                        Resources
+                    </span>
+
+                    <h3>
+                        Request Resource
+                    </h3>
+
+                    <p>
+                        Submit resources needed during
+                        rescue operations.
+                    </p>
+
+                    <span class="volunteer-action-link">
+                        New Request →
+                    </span>
+
+                </a>
+
+
+                <!-- MY RESOURCE REQUESTS -->
+
+                <a
+                    href="index.php?page=volunteer-resource-requests"
+                    class="volunteer-action-card"
+                >
+
+                    <span class="volunteer-action-tag">
+                        Tracking
+                    </span>
+
+                    <h3>
+                        My Resource Requests
+                    </h3>
+
+                    <p>
+                        Search and monitor your previously
+                        submitted resource requests.
+                    </p>
+
+                    <span class="volunteer-action-link">
+                        View Requests →
+                    </span>
+
+                </a>
+
+
+                <!-- PROFILE -->
+
+                <a
+                    href="index.php?page=volunteer-profile"
+                    class="volunteer-action-card"
+                >
+
+                    <span class="volunteer-action-tag">
+                        Account
+                    </span>
+
+                    <h3>
+                        My Profile
+                    </h3>
+
+                    <p>
+                        Review and update your volunteer
+                        information and rescue details.
+                    </p>
+
+                    <span class="volunteer-action-link">
+                        View Profile →
+                    </span>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             NOTIFICATIONS
+             ========================================= -->
+
+        <section class="volunteer-dashboard-section">
+
+            <div class="volunteer-dashboard-section-heading">
+
+                <div>
+
+                    <p>
+                        SYSTEM UPDATES
                     </p>
 
                     <h2>
@@ -393,101 +557,138 @@ if ($current_status === 'available') {
             </div>
 
 
-            <div class="notification-list">
+            <div class="volunteer-notification-panel">
 
-                <?php
-                foreach (
-                    $dashboardNotifications
-                    as $notification
-                ):
-                ?>
 
-                    <div class="notification-item">
+                <?php if (empty($dashboardNotifications)): ?>
 
-                        <div>
+                    <div class="volunteer-notification-empty">
 
-                            <div class="notification-title-row">
+                        <div class="volunteer-notification-empty-icon">
+                            N
+                        </div>
 
-                                <strong>
+                        <h3>
+                            No Active Notifications
+                        </h3>
 
-                                    <?=
-                                        htmlspecialchars(
+                        <p>
+                            Important volunteer announcements
+                            and alerts will appear here.
+                        </p>
+
+                    </div>
+
+
+                <?php else: ?>
+
+
+                    <div class="volunteer-notification-list">
+
+
+                        <?php foreach (
+                            $dashboardNotifications
+                            as $notification
+                        ): ?>
+
+
+                            <?php
+
+                            $alertType =
+                                strtolower(
+                                    $notification['alert_type']
+                                    ?? 'normal'
+                                );
+
+                            ?>
+
+
+                            <article class="volunteer-notification-item">
+
+
+                                <div class="volunteer-notification-content">
+
+                                    <strong>
+
+                                        <?= htmlspecialchars(
                                             $notification['title']
                                             ?? '',
                                             ENT_QUOTES,
                                             'UTF-8'
-                                        );
-                                    ?>
+                                        ); ?>
 
-                                </strong>
+                                    </strong>
 
 
-                                <span class="status-pill status-info">
+                                    <p>
 
-                                    <?=
-                                        htmlspecialchars(
-                                            ucfirst(
-                                                $notification['alert_type']
-                                                ?? 'normal'
-                                            ),
+                                        <?= htmlspecialchars(
+                                            $notification['message']
+                                            ?? '',
                                             ENT_QUOTES,
                                             'UTF-8'
-                                        );
-                                    ?>
+                                        ); ?>
+
+                                    </p>
+
+
+                                    <?php if (
+                                        !empty(
+                                            $notification['created_at']
+                                        )
+                                    ): ?>
+
+                                        <small>
+
+                                            <?= htmlspecialchars(
+                                                $notification['created_at'],
+                                                ENT_QUOTES,
+                                                'UTF-8'
+                                            ); ?>
+
+                                        </small>
+
+                                    <?php endif; ?>
+
+                                </div>
+
+
+                                <span
+                                    class="volunteer-notification-type volunteer-notification-type-<?= htmlspecialchars(
+                                        $alertType,
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    ); ?>"
+                                >
+
+                                    <?= htmlspecialchars(
+                                        ucfirst($alertType),
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    ); ?>
 
                                 </span>
 
-                            </div>
+                            </article>
 
 
-                            <p>
+                        <?php endforeach; ?>
 
-                                <?=
-                                    htmlspecialchars(
-                                        $notification['message']
-                                        ?? '',
-                                        ENT_QUOTES,
-                                        'UTF-8'
-                                    );
-                                ?>
-
-                            </p>
-
-                        </div>
-
-
-                        <?php
-                        if (
-                            !empty(
-                                $notification['created_at']
-                            )
-                        ):
-                        ?>
-
-                            <small>
-
-                                <?=
-                                    htmlspecialchars(
-                                        $notification['created_at'],
-                                        ENT_QUOTES,
-                                        'UTF-8'
-                                    );
-                                ?>
-
-                            </small>
-
-                        <?php endif; ?>
 
                     </div>
 
-                <?php endforeach; ?>
+
+                <?php endif; ?>
 
             </div>
 
-        </div>
+        </section>
 
-    <?php endif; ?>
+    </div>
 
 </div>
 
-<?php require_once "views/partials/footer.php"; ?>
+
+<?php
+require_once "views/partials/footer.php";
+?>
