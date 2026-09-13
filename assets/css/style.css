@@ -7445,3 +7445,493 @@ table form button {
     }
 
 }
+/* =========================================================
+   CHANGE PASSWORD
+   ========================================================= */
+
+@media screen {
+
+
+    /* =====================================================
+       PAGE
+       ===================================================== */
+
+    .change-password-page {
+        width: 100%;
+        max-width: 1020px;
+    }
+
+
+    /* =====================================================
+       PAGE HEADER
+       ===================================================== */
+
+    .change-password-page-header {
+        margin-bottom: 28px;
+    }
+
+
+    .change-password-page-header h1 {
+        margin-bottom: 8px;
+    }
+
+
+    /* =====================================================
+       MESSAGE
+       ===================================================== */
+
+    .change-password-message {
+        margin-bottom: 18px;
+
+        padding: 12px 15px;
+
+        border-radius: 8px;
+
+        font-size: 13px;
+        font-weight: 600;
+
+        line-height: 1.5;
+    }
+
+
+    .change-password-message-error {
+        border: 1px solid #fecaca;
+
+        background: #fef2f2;
+        color: #991b1b;
+    }
+
+
+    .change-password-message-success {
+        border: 1px solid #bbf7d0;
+
+        background: #f0fdf4;
+        color: #166534;
+    }
+
+
+    /* =====================================================
+       LAYOUT
+       ===================================================== */
+
+    .change-password-layout {
+        display: grid;
+
+        grid-template-columns:
+            320px minmax(0, 1fr);
+
+        gap: 20px;
+
+        align-items: start;
+    }
+
+
+    /* =====================================================
+       SECURITY PANEL
+       ===================================================== */
+
+    .change-password-security-panel {
+        padding: 25px 23px;
+
+        border: 1px solid #dbe3ec;
+        border-radius: 12px;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 5px 18px
+            rgba(15, 23, 42, 0.04);
+    }
+
+
+    .change-password-security-badge {
+        width: 48px;
+        height: 48px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin-bottom: 18px;
+
+        border-radius: 11px;
+
+        background: #eff6ff;
+        color: var(--primary);
+
+        font-size: 11px;
+        font-weight: 900;
+
+        letter-spacing: 0.04em;
+    }
+
+
+    .change-password-security-label {
+        margin: 0 0 5px;
+
+        color: var(--primary);
+
+        font-size: 9px;
+        font-weight: 800;
+
+        letter-spacing: 0.1em;
+    }
+
+
+    .change-password-security-panel h2 {
+        margin: 0 0 8px;
+
+        color: #172033;
+
+        font-size: 19px;
+    }
+
+
+    .change-password-security-description {
+        margin: 0;
+
+        color: #64748b;
+
+        font-size: 11px;
+        line-height: 1.6;
+    }
+
+
+    .change-password-security-divider {
+        height: 1px;
+
+        margin: 21px 0;
+
+        background: #edf2f7;
+    }
+
+
+    /* =====================================================
+       SECURITY ITEMS
+       ===================================================== */
+
+    .change-password-security-item {
+        display: flex;
+        align-items: flex-start;
+
+        gap: 11px;
+
+        margin-bottom: 18px;
+    }
+
+
+    .change-password-security-item:last-child {
+        margin-bottom: 0;
+    }
+
+
+    .change-password-security-item > span {
+        width: 29px;
+        height: 29px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        flex-shrink: 0;
+
+        border-radius: 7px;
+
+        background: #f1f5f9;
+        color: #64748b;
+
+        font-size: 9px;
+        font-weight: 800;
+    }
+
+
+    .change-password-security-item strong {
+        display: block;
+
+        margin-bottom: 3px;
+
+        color: #334155;
+
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+
+    .change-password-security-item p {
+        margin: 0;
+
+        color: #94a3b8;
+
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+
+    /* =====================================================
+       FORM CARD
+       ===================================================== */
+
+    .change-password-form-card {
+        overflow: hidden;
+
+        border: 1px solid #dbe3ec;
+        border-radius: 12px;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 5px 18px
+            rgba(15, 23, 42, 0.04);
+    }
+
+
+    /* =====================================================
+       FORM HEADER
+       ===================================================== */
+
+    .change-password-form-header {
+        padding: 23px 26px;
+
+        border-bottom: 1px solid #e8edf3;
+
+        background: #fbfdff;
+    }
+
+
+    .change-password-form-header > span {
+        display: block;
+
+        margin-bottom: 5px;
+
+        color: var(--primary);
+
+        font-size: 10px;
+        font-weight: 800;
+
+        letter-spacing: 0.1em;
+    }
+
+
+    .change-password-form-header h2 {
+        margin: 0;
+
+        color: #172033;
+
+        font-size: 20px;
+    }
+
+
+    .change-password-form-header p {
+        margin: 6px 0 0;
+
+        color: #64748b;
+
+        font-size: 11px;
+        line-height: 1.6;
+    }
+
+
+    /* =====================================================
+       FORM
+       ===================================================== */
+
+    .change-password-form {
+        width: 100%;
+        max-width: none !important;
+
+        margin: 0 !important;
+        padding: 26px !important;
+    }
+
+
+    /* =====================================================
+       FIELD
+       ===================================================== */
+
+    .change-password-field {
+        margin: 0 0 20px !important;
+    }
+
+
+    .change-password-field label {
+        display: block;
+
+        margin-bottom: 7px;
+
+        color: #334155;
+
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+
+    .change-password-field label span {
+        color: #dc2626;
+    }
+
+
+    .change-password-field input {
+        width: 100%;
+
+        margin: 0;
+
+        padding: 11px 13px;
+
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+
+        background: #ffffff;
+        color: #172033;
+
+        font-family: inherit;
+        font-size: 13px;
+
+        box-sizing: border-box;
+
+        outline: none;
+
+        transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+
+    .change-password-field input:hover {
+        border-color: #94a3b8;
+    }
+
+
+    .change-password-field input:focus {
+        border-color: #60a5fa;
+
+        box-shadow:
+            0 0 0 3px
+            rgba(59, 130, 246, 0.1);
+    }
+
+
+    .change-password-field input::placeholder {
+        color: #94a3b8;
+    }
+
+
+    .change-password-field small {
+        display: block;
+
+        margin-top: 6px;
+
+        color: #94a3b8;
+
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+
+    /* =====================================================
+       SEPARATION BETWEEN OLD AND NEW PASSWORD
+       ===================================================== */
+
+    .change-password-field-divider {
+        height: 1px;
+
+        margin: 24px 0;
+
+        background: #edf2f7;
+    }
+
+
+    /* =====================================================
+       ACTION
+       ===================================================== */
+
+    .change-password-form-actions {
+        display: flex;
+        justify-content: flex-end;
+
+        margin: 24px 0 0 !important;
+        padding-top: 22px;
+
+        border-top: 1px solid #edf2f7;
+    }
+
+
+    .change-password-submit {
+        min-height: 40px;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 10px 18px;
+
+        border: 1px solid var(--primary);
+        border-radius: 8px;
+
+        background: var(--primary);
+        color: #ffffff;
+
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 700;
+
+        cursor: pointer;
+
+        transition:
+            background 0.2s ease,
+            border-color 0.2s ease,
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+
+    .change-password-submit:hover {
+        border-color: var(--primary-dark);
+
+        background: var(--primary-dark);
+
+        transform: translateY(-1px);
+
+        box-shadow:
+            0 6px 16px
+            rgba(29, 78, 216, 0.18);
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @media (max-width: 800px) {
+
+        .change-password-layout {
+            grid-template-columns: 1fr;
+        }
+
+
+        .change-password-security-panel {
+            order: 2;
+        }
+
+    }
+
+
+    @media (max-width: 500px) {
+
+        .change-password-form-header,
+        .change-password-form {
+            padding: 20px !important;
+        }
+
+
+        .change-password-form-actions {
+            align-items: stretch;
+        }
+
+
+        .change-password-submit {
+            width: 100%;
+        }
+
+    }
+
+}
